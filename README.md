@@ -4,7 +4,13 @@ Plugin Claude Code qui **bootstrappe** un nouveau projet via un slash command in
 
 > Interview → structure de projet adaptée → `git init` → premier commit → remote optionnel.
 
-## Ce qu'il fait
+## Slash commands fournis
+
+- `/starter-kit:bootstrap` — interview + génération from-scratch d'un nouveau projet
+- `/starter-kit:add-adr` — créer un nouvel ADR avec numéro auto, index mis à jour
+- `/starter-kit:learn` — ajouter une entrée datée à `docs/LEARNINGS.md`
+
+## Ce que fait `/starter-kit:bootstrap`
 
 `/starter-kit:bootstrap` lance une interview courte (4-8 questions groupées) puis génère :
 
@@ -82,9 +88,10 @@ Si absent, le plugin affiche les commandes prêtes à coller pour exécution man
 ## Roadmap
 
 - [x] V0.1 — bootstrap from-scratch + mode reprise
-- [ ] V0.2 — skill `/starter-kit:add-adr` pour créer rapidement un nouvel ADR
-- [ ] V0.3 — skill `/starter-kit:learn` pour ajouter une entrée LEARNINGS
+- [x] V0.2 — `CLAUDE.md` template restructuré avec best practices (Boris Cherny, shanraisshan)
+- [x] V0.3 — skills `/starter-kit:add-adr` (nouvel ADR auto-incrémenté) et `/starter-kit:learn` (entrée datée dans LEARNINGS)
 - [ ] V0.4 — skill `/starter-kit:migrate` pour mettre à jour un projet créé avec une ancienne version
+- [ ] Publication marketplace publique sur GitHub
 
 ## Licence
 

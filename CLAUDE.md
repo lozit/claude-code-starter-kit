@@ -45,7 +45,7 @@ Recharger après modif d'un template : redémarrer Claude (ou `/reload-plugins` 
 
 ## Conventions de templates
 
-- Chaque template porte `<!-- generated-by: starter-kit v0.2.0 -->` en tête.
+- Chaque template porte `<!-- generated-by: starter-kit v0.3.0 -->` en tête.
 - Placeholders au format `{{KEY}}` (substitution texte simple, pas de moteur de template).
 - Placeholders disponibles définis dans `skills/bootstrap/SKILL.md` (Phase 4).
 - Suffixes de langue : `*.fr.tpl`, `*.en.tpl` pour les fichiers qui en ont besoin. Les fichiers sans suffixe sont langue-agnostiques (gitignore, adr-template, LEARNINGS, GLOSSARY...).
