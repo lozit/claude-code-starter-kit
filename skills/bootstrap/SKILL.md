@@ -89,7 +89,7 @@ Pour chaque fichier à créer :
 | `CLAUDE.md.{lang}.tpl` | `CLAUDE.md` |
 | `gitignore.minimal` | `.gitignore` |
 | `decisions-README.md.{lang}.tpl` | `docs/decisions/README.md` |
-| `adr-template.md` | `docs/decisions/0000-template.md` |
+| `adr-template.{lang}.md` | `docs/decisions/0000-template.md` |
 | `LEARNINGS.md.tpl` | `docs/LEARNINGS.md` |
 | `brief-README.md.tpl` | `brief/README.md` |
 | `media-README.md.tpl` | `media/README.md` |

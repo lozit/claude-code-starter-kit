@@ -7,9 +7,7 @@ Ce fichier est différent de la roadmap long terme : il décrit ce qui est en co
 
 ## En cours
 
-- [ ] Compléter `README.md`
-- [ ] Compléter la section description de `CLAUDE.md`
-- [ ] Remplir `brief/` avec les notes amont
+- [ ] (ajouter ici les premières tâches actives)
 
 ## À faire ensuite
 
