@@ -70,6 +70,17 @@ Pour chaque recommandation sélectionnée :
 ### Si "fichier `.claude/rules/<topic>.md`"
 
 - Crée le fichier avec son frontmatter (incluant `paths:` si suggéré) et son contenu
+- **Signature** : placer `<!-- generated-by: starter-kit vX.Y.Z -->` sur la ligne immédiatement après le `---` closing du frontmatter (PAS en ligne 1, car le frontmatter doit y rester). Format :
+  ```
+  ---
+  paths:
+    - "..."
+  ---
+  <!-- generated-by: starter-kit v0.6.0 -->
+
+  # Titre
+  ...
+  ```
 - Vérifie que le dossier `.claude/rules/` existe (créer si besoin via `Write` qui crée les parents)
 
 ### Si "permission `.claude/settings.json`"

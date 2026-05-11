@@ -29,9 +29,20 @@ Pour chaque fichier dans `generatedFiles`, exécute ces checks dans l'ordre :
 
 ### 2.2 Signature présente
 
-Lis les **3 premières lignes** du fichier. Cherche la regex `<!-- generated-by: starter-kit v([0-9]+\.[0-9]+\.[0-9]+) -->` :
+Lis les **10 premières lignes** du fichier (pour accommoder une YAML frontmatter qui peut compter jusqu'à 8-9 lignes : `---\nname: ...\npaths:\n  - "..."\n  - "..."\n---\n<!-- signature -->`). Cherche la regex `<!-- generated-by: starter-kit v([0-9]+\.[0-9]+\.[0-9]+) -->` :
 - **Match** → extraire la version (FOUND_VERSION), continuer
 - **No match** → **❌ signature absente**, passer aux checks suivants quand même
+
+**Exceptions** : les fichiers JSON (`.starter-kit.json`, `.claude/settings.json`, etc.) n'ont pas de signature (commentaire HTML invalide en JSON). Pour ces fichiers, skip ce check.
+
+**Note frontmatter YAML** : pour les fichiers commençant par `---` (rules, skills), la signature **doit** être sur la ligne juste après le `---` closing. Ex :
+```
+---
+paths:
+  - "..."
+---
+<!-- generated-by: starter-kit v0.6.0 -->
+```
 
 ### 2.3 Version match
 
@@ -41,11 +52,18 @@ Si signature trouvée :
 
 ### 2.4 Placeholders résiduels
 
-Cherche dans tout le contenu du fichier la regex `\{\{[A-Z_]+\}\}`.
-- **Aucun match** → **✅ pas de placeholder**
-- **Match** → **❌ placeholders non substitués : {{X}}, {{Y}}, ...**
+Cherche dans tout le contenu du fichier les **placeholders connus** de bootstrap phase 5 (whitelist exacte) :
 
-**Exception** : si le fichier est dans `skills/bootstrap/templates/` ou est lui-même un `*.tpl`, ne PAS faire ce check (les templates contiennent des `{{KEY}}` par design). Mais cette situation ne devrait pas arriver dans un projet utilisateur normal — uniquement dans le dogfood.
+```
+\{\{(PROJECT_NAME|DESCRIPTION|LANG|STACK|DATE|HAS_PLAN|HAS_ARCHITECTURE|HAS_GLOSSARY|HAS_CHANGELOG|REMOTE_PROVIDER|REMOTE_VISIBILITY|CONTENT|INTENT_SOURCE|GOAL|USERS|CONSTRAINTS|NONGOALS|ACCEPTANCE)\}\}
+```
+
+- **Aucun match** → **✅ pas de placeholder**
+- **Match** → **❌ placeholders non substitués : {{PROJECT_NAME}}, {{DESCRIPTION}}, ...**
+
+**Important : ne PAS matcher** `{{KEY}}`, `{{X}}`, `{{Y}}`, `{{NNNN}}`, etc. — ce sont des références documentaires (en backticks dans le texte) qui parlent du concept de placeholder. Seules les vraies clés bootstrap déclenchent l'erreur.
+
+**Exception** : si le fichier est dans `skills/bootstrap/templates/` ou est lui-même un `*.tpl`, skip ce check (les templates contiennent ces placeholders par design — c'est uniquement le cas dans le dogfood, pas dans un projet utilisateur normal).
 
 ## Phase 3 — Validations structurelles
 

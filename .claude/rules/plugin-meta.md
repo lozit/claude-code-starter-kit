@@ -4,6 +4,7 @@ paths:
   - "skills/**"
   - "**/*.tpl"
 ---
+<!-- generated-by: starter-kit v0.6.0 -->
 
 # Plugin meta-development rules
 
