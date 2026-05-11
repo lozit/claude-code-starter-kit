@@ -7,9 +7,7 @@ This file differs from the long-term roadmap: it describes what is happening **n
 
 ## In progress
 
-- [ ] Re-test bootstrap from-scratch in /tmp with the new V0.2 CLAUDE.md template (verify all sections render correctly with placeholders)
-- [ ] First ADR: marketplace.json location (was at root, moved to `.claude-plugin/`)
-- [ ] First ADR: choice of plain text placeholder substitution over a templating engine
+- [ ] Open-ended: validate V0.2 end-to-end by running `/starter-kit:bootstrap` in a fresh Claude session in `/tmp/test-bootstrap` (smoke test of the rendered CLAUDE.md already done in `/tmp/starter-kit-v02-smoke/`)
 
 ## Up next
 
@@ -24,6 +22,8 @@ This file differs from the long-term roadmap: it describes what is happening **n
 
 ## Recently done
 
+- [x] First two ADRs written: `0001-marketplace-json-location.md`, `0002-plain-text-placeholder-substitution.md` (2026-05-11)
+- [x] Smoke test of V0.2 CLAUDE.md template in `/tmp/starter-kit-v02-smoke/` — 0 placeholder leftover, all sections render (2026-05-11)
 - [x] V0.2 — `CLAUDE.md.{fr,en}.tpl` restructured to integrate best practices from shanraisshan/howborisusesclaudecode (Setup/Build/Test, mutable file philosophy, settings/rules, verification, plan mode, worktrees) (2026-05-11)
 - [x] V0.1.1 — EN variants for LEARNINGS, brief, media, PLAN, ARCHITECTURE, CHANGELOG, GLOSSARY, adr-template (2026-05-11)
 - [x] V0.1 — Project bootstrapped, skill + 15 templates + dogfood (2026-05-11)
