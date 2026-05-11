@@ -12,9 +12,7 @@ This file differs from the long-term roadmap: it describes what is happening **n
 ## Up next
 
 - [ ] Publish marketplace on GitHub for shareable distribution (`gh repo create`, push, share `/plugin marketplace add` URL)
-- [ ] ADR 0003 — multi-skill architecture rationale (bootstrap + add-adr + learn + migrate, `disable-model-invocation: true` policy)
-- [ ] ADR 0004 — `.starter-kit.json` schema with `bootstrappedWithVersion` and `migrations` array
-- [ ] Consider: hook (pre-commit?) that auto-bumps `<!-- generated-by -->` signatures when migrating, instead of relying on full-file rewrite
+- [ ] Optional V0.5 — hook (pre-commit?) that auto-bumps `<!-- generated-by -->` signatures when migrating, instead of relying on full-file rewrite
 
 ## Waiting / blocked
 
@@ -22,7 +20,9 @@ This file differs from the long-term roadmap: it describes what is happening **n
 
 ## Recently done
 
-- [x] V0.4 — skill `/starter-kit:migrate` with diff-per-file + `.new` fallback + `--dry-run`; `.starter-kit.json` schema extended with `bootstrappedWithVersion` and `migrations` (2026-05-11)
+- [x] ADR 0003 — multi-skill architecture rationale (2026-05-11)
+- [x] ADR 0004 — `.starter-kit.json` schema with `bootstrappedWithVersion` and `migrations` (2026-05-11)
+- [x] V0.4 — skill `/starter-kit:migrate` with diff-per-file + `.new` fallback + `--dry-run` (2026-05-11)
 - [x] V0.3 — skills `/starter-kit:add-adr` and `/starter-kit:learn` (2026-05-11)
 - [x] First two ADRs written: `0001-marketplace-json-location.md`, `0002-plain-text-placeholder-substitution.md` (2026-05-11)
 - [x] Smoke test of V0.2 CLAUDE.md template in `/tmp/starter-kit-v02-smoke/` — 0 placeholder leftover (2026-05-11)

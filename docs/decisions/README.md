@@ -32,3 +32,5 @@ No ADR needed for trivial choices or implementation details.
 | 0000 | Template | — | — |
 | [0001](0001-marketplace-json-location.md) | `marketplace.json` lives in `.claude-plugin/`, not at the repo root | Accepted | 2026-05-11 |
 | [0002](0002-plain-text-placeholder-substitution.md) | Plain text placeholder substitution, no templating engine | Accepted | 2026-05-11 |
+| [0003](0003-multi-skill-architecture.md) | Multi-skill architecture with `disable-model-invocation: true` | Accepted | 2026-05-11 |
+| [0004](0004-starter-kit-json-schema.md) | `.starter-kit.json` schema with `bootstrappedWithVersion` and `migrations` | Accepted | 2026-05-11 |
