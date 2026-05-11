@@ -34,3 +34,4 @@ No ADR needed for trivial choices or implementation details.
 | [0002](0002-plain-text-placeholder-substitution.md) | Plain text placeholder substitution, no templating engine | Accepted | 2026-05-11 |
 | [0003](0003-multi-skill-architecture.md) | Multi-skill architecture with `disable-model-invocation: true` | Accepted | 2026-05-11 |
 | [0004](0004-starter-kit-json-schema.md) | `.starter-kit.json` schema with `bootstrappedWithVersion` and `migrations` | Accepted | 2026-05-11 |
+| [0005](0005-intent-capture-and-apply-best-practices.md) | Intent capture in bootstrap + separate `apply-best-practices` skill | Accepted | 2026-05-11 |

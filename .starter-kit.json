@@ -61,6 +61,19 @@
         {"category": "claudemd-section", "name": "Workflow Claude Code (plan mode, /compact, worktrees)", "status": "applied"},
         {"category": "claudemd-reference", "name": ".claude/settings.json, .claude/rules/*.md, <important if=...> tags", "status": "applied (mentioned, not yet exercised in dogfood)"}
       ]
+    },
+    {
+      "appliedAt": "2026-05-11",
+      "source": "shanraisshan/claude-code-best-practice (via /starter-kit:apply-best-practices V0.5)",
+      "note": "First real run of apply-best-practices on the dogfood repo. 12 recommendations returned; 4 were already-existing skills (filtered out as redundant), 2 redundant with V0.2 manual integration, 6 truly new and user-selected (4 applied, 2 deferred to V0.6).",
+      "items": [
+        {"category": "claudemd-section", "name": "Plugin workflow (modèle mental)", "target": "CLAUDE.md (meta)", "status": "applied"},
+        {"category": "claude-rule", "name": "plugin-meta.md (paths: .claude-plugin/, skills/, *.tpl)", "target": ".claude/rules/plugin-meta.md", "status": "applied"},
+        {"category": "settings", "name": "Permissions preset (git, gh, glab, common bash, WebFetch domains)", "target": ".claude/settings.json", "status": "applied"},
+        {"category": "hook", "name": "PreToolUse validation {{KEY}} non substitué", "target": "docs/best-practices-pending.md", "status": "pending (saved for manual review)"},
+        {"category": "skill", "name": "/starter-kit:verify-bootstrap (V0.6 idea)", "target": "docs/best-practices-pending.md", "status": "deferred"},
+        {"category": "command", "name": "/watch-bootstrap (low priority)", "target": "docs/best-practices-pending.md", "status": "deferred"}
+      ]
     }
   ],
   "generatedFiles": [
@@ -74,6 +87,9 @@
     "CHANGELOG.md",
     "brief/00-INTENT.md",
     "docs/00-VISION.md",
+    "docs/best-practices-pending.md",
+    ".claude/rules/plugin-meta.md",
+    ".claude/settings.json",
     ".starter-kit.json"
   ],
   "skippedFiles": {

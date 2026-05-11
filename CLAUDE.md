@@ -67,6 +67,13 @@ Pièges du format plugin Claude Code, comportements surprenants de `AskUserQuest
 ### PLAN.md
 Tâches en cours sur le développement du plugin lui-même.
 
+## Plugin workflow (modèle mental)
+
+- **Template over code** : substitution texte simple `{{KEY}}` dans les templates, jamais de logique applicative ni de moteur de template (cf. ADR 0002).
+- **Dogfooding** : le plugin s'applique à lui-même. `Starting-Claude/` contient sa propre couche B (docs/, brief/, PLAN.md...) générée par `/starter-kit:bootstrap`.
+- **Offline-first** : seul `/starter-kit:apply-best-practices` requiert internet (WebFetch). Le reste fonctionne hors-ligne.
+- **User handoff** : un `CLAUDE.md` généré est un **point de départ**, pas une vérité absolue. L'utilisateur l'édite et l'enrichit selon ses besoins projet.
+
 ## À ne pas faire
 
 - Ne pas mettre de logique dans `plugin.json` (juste métadonnées)

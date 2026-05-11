@@ -7,8 +7,7 @@ This file differs from the long-term roadmap: it describes what is happening **n
 
 ## In progress
 
-- [ ] End-to-end real-world test: bootstrap a brand-new project at V0.5 to validate the intent capture flow (brief paste path AND interview path) + run `apply-best-practices` to validate the WebFetch + multi-select + apply flow
-- [ ] Optional ADR 0005 — V0.5 intent capture and apply-best-practices architecture decisions
+- [ ] End-to-end real-world test on a **fresh project** (not the dogfood): bootstrap V0.5 in `/tmp` to validate the intent capture flow on a from-scratch dossier (already validated on the dogfood via the V0.5 commit + the apply-best-practices run)
 
 ## Up next
 
@@ -20,6 +19,8 @@ This file differs from the long-term roadmap: it describes what is happening **n
 
 ## Recently done
 
+- [x] First real-world run of `/starter-kit:apply-best-practices` on the dogfood: 12 recommendations fetched, 6 truly new (4 applied, 2 deferred), `.claude/rules/plugin-meta.md` + `.claude/settings.json` + meta CLAUDE.md "Plugin workflow" section + `docs/best-practices-pending.md` created (2026-05-11)
+- [x] ADR 0005 — Intent capture in bootstrap + separate apply-best-practices skill (2026-05-11)
 - [x] V0.5 — intent capture in `bootstrap` (Phase 3) + new skill `/starter-kit:apply-best-practices` + dogfood backfill of `brief/00-INTENT.md` + `docs/00-VISION.md` (2026-05-11)
 - [x] Published to GitHub: https://github.com/lozit/claude-code-starter-kit (public marketplace) (2026-05-11)
 - [x] ADR 0003 — multi-skill architecture rationale (2026-05-11)

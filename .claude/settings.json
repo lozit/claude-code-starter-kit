@@ -1,0 +1,40 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git status)",
+      "Bash(git diff *)",
+      "Bash(git log *)",
+      "Bash(git add *)",
+      "Bash(git commit *)",
+      "Bash(git push *)",
+      "Bash(git pull *)",
+      "Bash(git mv *)",
+      "Bash(git rm *)",
+      "Bash(git branch *)",
+      "Bash(git checkout *)",
+      "Bash(git stash *)",
+      "Bash(git init *)",
+      "Bash(gh repo *)",
+      "Bash(gh auth status)",
+      "Bash(gh pr *)",
+      "Bash(gh issue *)",
+      "Bash(glab repo *)",
+      "Bash(glab auth status)",
+      "Bash(ls *)",
+      "Bash(cat *)",
+      "Bash(head *)",
+      "Bash(tail *)",
+      "Bash(find * -type f *)",
+      "Bash(grep *)",
+      "Bash(rg *)",
+      "Bash(wc *)",
+      "Bash(test *)",
+      "Bash(echo *)",
+      "Bash(pwd)",
+      "Bash(mkdir *)",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:resources.leadgenman.com)",
+      "WebFetch(domain:howborisusesclaudecode.com)"
+    ]
+  }
+}
