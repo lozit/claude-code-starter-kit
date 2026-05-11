@@ -1,4 +1,4 @@
-<!-- generated-by: starter-kit v0.3.0 -->
+<!-- generated-by: starter-kit v0.4.0 -->
 # Learnings — Starting-Claude
 
 Non-trivial learnings that emerged during the project. Reverse-chronological order (newest at the top).

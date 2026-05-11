@@ -112,7 +112,7 @@ Pour chaque fichier à créer :
 1. Si `.git/` absent dans cwd → `git init -b main`.
 2. `git add -A`
 3. Vérifie qu'il y a quelque chose à committer : `git diff --cached --quiet` → si rien, skip le commit.
-4. Sinon : `git commit -m "chore: bootstrap project structure with starter-kit v0.3.0"`
+4. Sinon : `git commit -m "chore: bootstrap project structure with starter-kit v0.4.0"`
 
 ## Phase 6 — Remote (si demandé)
 
@@ -139,7 +139,7 @@ Affiche à l'utilisateur :
 ## Règles importantes
 
 - **Ne JAMAIS écraser un fichier sans confirmation explicite** (cf. phase 3).
-- **Toujours** ajouter `<!-- generated-by: starter-kit v0.3.0 -->` en tête de chaque fichier généré (les templates le contiennent déjà).
+- **Toujours** ajouter `<!-- generated-by: starter-kit v0.4.0 -->` en tête de chaque fichier généré (les templates le contiennent déjà).
 - **Idempotence** : si l'utilisateur relance le skill, mode reprise détecte les fichiers déjà à jour et ne fait rien.
 - **Trace les erreurs** : si une étape échoue (ex. `gh repo create` retourne une erreur), ne fais pas semblant que ça a marché. Affiche l'erreur, propose une action.
 - **Conserver le `.starter-kit.json`** : c'est la source de vérité pour le mode reprise.

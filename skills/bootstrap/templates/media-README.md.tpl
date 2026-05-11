@@ -1,4 +1,4 @@
-<!-- generated-by: starter-kit v0.3.0 -->
+<!-- generated-by: starter-kit v0.4.0 -->
 # media/ — Assets visuels
 
 Images, mockups, captures d'écran, vidéos, audio, diagrammes — tout ce qui est binaire et visuel.

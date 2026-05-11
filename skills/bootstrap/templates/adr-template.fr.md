@@ -1,4 +1,4 @@
-<!-- generated-by: starter-kit v0.3.0 -->
+<!-- generated-by: starter-kit v0.4.0 -->
 # NNNN — Titre court de la décision
 
 **Date** : YYYY-MM-DD

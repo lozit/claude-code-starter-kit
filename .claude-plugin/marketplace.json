@@ -6,14 +6,14 @@
   },
   "metadata": {
     "description": "Marketplace locale mono-plugin pour développer et tester starter-kit en local",
-    "version": "0.3.0"
+    "version": "0.4.0"
   },
   "plugins": [
     {
       "name": "starter-kit",
       "source": "./",
       "description": "Bootstrap interactif de nouveaux projets Claude Code",
-      "version": "0.3.0",
+      "version": "0.4.0",
       "category": "scaffold"
     }
   ]

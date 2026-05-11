@@ -1,4 +1,4 @@
-<!-- generated-by: starter-kit v0.3.0 -->
+<!-- generated-by: starter-kit v0.4.0 -->
 # NNNN — Short decision title
 
 **Date**: YYYY-MM-DD

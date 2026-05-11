@@ -1,4 +1,4 @@
-<!-- generated-by: starter-kit v0.3.0 -->
+<!-- generated-by: starter-kit v0.4.0 -->
 # brief/ — Upstream notes
 
 This folder contains anything written **before** starting the project that provides domain context:
