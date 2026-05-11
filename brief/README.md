@@ -1,21 +1,21 @@
 <!-- generated-by: starter-kit v0.1.0 -->
-# brief/ — Notes amont
+# brief/ — Upstream notes
 
-Ce dossier contient tout ce qui a été écrit **avant** de démarrer le projet et qui sert de contexte métier :
+This folder contains anything written **before** starting the project that provides domain context:
 
-- Spécifications brutes envoyées par le client / le PO
+- Raw specifications sent by the client / PO
 - Brainstorms, mind-maps
-- Extraits d'emails ou de conversations
-- Notes prises pendant les réunions de cadrage
-- Documents de référence externes (PDF, captures...)
+- Email or conversation excerpts
+- Notes from scoping meetings
+- External reference documents (PDFs, screenshots...)
 
 ## Conventions
 
-- Pas de structure imposée. Range comme tu veux (sous-dossiers, fichiers plats, mix).
-- Préfère les noms explicites : `2026-05-11-call-client.md` plutôt que `notes.md`.
-- Tout ce qui est **synthétisé et stable** doit migrer vers `docs/` (vision, archi, glossaire...).
-- `brief/` reste brouillon ; `docs/` est la version finale.
+- No imposed structure. Organize as you wish (subfolders, flat files, mix).
+- Prefer explicit names: `2026-05-11-client-call.md` rather than `notes.md`.
+- Anything **synthesized and stable** should migrate to `docs/` (vision, architecture, glossary...).
+- `brief/` stays draft; `docs/` is the final version.
 
-## Pour Claude
+## For Claude
 
-Si tu cherches du contexte métier en début de session et que la doc projet est insuffisante, **lis ce dossier**.
+If you're looking for domain context at session start and the project docs are insufficient, **read this folder**.

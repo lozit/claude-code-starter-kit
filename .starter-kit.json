@@ -1,0 +1,33 @@
+{
+  "starterKitVersion": "0.1.0",
+  "bootstrappedAt": "2026-05-11",
+  "answers": {
+    "projectName": "Starting-Claude",
+    "description": "Plugin Claude Code qui bootstrappe de nouveaux projets via un slash command interactif.",
+    "lang": "en",
+    "projectType": "code",
+    "stack": "Markdown + JSON (plugin Claude Code)",
+    "hasPlan": true,
+    "hasArchitecture": true,
+    "hasGlossary": false,
+    "hasChangelog": true,
+    "remoteProvider": null,
+    "remoteVisibility": null
+  },
+  "generatedFiles": [
+    "docs/decisions/README.md",
+    "docs/decisions/0000-template.md",
+    "docs/LEARNINGS.md",
+    "brief/README.md",
+    "media/README.md",
+    "PLAN.md",
+    "docs/ARCHITECTURE.md",
+    "CHANGELOG.md",
+    ".starter-kit.json"
+  ],
+  "skippedFiles": {
+    "CLAUDE.md": "foreign (no generated-by signature)",
+    "README.md": "foreign (no generated-by signature)",
+    ".gitignore": "foreign (no generated-by signature)"
+  }
+}

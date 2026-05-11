@@ -17,6 +17,3 @@ Thumbs.db
 
 # Claude Code
 .claude/local/
-
-# Plugin dev — état local éventuel d'un test bootstrap
-.starter-kit.json

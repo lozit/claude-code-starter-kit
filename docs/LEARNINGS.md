@@ -1,17 +1,17 @@
 <!-- generated-by: starter-kit v0.1.0 -->
-# Apprentissages — Starting-Claude
+# Learnings — Starting-Claude
 
-Apprentissages non-triviaux émergés au fil du projet. Ordre antichronologique (le plus récent en haut).
+Non-trivial learnings that emerged during the project. Reverse-chronological order (newest at the top).
 
-Une entrée par apprentissage. Garde le format simple : titre, contexte, leçon.
+One entry per learning. Keep the format simple: title, context, lesson.
 
 ---
 
-<!-- Exemple :
+<!-- Example:
 
-## YYYY-MM-DD — Titre court
+## YYYY-MM-DD — Short title
 
-**Contexte** : ce qu'on faisait.
-**Leçon** : ce qu'on a appris, et comment l'appliquer la prochaine fois.
+**Context**: what we were doing.
+**Lesson**: what we learned, and how to apply it next time.
 
 -->

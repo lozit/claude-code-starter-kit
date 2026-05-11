@@ -1,28 +1,31 @@
 <!-- generated-by: starter-kit v0.1.0 -->
 # PLAN — Starting-Claude
 
-Plan/todo **actif** du projet. Maintenu par Claude au fil du travail.
+**Active** plan/todo for the project. Maintained by Claude during work.
 
-Ce fichier est différent de la roadmap long terme : il décrit ce qui est en cours **maintenant**.
+This file differs from the long-term roadmap: it describes what is happening **now**.
 
-## En cours
+## In progress
 
-- [ ] Compléter `README.md`
-- [ ] Compléter la section description de `CLAUDE.md`
-- [ ] Remplir `brief/` avec les notes amont
+- [ ] Add EN variants for all remaining FR-only templates (V0.1 gap, see V0.1.1)
+- [ ] First ADR: marketplace.json location (was at root, moved to `.claude-plugin/`)
 
-## À faire ensuite
+## Up next
+
+- [ ] V0.2 — `/starter-kit:add-adr` skill (quick ADR creation)
+- [ ] V0.2 — `/starter-kit:learn` skill (quick LEARNINGS entry)
+- [ ] V0.4 — `/starter-kit:migrate` skill (upgrade projects bootstrapped with older versions)
+- [ ] Publish marketplace on GitHub for shareable distribution
+
+## Waiting / blocked
 
 - [ ] ...
 
-## En attente / bloqué
+## Recently done
 
-- [ ] ...
-
-## Fait récemment
-
-- [x] Bootstrap du projet (2026-05-11)
+- [x] Project bootstrapped (2026-05-11)
+- [x] V0.1.1 — EN variants for LEARNINGS, brief, media, PLAN, ARCHITECTURE, CHANGELOG, GLOSSARY, adr-template (2026-05-11)
 
 ---
 
-**Convention** : Claude met à jour ce fichier en début/fin de session. Les tâches faites restent dans "Fait récemment" pendant ~1 semaine puis sont archivées (supprimées ou déplacées vers CHANGELOG).
+**Convention**: Claude updates this file at the start/end of each session. Completed tasks stay in "Recently done" for ~1 week then are archived (deleted or moved to CHANGELOG).

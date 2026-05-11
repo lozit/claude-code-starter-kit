@@ -1,33 +1,33 @@
 <!-- generated-by: starter-kit v0.1.0 -->
-# NNNN — Titre court de la décision
+# NNNN — Short decision title
 
-**Date** : YYYY-MM-DD
-**Statut** : Proposé | Accepté | Déprécié | Remplacé par ADR-XXXX
+**Date**: YYYY-MM-DD
+**Status**: Proposed | Accepted | Deprecated | Superseded by ADR-XXXX
 
-## Contexte
+## Context
 
-Quel est le problème ? Quelles sont les contraintes ? Pourquoi cette décision se pose maintenant ?
+What is the problem? What are the constraints? Why is this decision coming up now?
 
-## Décision
+## Decision
 
-Ce qui a été décidé, en une ou deux phrases claires.
+What was decided, in one or two clear sentences.
 
-## Alternatives considérées
+## Alternatives considered
 
-- **Option A** : pourquoi écartée
-- **Option B** : pourquoi écartée
+- **Option A**: why rejected
+- **Option B**: why rejected
 
-## Conséquences
+## Consequences
 
-### Positives
+### Positive
 - ...
 
-### Négatives / Tradeoffs
+### Negative / Tradeoffs
 - ...
 
-### Neutres
+### Neutral
 - ...
 
 ## Notes
 
-Liens utiles, références, discussions associées.
+Useful links, references, related discussions.

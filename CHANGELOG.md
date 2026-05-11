@@ -1,15 +1,16 @@
 <!-- generated-by: starter-kit v0.1.0 -->
 # Changelog
 
-Toutes les modifications notables de ce projet sont documentées dans ce fichier.
+All notable changes to this project are documented in this file.
 
-Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/),
-versions respectant [Semantic Versioning](https://semver.org/lang/fr/).
+Format inspired by [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
+versions follow [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
 ### Added
-- Bootstrap du projet avec starter-kit le 2026-05-11
+- Project bootstrapped with starter-kit on 2026-05-11
+- EN variants for all templates that were previously FR-only (LEARNINGS, brief, media, PLAN, ARCHITECTURE, CHANGELOG, GLOSSARY, adr-template)
 
 ### Changed
 
