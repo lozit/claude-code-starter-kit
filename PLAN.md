@@ -11,8 +11,8 @@ This file differs from the long-term roadmap: it describes what is happening **n
 
 ## Up next
 
-- [ ] Publish marketplace on GitHub for shareable distribution (`gh repo create`, push, share `/plugin marketplace add` URL)
 - [ ] Optional V0.5 — hook (pre-commit?) that auto-bumps `<!-- generated-by -->` signatures when migrating, instead of relying on full-file rewrite
+- [ ] End-to-end real-world test: bootstrap a brand-new project using the published marketplace (different machine or fresh `/plugin marketplace remove + add` to validate the public install path)
 
 ## Waiting / blocked
 
@@ -20,6 +20,7 @@ This file differs from the long-term roadmap: it describes what is happening **n
 
 ## Recently done
 
+- [x] Published to GitHub: https://github.com/lozit/claude-code-starter-kit (public marketplace) (2026-05-11)
 - [x] ADR 0003 — multi-skill architecture rationale (2026-05-11)
 - [x] ADR 0004 — `.starter-kit.json` schema with `bootstrappedWithVersion` and `migrations` (2026-05-11)
 - [x] V0.4 — skill `/starter-kit:migrate` with diff-per-file + `.new` fallback + `--dry-run` (2026-05-11)
