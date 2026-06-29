@@ -64,3 +64,4 @@ No ADR needed for trivial choices or implementation details.
 | [0032](0032-premortem-anti-sycophancy.md) | Adopt the premortem as a reflection-phase adversarial technique (anti-sycophancy): PRD-Risks hint + Posture pointer + `/groundrules:premortem` skill | Accepted | 2026-06-20 |
 | [0033](0033-adopt-full-mode.md) | adopt: "Full adoption" mode (consolidate + reformat, single grouped confirmation, `--full`) | Accepted | 2026-06-26 |
 | [0034](0034-posture-keep-the-diff-small.md) | Posture: a "keep the diff small" axis (simplicity + surgical changes), harvested from karpathy-skills | Accepted | 2026-06-29 |
+| [0035](0035-no-auto-capture-memory-layer.md) | Considered an auto-capture memory layer (claude-mem class); declined — reaffirms ADR 0020/0021/0025 | Accepted | 2026-06-29 |

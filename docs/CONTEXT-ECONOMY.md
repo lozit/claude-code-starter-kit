@@ -101,6 +101,29 @@ A groundrules-generated project is already built on this ladder:
 The decision to keep it this way (index over RAG for own docs) is recorded in
 [ADR 0021](decisions/0021-context-economy-index-over-doc-search.md).
 
+## What about an auto-capture memory layer?
+
+A third class of tool is worth naming, because it's the most common "but how does the agent
+*remember*?" ask: a **persistent-memory system** (e.g.
+[claude-mem](https://github.com/thedotmack/claude-mem)) that **automatically captures**
+everything the agent does via lifecycle hooks, AI-compresses it into a **machine-local store**
+(SQLite + a vector DB behind a background worker), and **re-injects** relevant snippets into
+future sessions. It's the opposite bet to groundrules' on three axes:
+
+| | Auto-capture memory (claude-mem class) | groundrules |
+|---|---|---|
+| **Where it lives** | Machine-local (`~/.claude-mem/…`) — **dies on `git clone` / new machine**, doesn't travel to teammates | In the **repo** — versioned, shared, survives a clone ([ADR 0020](decisions/0020-repo-is-the-only-memory.md)) |
+| **How it's written** | **Automatic** capture of everything (high recall, low signal) | **Curated** — LEARNINGS/ADRs are deliberate, high-signal, human-readable |
+| **What it needs** | A **runtime daemon** + hooks always on | Plain files; **no runtime** ([ADR 0025](decisions/0025-no-runtime-hook-no-watch.md)) |
+
+One honest point of **agreement**: claude-mem's *progressive disclosure* (a compact index
+first, full detail fetched only for the IDs you filter to) is the **same instinct** as the
+ladder above — filter before you fetch. We arrive at it by **curation**, they by **RAG**; that
+two traditions converge on "index first, detail on demand" is a point *for* the principle, not
+against it. groundrules takes **no dependency** on such a tool and doesn't bundle one; if you
+genuinely want automatic cross-session recall *on top of* curated repo memory, these exist and
+are complementary — just know the recall lives **outside** your repo and your version history.
+
 ## Sources
 
 - Chroma, *Context Rot: How Increasing Input Tokens Impacts LLM Performance* (2025) — 18

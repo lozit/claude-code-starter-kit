@@ -2,7 +2,7 @@
 
 **groundrules lays the documentation backbone of a software project — and keeps it alive.** A Claude Code plugin that interviews you, captures the project's intent, and generates a tailored, opinionated doc structure (vision, decisions, learnings, architecture…), then gives you the skills to maintain it as the project evolves.
 
-> **Opinionated, and it shows its work.** Each choice is sourced — *context rot* / lost-in-the-middle, LLM **sycophancy** (countered with Gary Klein's **premortem**), Michael Nygard's **ADRs**, **TDD** as a loop's back pressure, the *"write loops, not prompts"* shift — and it's explicit about what it **leaves out**: no GraphRAG / *graphify* layer (a small index beats doc-search for your own repo), no coercive mandatory-TDD. The receipts: [`docs/decisions/`](docs/decisions/) and [**What the research says**](#what-the-research-says).
+> **Opinionated, and it shows its work.** Each choice is sourced — *context rot* / lost-in-the-middle, LLM **sycophancy** (countered with Gary Klein's **premortem**), Michael Nygard's **ADRs**, **TDD** as a loop's back pressure, the *"write loops, not prompts"* shift — and it's explicit about what it **leaves out**: no GraphRAG / *graphify* layer (a small index beats doc-search for your own repo), no auto-captured machine-local memory daemon (the repo is the only memory — it travels with `git clone`), no coercive mandatory-TDD. The receipts: [`docs/decisions/`](docs/decisions/) and [**What the research says**](#what-the-research-says).
 
 ## Why
 
