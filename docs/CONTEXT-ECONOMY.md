@@ -36,6 +36,34 @@ This isn't folklore. It's true on two independent grounds:
 So "put everything in `CLAUDE.md` so Claude has it" actively *hurts* — it dilutes
 attention and costs more.
 
+## Is the agent still reading it? The canary probe
+
+The budget (< 200 lines) is **preventive**. But adherence is never guaranteed 100%, and you
+get no alarm when it slips — so pair the budget with a cheap **detective** signal: a *canary*.
+
+A canary is one trivial, glance-checkable instruction whose **only** job is to report whether
+the file is still being read — e.g. *"always greet me as `<name>`"*. While the greeting holds,
+the agent is reading and honoring the file; when it silently lapses, adherence is decaying
+(usually **context saturation** late in a long session, or too many competing instructions).
+
+Three things to keep straight:
+
+- **It's a passive probe, not a guard.** `CLAUDE.md` is **context, not enforced config** — to
+  *block* an action no matter what, you need a `PreToolUse` hook, not a line of Markdown. This
+  is exactly why groundrules keeps enforcement out of the generated file
+  ([ADR 0025](decisions/0025-no-runtime-hook-no-watch.md)).
+- **A root canary tests saturation, not compaction.** The project-root `CLAUDE.md` **survives
+  `/compact`** — Claude re-reads it from disk and re-injects it. So a root canary mostly
+  surfaces in-session context saturation, not post-compaction loss (a common misconception).
+- **It's a global witness, not a diagnostic.** It tells you attention is slipping, *not which
+  rule* fell.
+
+groundrules **doesn't generate a canary**: a gimmick line costs the very budget it watches and
+adds one more competing instruction (the noise it's meant to detect). It's an **opt-in
+technique** you add yourself when you want the signal. (Origin:
+[HN](https://news.ycombinator.com/item?id=46098838); see also the official
+[memory docs](https://code.claude.com/docs/en/memory).)
+
 ## Index vs documentation-search plugin: settle the debate
 
 A common online claim: a **doc-search / RAG plugin** (an MCP server that semantically
