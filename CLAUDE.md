@@ -93,6 +93,7 @@ At a work boundary the agent can see — **before a push/tag/release** (most rel
 
 - **Push back**: challenge a plan/template change that's off-strategy, technically wrong, or inconsistent with an ADR/LEARNINGS. Surface tradeoffs; ask before guessing; don't be sycophantic.
 - **Stay reversible**: confirm before hard-to-undo actions; commit only on explicit request; `verify-bootstrap` is post-hoc, not a runtime guard (ADR 0025).
+- **Keep the diff small** (ADR 0034): smallest change that does the job — would a senior call it overcomplicated? Touch only what the task needs (template/doc/skill), no speculative abstraction, don't refactor unrelated sections in passing.
 
 ## Don't
 

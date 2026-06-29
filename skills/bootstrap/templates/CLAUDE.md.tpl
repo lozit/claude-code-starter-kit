@@ -101,6 +101,11 @@ How I want you to work with me — not just *what* to do.
 - **Confirm before any hard-to-undo action**: deletion, migration, mass rewrite, destructive command. When in doubt, stop and ask.
 - Safety nets to lean on: work in git and commit often (the ultimate net); `/rewind` (or `Esc Esc`) restores pre-edit checkpoints. Optionally add a `.claude/settings.json` `deny` list and a `PreToolUse` guard for destructive commands (harness-specific — not generated for you).
 
+**Keep the diff small.** *Would a senior engineer call this overcomplicated?* — if yes, it probably is.
+- **Simplicity first** — write the minimum that solves the *stated* problem; no speculative features, no abstraction you don't need yet.
+- **Surgical changes** — touch only what the task requires; match the surrounding style; don't refactor unrelated code in passing.
+- **Clean up only your own mess** — remove an import or helper only when *your* change is what orphaned it.
+
 ## Verifying the work
 
 Before declaring a task done:

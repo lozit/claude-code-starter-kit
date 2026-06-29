@@ -8,6 +8,9 @@ versions follow [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+### Changed
+- **Generated `CLAUDE.md` Posture gains a "Keep the diff small" axis** (implements [ADR 0034](docs/decisions/0034-posture-keep-the-diff-small.md)). The `## Posture` section covered *Push back* and *Stay reversible* (social/safety register) but said nothing about the **shape of the diff**. Adds a third axis — *simplicity first* (minimum that solves the stated problem, no speculative abstraction), *surgical changes* (touch only what the task requires, match surrounding style), *clean up only your own mess* — led by a question (*"would a senior call this overcomplicated?"*, consistent with the ADR 0032 reframing finding) rather than imperatives. Three bullets, folded into the existing section (no new section, respecting the ADR 0024 line budget). Harvested from [`forrestchang/andrej-karpathy-skills`](https://github.com/forrestchang/andrej-karpathy-skills) — its other two principles were already covered more deeply (Push back + `/premortem`; the loop). Dogfooded in this repo's own `CLAUDE.md`.
+
 ## [1.9.0] - 2026-06-26
 
 > **`adopt` Full adoption mode.** A third adoption strategy for a project you fully own — consolidate *and* reformat everything onto the canonical groundrules layout, behind a single grouped confirmation. Implements ADR 0033.
