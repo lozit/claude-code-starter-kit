@@ -1,4 +1,4 @@
-<!-- generated-by: groundrules v1.9.0 -->
+<!-- generated-by: groundrules v1.10.0 -->
 # 0033 — adopt: "Full adoption" mode (consolidate + reformat, single grouped confirmation)
 
 **Date**: 2026-06-26

@@ -1,4 +1,4 @@
-<!-- generated-by: groundrules v1.9.0 -->
+<!-- generated-by: groundrules v1.10.0 -->
 # 0031 — `/goal` interop: the loop executor is swappable; reposition `run-loop.sh` as fallback
 
 **Date**: 2026-06-15

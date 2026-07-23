@@ -1,4 +1,4 @@
-<!-- generated-by: groundrules v1.9.0 -->
+<!-- generated-by: groundrules v1.10.0 -->
 # PRD — Minimal runnable loop (M1 proof-of-concept)
 
 > Product Requirements Document for a single feature. Written **before** building, so the agent

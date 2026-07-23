@@ -1,4 +1,4 @@
-<!-- generated-by: groundrules v1.9.0 -->
+<!-- generated-by: groundrules v1.10.0 -->
 # Architecture — {{PROJECT_NAME}}
 
 **Living** snapshot of the current architecture. Updated as the structure evolves.

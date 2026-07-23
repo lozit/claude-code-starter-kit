@@ -1,4 +1,4 @@
-<!-- generated-by: groundrules v1.9.0 -->
+<!-- generated-by: groundrules v1.10.0 -->
 # Vision — {{PROJECT_NAME}}
 
 > Synthesis of the project intent. Source: {{INTENT_SOURCE}}. Update when intent evolves (rare; tactical decisions go in `docs/decisions/`).

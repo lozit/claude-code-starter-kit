@@ -41,7 +41,7 @@ Read the **first 10 lines** of the file (to accommodate a YAML frontmatter that 
 paths:
   - "..."
 ---
-<!-- generated-by: groundrules v1.9.0 -->
+<!-- generated-by: groundrules v1.10.0 -->
 ```
 
 ### 2.3 Version match

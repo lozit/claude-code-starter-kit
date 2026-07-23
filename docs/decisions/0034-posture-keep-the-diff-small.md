@@ -1,4 +1,4 @@
-<!-- generated-by: groundrules v1.9.0 -->
+<!-- generated-by: groundrules v1.10.0 -->
 # 0034 — Posture: a "keep the diff small" axis (simplicity + surgical changes)
 
 **Date**: 2026-06-29

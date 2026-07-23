@@ -1,5 +1,5 @@
 {
-  "groundrulesVersion": "1.9.0",
+  "groundrulesVersion": "1.10.0",
   "bootstrappedAt": "2026-05-11",
   "bootstrappedWithVersion": "0.1.0",
   "migrations": [
@@ -146,6 +146,12 @@
       "to": "1.9.0",
       "at": "2026-06-26",
       "note": "V1.9 adopt 'Full adoption' mode (ADR 0033): third adoption strategy alongside map-in-place and consolidate, for a project you fully own — reformat by default, git rm merged sources for a clean canonical layout, Call 3b completeness pre-check, all behind a single grouped confirmation (Phase 3 recap is the gate, never per-file, never silent). Selectable via Call 1 option and a --full flag (composes with --dry-run). adoptionMode gains 'full'. Reuses the consolidate Phase 4b mechanics (ADR 0018), no new skill."
+    },
+    {
+      "from": "1.9.0",
+      "to": "1.10.0",
+      "at": "2026-07-23",
+      "note": "V1.10 posture & positioning harvested from community tools/patterns (no new skill, no runtime): generated CLAUDE.md ## Posture gains a third axis 'Keep the diff small' (simplicity first / surgical changes / clean up only your own mess), question-led per ADR 0032, from karpathy-skills (ADR 0034); recorded decision to decline auto-capture memory layers (claude-mem class) reaffirming ADR 0020/0021/0025, with a CONTEXT-ECONOMY contrast section + README leaves-out line (ADR 0035); the 'canary' adherence probe documented in CONTEXT-ECONOMY as the detective complement to the <200-line budget (root canary tests saturation not compaction; groundrules generates none — opt-in). README 'Established practices' gains a small-surgical-diffs row."
     }
   ],
   "answers": {

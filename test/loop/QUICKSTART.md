@@ -1,4 +1,4 @@
-<!-- generated-by: groundrules v1.9.0 -->
+<!-- generated-by: groundrules v1.10.0 -->
 # Quickstart — your first loop, in 5 steps
 
 The everyday rhythm with groundrules: **a fresh project → ask in plain words → set a goal (a failing

@@ -1,4 +1,4 @@
-<!-- generated-by: groundrules v1.9.0 -->
+<!-- generated-by: groundrules v1.10.0 -->
 # Changelog
 
 All notable changes to this project are documented in this file.
@@ -7,6 +7,10 @@ Format inspired by [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 versions follow [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
+
+## [1.10.0] - 2026-07-23
+
+> **Posture & positioning, harvested from the field.** A third `## Posture` axis in the generated `CLAUDE.md` (*keep the diff small*), a recorded decision to decline auto-capture memory layers (claude-mem class), and the *canary* adherence probe documented — three small, sourced refinements from reviewing community tools/patterns. No new skill, no runtime.
 
 ### Changed
 - **`docs/CONTEXT-ECONOMY.md` — the "canary" adherence probe** documented as the *detective* complement to the preventive < 200-line budget. A canary is one trivial, glance-checkable instruction (e.g. "always greet me as `<name>`") whose only job is to signal when `CLAUDE.md` adherence decays (context saturation, competing instructions). Records the two subtle-but-true points: it's a passive probe not a guard (`CLAUDE.md` is context, not enforced config — to block, you need a `PreToolUse` hook, [ADR 0025](docs/decisions/0025-no-runtime-hook-no-watch.md)), and a **root** canary tests saturation **not** compaction (the project-root file survives `/compact`, re-read from disk). groundrules deliberately **does not** generate a canary (it costs the budget it watches and adds a competing instruction) — it's an opt-in technique. Docs only.

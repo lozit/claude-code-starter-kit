@@ -1,4 +1,4 @@
-<!-- generated-by: groundrules v1.9.0 (loop walkthrough fixture) -->
+<!-- generated-by: groundrules v1.10.0 (loop walkthrough fixture) -->
 # Sample approved plan — feed this to `/groundrules:realize`
 
 A deliberately **mixed** plan so the walkthrough shows `realize` partitioning correctly. Paste this (or

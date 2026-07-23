@@ -1,4 +1,4 @@
-<!-- generated-by: groundrules v1.9.0 -->
+<!-- generated-by: groundrules v1.10.0 -->
 # PLAN — groundrules
 
 **Active** plan/todo for the project. Maintained by Claude during work.
@@ -7,7 +7,7 @@ This file differs from the long-term roadmap: it describes what is happening **n
 
 ## In progress
 
-- [ ] *(empty — v1.9.0 shipped; next item enters here when tackled)*
+- [ ] *(empty — v1.10.0 shipped; next item enters here when tackled)*
 
 ## Up next
 
@@ -33,6 +33,8 @@ Raw ideas, captured before they're lost. Not yet vetted. Each gets triaged later
 - [ ] ...
 
 ## Recently done
+
+- [x] **Released V1.10.0 — posture & positioning, harvested from the field** (no new skill, no runtime): generated `CLAUDE.md` `## Posture` gains a third axis **"Keep the diff small"** (simplicity first / surgical changes / clean up only your own mess), question-led per ADR 0032, from [karpathy-skills](https://github.com/forrestchang/andrej-karpathy-skills) — [ADR 0034](docs/decisions/0034-posture-keep-the-diff-small.md); recorded decision to **decline auto-capture memory** (claude-mem class), reaffirming ADR 0020/0021/0025, with a `CONTEXT-ECONOMY` contrast section + README leaves-out line — [ADR 0035](docs/decisions/0035-no-auto-capture-memory-layer.md); the **canary** adherence probe documented in `CONTEXT-ECONOMY` (detective complement to the <200-line budget; root canary tests saturation not compaction; we generate none — opt-in). README "Established practices" gains a small-surgical-diffs row. 105 signatures swept, pushed + tagged + GitHub release. (2026-07-23)
 
 - [x] **Released V1.9.0 — `adopt` Full adoption mode** (implements [ADR 0033](docs/decisions/0033-adopt-full-mode.md)): third adoption strategy alongside map-in-place and consolidate, for a project you fully own — reformat by default, `git rm` merged sources for a clean canonical layout, Call 3b completeness pre-check, all behind a single grouped confirmation (Phase 3 recap is the gate, never per-file, never silent). Selectable via Call 1 option + a `--full` flag (composes with `--dry-run`). `adoptionMode` gains `"full"`. Reuses the consolidate Phase 4b mechanics (ADR 0018), no new skill. 103 signatures swept, pushed + tagged + GitHub release. (2026-06-26)
 

@@ -325,7 +325,7 @@ Only surface this if `.claude/settings.json` doesn't already carry a project-sco
 ## Important rules
 
 - **NEVER overwrite a file without explicit confirmation** (see phase 4).
-- **Always** add `<!-- generated-by: groundrules v1.9.0 -->` at the top of each generated file (the templates already contain it).
+- **Always** add `<!-- generated-by: groundrules v1.10.0 -->` at the top of each generated file (the templates already contain it).
 - **Idempotence**: if the user re-runs the skill, resume mode detects already-up-to-date files and does nothing.
 - **Surface errors**: if a step fails (e.g. `gh repo create` returns an error), don't pretend it worked. Show the error, propose an action.
 - **Keep `.groundrules.json`**: it's the source of truth for resume mode and for `apply-best-practices`.

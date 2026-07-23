@@ -1,4 +1,4 @@
-<!-- generated-by: groundrules v1.9.0 (prototype fixture) -->
+<!-- generated-by: groundrules v1.10.0 (prototype fixture) -->
 # TODO — slugify fixture
 
 Backlog for the minimal-loop fixture. Tasks are `- [ ]` (ready) / `- [x]` (done). The loop takes the

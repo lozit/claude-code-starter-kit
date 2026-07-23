@@ -1,4 +1,4 @@
-<!-- generated-by: groundrules v1.9.0 -->
+<!-- generated-by: groundrules v1.10.0 -->
 # 0035 — Considered an auto-capture memory layer (claude-mem class); declined
 
 **Date**: 2026-06-29

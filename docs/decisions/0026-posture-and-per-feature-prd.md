@@ -1,4 +1,4 @@
-<!-- generated-by: groundrules v1.9.0 -->
+<!-- generated-by: groundrules v1.10.0 -->
 # 0026 — Posture section + per-feature PRD (harvested from the four-principles doc)
 
 **Date**: 2026-06-13

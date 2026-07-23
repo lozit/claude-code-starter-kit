@@ -1,4 +1,4 @@
-<!-- generated-by: groundrules v1.9.0 -->
+<!-- generated-by: groundrules v1.10.0 -->
 # Process — {{PROJECT_NAME}}
 
 > The **working method contract** for this project: how we work together, phase by phase, with explicit validation gates. This is neither the intent (`intake/`) nor the vision (`docs/VISION.md`) — it's the *how we proceed*. Claude must follow it and **never skip a phase**.
