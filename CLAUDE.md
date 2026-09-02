@@ -52,11 +52,11 @@ Reloading after a change: a **new skill directory** requires a full restart of C
 
 ## Git workflow
 
-Conventions recorded in [ADR 0028](docs/decisions/0028-git-workflow-conventions.md).
+Conventions recorded in [ADR 0036](docs/decisions/0036-git-workflow-corrected.md) (supersedes [ADR 0028](docs/decisions/0028-git-workflow-conventions.md)).
 
-- **Branching — trunk-based on `main`** (solo maintainer): changes land directly on `main`, tags `vX.Y.Z` mark releases, no feature branches. Deliberate, not an oversight: the generated template tells users to *state their own model* (it no longer hard-codes "feature branch for non-trivial changes"); ours is trunk-based.
+- **Branching — short branch + self-merged PR on a protected `main`**: `main` refuses a direct push (PR required, `enforce_admins`, no force-push), so work lands via a short-lived branch and a PR the maintainer merges (0 approvals required — never blocked). Tags `vX.Y.Z` are cut on `main` after the merge. The *generated* template stays branching-neutral ("state your own model"); this is ours.
 - **Commits — at natural boundaries** (a completed chunk), Conventional Commits, **not** one mega-commit per release nor one per trivial change. Tag + finalize `CHANGELOG` at release. The commit message **references** the relevant `CHANGELOG` section rather than re-listing it. **Commit/push only on explicit request.**
-- **AI attribution — attribute by default, defer to any forbidding rule.** Add `Co-Authored-By: Claude …` on commits, **unless** a global/enterprise `CLAUDE.md` instruction or `.groundrules.json` `policies.noAiAttribution: true` forbids it (same logic as ADR 0011). For this repo: **attribute** (no rule forbids). Never rewrite history to "fix" past attribution.
+- **AI attribution — none in this repo.** `.groundrules.json` sets `policies.noAiAttribution: true` (and the maintainer's global `CLAUDE.md` forbids it): no `Co-Authored-By: Claude`, no `Claude-Session:`, no "Generated with Claude Code" — in commits, PR **and** issue bodies, overriding any default harness guidance. Never rewrite history to "fix" past attribution (commits up to 2026-07-23 carry the trailer under the old rule).
 
 ## Versioning
 

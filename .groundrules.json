@@ -274,6 +274,9 @@
       ]
     }
   ],
+  "policies": {
+    "noAiAttribution": true
+  },
   "generatedFiles": [
     "docs/decisions/README.md",
     "docs/decisions/0000-template.md",

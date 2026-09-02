@@ -57,7 +57,7 @@ No ADR needed for trivial choices or implementation details.
 | [0025](0025-no-runtime-hook-no-watch.md) | Won't-do: PreToolUse `{{KEY}}` hook and `/watch-bootstrap` | Accepted | 2026-06-08 |
 | [0026](0026-posture-and-per-feature-prd.md) | Posture section + per-feature PRD (superpowers-aware) | Accepted | 2026-06-13 |
 | [0027](0027-reflection-realization-interactive-loop.md) | Reflection/realization phases; interactive/loop regimes; loop-readiness direction | Accepted | 2026-06-13 |
-| [0028](0028-git-workflow-conventions.md) | Git workflow: neutral branching, boundary commits, AI attribution-unless-forbidden | Accepted | 2026-06-13 |
+| [0028](0028-git-workflow-conventions.md) | Git workflow: neutral branching, boundary commits, AI attribution-unless-forbidden | Superseded by 0036 | 2026-06-13 |
 | [0029](0029-content-aware-claude-md-tailoring.md) | Content-aware CLAUDE.md tailoring; retire the lean template (supersedes 0009) | Accepted | 2026-06-14 |
 | [0030](0030-loop-namespace-and-backlog.md) | `loop/` is the loop's namespace; the loop reads `loop/backlog.md`, `PLAN.md` only points to it | Accepted | 2026-06-14 |
 | [0031](0031-goal-interop-swappable-loop-executor.md) | `/goal` interop: the loop executor is swappable (`/goal` = light loop, groundrules loop = high-fidelity); reposition `run-loop.sh` | Accepted | 2026-06-17 |
@@ -65,3 +65,4 @@ No ADR needed for trivial choices or implementation details.
 | [0033](0033-adopt-full-mode.md) | adopt: "Full adoption" mode (consolidate + reformat, single grouped confirmation, `--full`) | Accepted | 2026-06-26 |
 | [0034](0034-posture-keep-the-diff-small.md) | Posture: a "keep the diff small" axis (simplicity + surgical changes), harvested from karpathy-skills | Accepted | 2026-06-29 |
 | [0035](0035-no-auto-capture-memory-layer.md) | Considered an auto-capture memory layer (claude-mem class); declined — reaffirms ADR 0020/0021/0025 | Accepted | 2026-06-29 |
+| [0036](0036-git-workflow-corrected.md) | Git workflow corrected: PR on protected `main`, no AI attribution (supersedes 0028) | Accepted | 2026-09-02 |

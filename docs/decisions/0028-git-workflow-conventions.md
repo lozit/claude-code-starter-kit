@@ -2,7 +2,7 @@
 # 0028 — Git workflow conventions (branching, commit granularity, AI attribution)
 
 **Date**: 2026-06-13
-**Status**: Accepted
+**Status**: Superseded by [ADR 0036](0036-git-workflow-corrected.md)
 
 ## Context
 
@@ -78,3 +78,8 @@ recorded here so the practice has a written, intentional home.
 
 - Points 1 & 2 were already partially applied (templates, meta `CLAUDE.md`) before this ADR; this
   records the *why* and adds the commit-granularity + attribution decisions.
+- **Superseded 2026-09-02 by [ADR 0036](0036-git-workflow-corrected.md)**: two premises here went
+  stale — `main` is now a protected branch (direct push refused, admins included), and the
+  maintainer's global `CLAUDE.md` *does* forbid AI attribution, so this ADR's *"for this repo:
+  attribute (no rule forbids it)"* is false. The boundary-commit convention (point 2) survives
+  unchanged in 0036.
