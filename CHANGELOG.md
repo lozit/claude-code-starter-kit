@@ -8,6 +8,9 @@ versions follow [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+### Changed
+- **Git workflow conventions corrected against verifiable state** ([ADR 0036](docs/decisions/0036-git-workflow-corrected.md), supersedes [ADR 0028](docs/decisions/0028-git-workflow-conventions.md)). Two premises of 0028 had gone stale, both falsifiable against the machine: (1) *branching* — it claimed trunk-based direct pushes to `main`, but `main` is **protected** (PR required, `enforce_admins: true`, no force-push), so the real model is **short branch + self-merged PR** (0 approvals — a solo maintainer is never blocked); (2) *AI attribution* — it claimed *"for this repo: attribute (no rule forbids it)"*, but the maintainer's global `CLAUDE.md` **does** forbid it (no `Co-Authored-By`, no `Claude-Session:`, no "Generated with Claude Code", commits/PRs/issues alike). 0028's conditional was right, only its facts were wrong. The policy is now recorded **in the repo** as `policies.noAiAttribution: true` in `.groundrules.json` — dogfooding [ADR 0011](docs/decisions/0011-detect-no-ai-attribution-policy.md)'s own persistence step, because a machine-local global file cannot be read by a fresh clone, a CI run or a subagent. Boundary commits (0028 point 2) carry over unchanged; no history rewrite. Meta `CLAUDE.md` Git workflow section updated. **Dogfood only** — no change to the plugin's output (the generated `CLAUDE.md` stays branching-neutral).
+
 ## [1.10.0] - 2026-07-23
 
 > **Posture & positioning, harvested from the field.** A third `## Posture` axis in the generated `CLAUDE.md` (*keep the diff small*), a recorded decision to decline auto-capture memory layers (claude-mem class), and the *canary* adherence probe documented — three small, sourced refinements from reviewing community tools/patterns. No new skill, no runtime.
