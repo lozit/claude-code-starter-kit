@@ -9,7 +9,34 @@
 Fed by the checkpoint-capture ritual (cf. `CLAUDE.md` → "Capture at checkpoints", typically
 before a push/release).
 
+> **This file is the journal, not the suite.** The runnable regression suite over the agent's
+> configuration lives in `evals/` and is run with `claude plugin eval` ([ADR 0037](decisions/0037-executable-evals-over-agent-config.md)).
+> An entry here whose guard sits at `Status: watching` is a **case candidate**: the observed failure
+> mode is the prompt, the guard is the grader. `validated` is meant to mean *a case exists and is green*.
+
 ---
+
+## 2026-09-02 — Reasoned about a layer-B copy as if it were the shipped layer-A source
+
+**Observed**: asked to analyse the loop's verifier against an external brief, the agent read
+`docs/prototypes/loop/LOOP.md` + `verifier.md` (**layer B** — a frozen proof-of-concept, explicitly
+*"NOT shipped"* in its own README) and reported a defect *"in the living default"*. The shipped copy,
+`skills/bootstrap/templates/loop/` (**layer A** — what users actually get), had already fixed it and
+carried an extra callout. The two had silently diverged. The user was told the wrong file was at
+fault; the agent corrected itself only after diffing the two on the way to editing.
+
+**Pattern**: the repo's two disjoint layers are stated in `CLAUDE.md` ("*am I touching the plugin
+sources (A) or the project docs (B)?*"), but the question is asked at **write** time. Here the error
+was at **read** time — reading B and generalising to A. A duplicated file makes it worse: both copies
+look canonical when read alone, and only a diff reveals which one ships.
+
+**Guard**: when a file has a counterpart in the other layer, **diff the two before drawing any
+conclusion about behaviour**, not just before editing — and name the layer explicitly when reporting.
+Concretely, for anything under `docs/prototypes/`: its shipped counterpart under
+`skills/bootstrap/templates/` is the one that governs behaviour.
+
+**Status**: watching — and the first candidate case for the `evals/` suite
+([ADR 0037](decisions/0037-executable-evals-over-agent-config.md)); tracked in `PLAN.md`.
 
 ## 2026-06-13 — Jumps to execution without capturing / confirming scope first
 

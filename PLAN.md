@@ -7,7 +7,8 @@ This file differs from the long-term roadmap: it describes what is happening **n
 
 ## In progress
 
-- [ ] *(empty — v1.10.0 shipped; next item enters here when tackled)*
+- [ ] **Author the first eval cases** (implements [ADR 0037](docs/decisions/0037-executable-evals-over-agent-config.md)): up to **three** `evals/` cases, each sourced from a `Status: watching` entry of `docs/AGENT-EVALS.md` (failure mode = prompt, guard = grader). `claude plugin eval init --bare <name>` scaffolds one. Keep the suite small enough that it actually gets run; non-blocking until it has earned trust.
+  - **Case 1 — the layer A/B divergence** (`docs/AGENT-EVALS.md`, 2026-09-02): prompt the agent to change a loop prompt (e.g. *"tighten what the verifier is handed"*); the grader passes only if **both** copies land — `skills/bootstrap/templates/loop/` (shipped, layer A) **and** `docs/prototypes/loop/` (prototype, layer B) — or if the agent names the layer distinction and says which one governs. Its failure was observed twice on the same file pair: the divergence itself, then this session reading B as if it were A. Worth pairing with the cheap mechanical version — a `diff` of the two directories — since a drift is computable and does not need a judge.
 
 ## Up next
 
@@ -33,6 +34,10 @@ Raw ideas, captured before they're lost. Not yet vetted. Each gets triaged later
 - [ ] ...
 
 ## Recently done
+
+- [x] **Evals ADR written — [ADR 0037](docs/decisions/0037-executable-evals-over-agent-config.md)** (tensions 1 & 2 of the AI-native SDLC brief, source read): adopt `evals/` + `claude plugin eval`, **out of band** so ADR 0025 stands untouched; `docs/AGENT-EVALS.md` keeps the word and **feeds** the cases; **native case format adopted as-is** — portability is a property of what we *generate*, not of how we *test*, and the system under test is already a Claude Code plugin. Nothing generated for users, CI deferred with its reason. — under `[Unreleased]` (2026-09-02)
+
+- [x] **AI-native SDLC brief — tensions 3 & 4 closed** (`intake/2026-09-02-ai-native-sdlc-evals-and-verification.md`): the loop's verifier now states **what it is handed** (task line + pre-written acceptance test + diff, and nothing that carries the author's framing) in the shipped template *and* the prototype, which also loses the stale "at minimum, switch frame" fallback; separation of duties for a solo operator recorded in [ADR 0036](docs/decisions/0036-git-workflow-corrected.md) (`enforce_admins` is the mechanism, no ceremony). — under `[Unreleased]` (2026-09-02)
 
 - [x] **Git workflow ADR corrected against the machine — [ADR 0036](docs/decisions/0036-git-workflow-corrected.md)** (supersedes [ADR 0028](docs/decisions/0028-git-workflow-conventions.md)): `main` is protected (PR required, `enforce_admins`, no force-push) so the model is **short branch + self-merged PR**, not trunk-based direct push; and AI attribution is **forbidden** here (global `CLAUDE.md`), which 0028 wrongly claimed no rule did — now recorded in-repo as `policies.noAiAttribution: true` in `.groundrules.json` (dogfoods ADR 0011). Boundary commits unchanged, no history rewrite. Meta `CLAUDE.md` + CHANGELOG updated — under `[Unreleased]` (2026-09-02)
 
