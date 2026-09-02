@@ -22,8 +22,10 @@ disk — read it, don't rely on memory of a previous turn.
 
 4. **Verifier pass.** Review the maker's diff following [`verifier.md`](verifier.md) — **as an
    independent reviewer that re-derives from the diff and re-runs the test**, not trusting the maker's
-   report. For real independence the verifier should run as a **separate subagent / fresh context**;
-   at minimum, switch fully into the verifier frame and ignore the maker's self-assessment.
+   report. For real independence the verifier should run as a **separate subagent / fresh context**,
+   handed only the **task line + its pre-written acceptance test** and the **diff** — never the maker's
+   reasoning, its `STATUS` narrative or the commit message. Those carry the author's framing, and a
+   fresh agent fed the author's story is no longer a fresh one.
 
 5. **Act on the verdict.**
    - **PASS** → commit **the intended diff** (the files the task changed + the `TODO.md` check-off),
