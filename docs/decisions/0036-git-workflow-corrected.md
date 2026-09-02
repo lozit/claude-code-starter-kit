@@ -74,6 +74,12 @@ release.
   `.groundrules.json`), not against memory.
 - The attribution rule survives a clone, a fresh agent and a headless run, because it is in the repo.
 - Dogfoods ADR 0011 end to end: detect → persist → suppress.
+- **It is also the single-operator form of separation of duties.** The AI-native SDLC playbook rests
+  that principle on code owners and a team; with one operator there is no second person, so the
+  separation has to come from the machine. `enforce_admins: true` is exactly that: the agent cannot
+  land its own work — a human merge is structurally required, not merely habitual. Nothing extra to
+  remember, no ceremony added (see `intake/2026-09-02-ai-native-sdlc-evals-and-verification.md`,
+  tension 4, which was written against 0028's stale trunk claim).
 
 ### Negative / Tradeoffs
 - One extra step per landing (branch + PR) for a solo maintainer — accepted for the safety net.

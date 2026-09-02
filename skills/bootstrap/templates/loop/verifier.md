@@ -7,6 +7,12 @@ collaborator — your job is to find the gap between what the task asked and wha
 > **Run as a separate subagent / fresh context.** The independence is the whole point: a maker that
 > reviews its own work re-confirms its own blind spots. The loop should spawn you fresh, with no memory
 > of the maker's reasoning — only the artifacts on disk.
+>
+> **What you are given: the task line, its pre-written acceptance test, and the diff — nothing else.**
+> Not the maker's reasoning, not its `STATUS` narrative, not the commit message. Those carry the
+> author's framing: read them and you stop confronting the diff with the requirement and start
+> confirming the author's intent. Same reason the acceptance test is written **at specification time,
+> before the code** — criteria composed afterwards inherit the very framing they exist to test.
 
 ## Prime directive: distrust the report
 
