@@ -1,6 +1,6 @@
 ---
 name: idea
-description: Use when a forward idea surfaces that you don't want to lose: parks it as a one-line entry in PLAN.md's "Ideas - to triage" inbox. The prospective complement to /groundrules:checkpoint (retrospective).
+description: "Use when a forward idea surfaces that you don't want to lose: parks it as a one-line entry in PLAN.md's \"Ideas - to triage\" inbox. The prospective complement to /groundrules:checkpoint (retrospective)."
 disable-model-invocation: true
 allowed-tools: Read, Edit, Write, Bash
 ---
