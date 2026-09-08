@@ -27,6 +27,14 @@ You will bootstrap a Claude Code project in the **current working directory**. F
    - optional specialized docs: `docs/DATA_MODEL.md`, `docs/SECURITY.md`, `docs/DESIGN_SYSTEM.md`, `docs/ROADMAP.md`, `docs/I18N.md`, `docs/PROCESS.md`, `RELEASE.md`, `docs/AGENT-EVALS.md`
    - **`PLAN.md` equivalents** (planning aliases, **same altitude**) — detection is **case-insensitive** and **nested** (up to ~3 levels, excluding `node_modules`/`.git`): `plan.md`, `TODO.md`, `todo.md`, `todos.md`, `TASKS.md`, `BACKLOG.md`, including under a path (e.g. `docs/gtd/todos.md`). There may be **several** — report all of them. **Case guard**: **never** generate `PLAN.md` if an equivalent name exists in a different case (collision on a case-sensitive FS).
    - `docs/superpowers/plans/` (superpowers **per-feature** plans — **different altitude**, *not* a `PLAN.md` alias)
+   - **superpowers in use** → `HAS_SUPERPOWERS`, which decides whether the generated `CLAUDE.md` carries the interop section (Phase 5). Three signals, in order, **all read-only and best-effort**; the first that fires wins:
+     1. `docs/superpowers/plans/` or `docs/superpowers/specs/` present in this folder → `true`. (In a genuinely empty folder this can never fire — hence the others.)
+     2. This folder's own `.claude/settings.json`, if present: an `enabledPlugins` key whose **name part** is exactly `superpowers` → `true`. This is where a **project-scope** install is recorded, and it is the signal that is actually about *this* project.
+     3. The user's **installed-plugin registry**, if the harness exposes one (at the time of writing `~/.claude/plugins/installed_plugins.json`, whose `plugins` object is keyed `<name>@<marketplace>` and whose values are **arrays of install records**). A key whose name part is exactly `superpowers` counts **only** when one of its records is `"scope": "user"`, or is project-scoped with a `projectPath` equal to this folder. **Do not accept a record project-scoped to some other repository** — that would make every folder on the machine report `true` because one unrelated project installed the plugin.
+     4. None → `false`. **`false` is the default**, and it is the common case: the section is eight lines of interop guidance that is noise for a project not using that plugin.
+
+     Match the name part by **exact equality** on the segment before `@` — `superpowers`, not a fork like `superpowers-fork` or `obra-superpowers`, whose interop shape you cannot assume. Unreadable, absent, or a shape you don't recognize → **don't guess and don't fail**: fall through to the next signal.
+   - **Never ask about superpowers.** A question costs every user something to spare a minority eight lines; the whole point is to remove that tax, not move it. If the detection is wrong, the recap (Phase 8) says so and says how to fix it.
    - **Global / enterprise CLAUDE.md** (loaded **in addition to** the project CLAUDE.md — NEVER overwrite it): `~/.claude/CLAUDE.md`, and the managed policy if present (`/Library/Application Support/ClaudeCode/CLAUDE.md` on macOS, `/etc/claude-code/CLAUDE.md` on Linux). If at least one exists → `HAS_GLOBAL_CLAUDE=true`, **and read its content** (it's short — our own <200-line doctrine) into `GLOBAL_CLAUDE_CONTENT` for the **content-aware tailoring** in Phase 5 (which sections it already covers).
    - **AI attribution policy**: read (**read-only**) the detected CLAUDE.md files (project + global) for a rule **forbidding** AI attribution — patterns (case-insensitive): `no AI attribution`, `Co-Authored-By`, `Generated with Claude`, `do not add ... attribution`. If found → `NO_AI_ATTRIBUTION=true`. (Read-only: never modify these files.)
    - `package.json` (→ Node stack), `pyproject.toml`/`requirements.txt` (→ Python), `Cargo.toml` (→ Rust), `go.mod` (→ Go)
@@ -77,7 +85,7 @@ Only ask this call for a code project. For a non-code project, only `ROADMAP` ma
 A **dedicated** single `AskUserQuestion` (one question), because the scaffolding is heavier than a doc and deserves its own framing: *"Generate optional **loop scaffolding** — a maker/verifier autonomous loop (`loop/`) that executes loop-safe tasks with built-in back pressure? You can run it later or never; it changes nothing until you do."* Options: `No (recommended — add later if needed)` / `Yes, generate loop/`. Default **No**.
 
 - **Skip this call entirely on resume** when `.groundrules.json` already has `loop.scaffolded: true` — the namespace exists; don't re-ask or regenerate (idempotence).
-- **Skip this call entirely** when **superpowers is detected** (`docs/superpowers/plans/` present): superpowers already *is* a maker/verifier realization pipeline — groundrules defers the whole realization to it and contributes the memory layer instead. Note this in the Phase 4 recap (do not generate `loop/`).
+- **Skip this call entirely** when `HAS_SUPERPOWERS=true` (Phase 1 — any of its three signals, not just `docs/superpowers/plans/`): superpowers already *is* a maker/verifier realization pipeline — groundrules defers the whole realization to it and contributes the memory layer instead. Note this in the Phase 4 recap (do not generate `loop/`).
 - **Code projects only** — for a non-code project, don't ask.
 - If `Yes` → `HAS_LOOP=true`. This generates the `loop/` namespace (see file mapping) **and** inserts a `## Invariants` section into the generated `CLAUDE.md`. If `No` → `HAS_LOOP=false`, nothing loop-related is generated.
 - Brief honesty in the option/recap: the loop is **most useful once `/groundrules:realize` lands** (it will fill `loop/backlog.md`); for now the backlog is hand-filled. See [ADR 0027](../../docs/decisions/0027-reflection-realization-interactive-loop.md) / [ADR 0030](../../docs/decisions/0030-loop-namespace-and-backlog.md).
@@ -98,7 +106,7 @@ If Phase 1 detected a **planning alias** (`TODO.md`, `TASKS.md`, `BACKLOG.md`…
 
 If **several** equivalents are detected, list them all and clarify their respective roles (e.g. `plan.md` = active view, `docs/gtd/todos.md` = backlog) in the question. For a more complex project (brownfield, many existing docs), point to `/groundrules:adopt`.
 
-> **superpowers**: if only `docs/superpowers/plans/` is present (no root alias), it is **not** a `PLAN.md` equivalent (different altitude — see the interop note in the `CLAUDE.md` template). Keep the standard `PLAN.md` question, and note in the recap (Phase 4) that `PLAN.md` should **point to** the active superpowers plan rather than duplicate tasks.
+> **superpowers** (`HAS_SUPERPOWERS=true`): if only `docs/superpowers/plans/` is present (no root alias), it is **not** a `PLAN.md` equivalent (different altitude — see the interop note in the `CLAUDE.md` template). Keep the standard `PLAN.md` question, and note in the recap (Phase 4) that `PLAN.md` should **point to** the active superpowers plan rather than duplicate tasks.
 
 ## Phase 3 — Project intent
 
@@ -180,6 +188,9 @@ For each file to create:
    - `{{HAS_PLAN}}`, `{{HAS_ARCHITECTURE}}`, `{{HAS_GLOSSARY}}`, `{{HAS_CHANGELOG}}` — `true`/`false`
    - `{{HAS_DATA_MODEL}}`, `{{HAS_SECURITY}}`, `{{HAS_DESIGN_SYSTEM}}`, `{{HAS_ROADMAP}}`, `{{HAS_I18N}}`, `{{HAS_PROCESS}}`, `{{HAS_RELEASE}}`, `{{HAS_AGENT_EVALS}}` — `true`/`false` (specialized docs)
    - `{{HAS_LOOP}}` — `true`/`false` (loop scaffolding opted in, Call 2c)
+   - `{{HAS_SUPERPOWERS}}` — `true`/`false` (superpowers detected, Phase 1)
+
+   **Only some of these are substituted tokens.** `{{PROJECT_NAME}}`, `{{DESCRIPTION}}`, `{{STACK}}`, `{{DATE}}`, `{{GLOBAL_CLAUDE_NOTE}}`, `{{REMOTE_PROVIDER}}`, `{{REMOTE_VISIBILITY}}`, `{{CONTENT}}`, `{{INTENT_SOURCE}}`, `{{GOAL}}`, `{{USERS}}`, `{{CONSTRAINTS}}`, `{{NONGOALS}}` and `{{ACCEPTANCE}}` appear literally in a template and are replaced. Every `{{HAS_*}}` is a **decision variable, not a token**: it appears in no template and selects which file to write, which section to splice, which section to drop. Searching a template for `{{HAS_LOOP}}` or `{{HAS_SUPERPOWERS}}` finds nothing, and that is correct — do not conclude the condition does not exist.
    - `{{GLOBAL_CLAUDE_NOTE}}` — deference note to the global CLAUDE.md **+ the list of omitted sections** (see "CLAUDE.md generation"), or **empty string** if no global detected
    - `{{REMOTE_PROVIDER}}` — `github` / `gitlab` / empty string
    - `{{REMOTE_VISIBILITY}}` — `private` / `public` / empty string
@@ -203,6 +214,8 @@ There is **one** template (`CLAUDE.md.tpl`). When a global CLAUDE.md exists, a "
      > `> **Relationship with the global CLAUDE.md**: this file is loaded **in addition to** the global (\`~/.claude/CLAUDE.md\` + enterprise policy) — on conflict the global/enterprise rule wins. **Omitted here (your global already covers them):** <comma-separated section titles, or "none">.`
   5. **Recap to the user**: list what you omitted and why; they can **veto** (keep any section).
 - Net effect: a **thin** global → output ≈ the full template (minus only what it truly covers); a **rich** global → output approaches the old lean. The result **scales with the global's real content**, with no holes.
+
+**`### Interop with superpowers` section (only if `HAS_SUPERPOWERS=true`)**: when `false`, **drop that whole `###` section** from the composed content before writing — from its heading line down to (excluding) the next heading of equal or higher level. Match the heading by **prefix**, `### Interop with superpowers`, and never by a bullet count: the body is free to grow. Its parent `## Key files and folders` keeps its other children, so the parent stays. This is the same drop mechanic as the global tailoring above, on a different trigger: there, a section is dropped because the global already covers it; here, because the plugin it describes is not in play. Keep the inline mention of *"or your superpowers spec"* under `## Claude Code workflow` either way — four words are not worth a second conditional, and they read as an aside rather than a section. The section is **never** dropped when `HAS_SUPERPOWERS=true`, whatever the global says: no global covers a plugin interop.
 
 **`## Invariants` section (only if `HAS_LOOP=true`)**: if loop scaffolding was opted in, read `${CLAUDE_PLUGIN_ROOT}/skills/bootstrap/templates/loop/CLAUDE-invariants.md`, strip its leading `<!-- ... -->` comment lines, and **splice its `## Invariants` section into the CLAUDE.md content *before* the single `Write`** — positioned **immediately before the `## Posture` heading** (i.e. after the *last child* of `## Conventions`, never between the `## Conventions` heading and its `###` subsections). Compose-then-write (bootstrap has no `Edit` tool); don't write-then-rewrite. If `HAS_LOOP=false`, do **not** add it (non-loop projects stay lean — the verifier is what gives invariants teeth, cf. ADR 0030). This section is never omitted by the global-tailoring logic above.
 
@@ -277,6 +290,8 @@ Write `.groundrules.json` at the root with this schema:
 
 `policies.noAiAttribution` reflects the `NO_AI_ATTRIBUTION` detected in phase 1 — it lets other skills (`migrate`, etc.) know the policy without re-scanning.
 
+`superpowers` records the Phase 1 **detection** — `{ "detected": true | false, "via": "docs/superpowers/plans/" | ".claude/settings.json" | "installed-plugin registry" | null }`. It is **top-level, never under `answers`**, for the same reason as `loop` below: `answers` holds what the user *said*, and nothing was ever asked here (Phase 1 forbids it). Recording *which* signal fired is what makes a wrong detection debuggable, and Phase 8 tells the user the detection can be wrong.
+
 `loop.scaffolded` records whether the `loop/` namespace was generated (Call 2c) — it lets `/groundrules:realize` (later) know the scaffolding exists, and keeps the opt-in idempotent (resume mode skips an already-scaffolded `loop/`). `false`/`null` when not opted in. The Call 2c answer lives **only** in this top-level `loop` object, **not** under `answers` (avoid a duplicate `answers.loop` key).
 
 `groundrulesVersion` can evolve (via `/groundrules:migrate`), `bootstrappedWithVersion` stays frozen. `migrations` accumulates `{from, to, at}` entries. `appliedPractices` is filled by `/groundrules:apply-best-practices`. If the intent is skipped, `intent.source = "skipped"` and the other fields are `null`.
@@ -313,6 +328,13 @@ Show the user:
   4. If `PLAN.md` was created: add the first tasks
   5. Read `docs/VISION.md` and amend it if the synthesis missed something
   6. If the intent was skipped and you still want tailored practices: fill `docs/VISION.md` by hand then run `apply-best-practices`
+
+If `HAS_SUPERPOWERS=false`, add **one** line — never a paragraph, and never a question:
+> *The `CLAUDE.md` interop section for [superpowers](https://github.com/obra/superpowers) was left out (not detected). If you do use it — its artifacts can live outside `docs/superpowers/` — add the section by hand: it is the `### Interop with superpowers` block of `${CLAUDE_PLUGIN_ROOT}/skills/bootstrap/templates/CLAUDE.md.tpl`.*
+
+Do **not** point at `/groundrules:migrate` here: it has no superpowers awareness and would only surface the block as a generic diff to accept or reject.
+
+Say nothing at all when `HAS_SUPERPOWERS=true`: a section that is present needs no explanation.
 
 ### Team-sharing tip (project-scope install)
 
