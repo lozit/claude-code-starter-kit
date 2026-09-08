@@ -13,7 +13,7 @@ You will run the **checkpoint-capture ritual** for the current project, on deman
 
 ## Phase 1 — Gather what happened (inform the questions)
 
-Best-effort, read-only — to ground the three questions in what actually changed:
+Best-effort, read-only — to ground the four questions in what actually changed:
 
 1. `git status --short` and the latest tag: `git describe --tags --abbrev=0` (may be absent).
 2. Commits since that tag (or the last ~15): `git log <tag>..HEAD --oneline` (or `git log -15 --oneline`).
@@ -22,7 +22,7 @@ Best-effort, read-only — to ground the three questions in what actually change
 
 Summarize in 2-3 lines what this work session changed, so the user answers against real context — not a blank prompt.
 
-## Phase 2 — The three questions
+## Phase 2 — The four questions
 
 One grouped `AskUserQuestion` (multiSelect for "what happened"), then drill into each chosen bucket. Phrase them with the context from Phase 1:
 

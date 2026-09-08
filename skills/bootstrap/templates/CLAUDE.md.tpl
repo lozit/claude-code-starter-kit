@@ -21,7 +21,7 @@ The agent can't perceive "end of session" — so capture at the **work boundarie
 
 You can also trigger it yourself any time with **`/groundrules:checkpoint`**.
 
-At that moment, three questions, each routed to where it belongs:
+At that moment, four questions, each routed to where it belongs:
 
 1. **Decided** anything structural? → `/groundrules:add-adr` (`docs/decisions/`)
 2. **Learned** something that changes how to work here (incl. a blocker that cost 30+ min, with its fix)? → `/groundrules:learn` (`docs/LEARNINGS.md`)
