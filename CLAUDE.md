@@ -83,6 +83,8 @@ Ongoing tasks on the development of the plugin itself.
 ### Capture at checkpoints
 At a work boundary the agent can see — **before a push/tag/release** (most reliable) or a completed milestone — propose capturing proactively: **decided** → an ADR, **learned / blocked 30+ min** → `docs/LEARNINGS.md`, **agent mistake/hallucination/drift** → `docs/AGENT-EVALS.md` + a guard (cf. ADR 0022). The user can also run `/groundrules:checkpoint`. Capture in the repo, not in memory.
 
+Then **reconcile the status**: `/groundrules:close` compares `PLAN.md` with what the session actually changed and proposes the edit — a check, not a reminder (ADR 0038). It never writes without confirmation.
+
 ## Plugin workflow (mental model)
 
 - **Template over code**: plain text `{{KEY}}` substitution in templates, never application logic nor a template engine (cf. ADR 0002).

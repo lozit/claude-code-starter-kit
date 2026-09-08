@@ -77,7 +77,7 @@ Show what was captured:
 - 📘 README/doc synced (if a surface drift was fixed)
 - ⏭️ nothing captured for the skipped buckets
 
-Then: remind to add a `CHANGELOG.md` `[Unreleased]` line for any notable change, and — if a push/release is next — note that the capture is now done (this is the reliable moment for it).
+Then: remind to add a `CHANGELOG.md` `[Unreleased]` line for any notable change, and — if a push/release is next — note that the capture is now done (this is the reliable moment for it). Then point to **`/groundrules:close`** for the *status* side: it reconciles `PLAN.md` with what actually changed — `checkpoint` captures knowledge, `close` reconciles status.
 
 **NEVER commit automatically.**
 

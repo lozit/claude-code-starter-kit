@@ -26,6 +26,7 @@ At that moment, three questions, each routed to where it belongs:
 1. **Decided** anything structural? → `/groundrules:add-adr` (`docs/decisions/`)
 2. **Learned** something that changes how to work here (incl. a blocker that cost 30+ min, with its fix)? → `/groundrules:learn` (`docs/LEARNINGS.md`)
 3. **Caught the agent** repeating a mistake, hallucinating, or drifting? → note it in `docs/AGENT-EVALS.md` (if present) and add the guard here or in `.claude/rules/`
+4. **Is `PLAN.md` still true?** → `/groundrules:close` compares it with what actually changed and proposes the edit — a check, not a reminder. It never writes without your confirmation.
 
 Capture beats memory: if it's not written to the repo, it's gone next session.
 
