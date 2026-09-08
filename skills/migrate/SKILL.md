@@ -31,10 +31,19 @@ If `$ARGUMENTS` contains `--dry-run` (or `dry-run`), run all analysis phases but
    - **OLD == NEW** → *"Project up to date at version NEW. Nothing to migrate."* Stop.
    - **OLD > NEW** (semver) → *"Project version (OLD) is newer than the installed plugin (NEW). Refusing to downgrade."* Stop.
    - **OLD < NEW** → continue.
+5. **Cross-check the state file against the files themselves.** OLD comes from one JSON key, and nothing has ever confirmed that the files agree with it. Read the `generated-by` signature (first ~10 lines) of each entry in `generatedFiles` and compare its version with OLD:
+   - **All agree** → say nothing; this is the normal case.
+   - **A file is signed *newer* than OLD** → the state file is behind what the file claims: a partial earlier migration, a hand-edited signature, or a file copied in from another project. **Report it by name**, and mark the file *signature disputed*.
+   - **A file is signed *older* than OLD** → it missed a migration the state file recorded as done.
+   - **No signature at all** → it was replaced by hand or never generated; treat it as foreign for this run and do not arbitrate it against a template.
+
+   **A disputed signature never stops the migration**, and never silently decides anything: it is reported once, and a disputed file is **not offered `Overwrite`** in Phase 5 — the same protection as an accumulator (Phase 6), for the same reason. A version number that two sources disagree about is not a basis for replacing someone's file. Say which reading you used (always the state file's OLD) so the disagreement is visible rather than resolved behind their back.
 
 ## Phase 2 — Show what changes
 
-Read `${CLAUDE_PLUGIN_ROOT}/CHANGELOG.md`. Extract and show the entries between OLD and NEW so the user understands what they'll get.
+Read `${CLAUDE_PLUGIN_ROOT}/CHANGELOG.md`. Show the **released** sections strictly above OLD and up to and including NEW — `(OLD, NEW]`: OLD is excluded, being what the project already has, and NEW is included, being what it is migrating to. So a 1.9.0 → 1.11.0 run shows `[1.10.0]` and `[1.11.0]`, and nothing else.
+
+**`## [Unreleased]` is not part of that range.** Its entries belong to no released version, so they do not describe what NEW delivers. Never fold them into the list. When that section is non-empty, add **one** line saying so — *the plugin also carries unreleased changes, which are not part of vNEW and apply only if you are running it from a source checkout rather than an installed release* — because a user on `--plugin-dir` genuinely has that behaviour and would otherwise be told about none of it.
 
 > **Migrations that rename/move files**: some versions rename or relocate generated files — e.g. V0.7 renamed `docs/00-VISION.md` → `docs/VISION.md` and `brief/00-INTENT.md` → `brief/INTENT.md`; V0.9 moved `media/` → `docs/media/`; V0.11 renamed the `brief/` folder → `intake/` (ADR 0014). When migrating across such a version, detect the old path on disk and offer to `git mv` it to the new path (never duplicate; never delete without confirmation). Renames **chain**: a pre-V0.7 `brief/00-INTENT.md` migrating past V0.11 lands directly at `intake/INTENT.md` (one `git mv` to the final path). For `media/` → `docs/media/`: if a top-level `media/` exists and was the starter-kit one, offer the move; if the project has its own unrelated `media/`/`public/`, leave it and just create `docs/media/`. For `brief/` → `intake/`: offer `git mv brief intake` (whole folder), then fix the paths in `generatedFiles` and any `intent.source`-style references in `.groundrules.json`; also flag stale `brief/` references in the project's own `CLAUDE.md`/`README.md`/docs for the user to update (or offer to update them if they carry the starter-kit signature).
 
@@ -105,6 +114,8 @@ Show a recap table:
 | File                   | State             | Proposed action      |
 |------------------------|-------------------|----------------------|
 | CLAUDE.md              | content modified  | show diff then choose |
+| PLAN.md                | content modified  | no overwrite (accumulator) |
+| README.md              | signature disputed| no overwrite (file says v1.9.0, state says 1.8.0) |
 | docs/LEARNINGS.md      | identical         | skip                 |
 | docs/ARCHITECTURE.md   | identical         | skip                 |
 | (new) docs/...         | template added    | create? (optional)   |
@@ -132,6 +143,8 @@ For each "new template available": `Create` / `Skip`.
 - **Create** → **skip the file.** A file that does not exist yet loses nothing by waiting, and creating it half-substituted only moves the problem. Name what is missing.
 
 In every case say where the value would come from — usually a key absent from `.groundrules.json` — so the user can fill it and re-run: `migrate` is re-runnable by design.
+
+**`Overwrite` is also withheld from a file whose signature is disputed** (Phase 1 step 5). Two sources disagree about which version produced it, and neither has been shown to be right; replacing it would resolve that disagreement by destroying one side of it. Offer the other three answers, and say which two versions disagree.
 
 **Second guard — never offer `Overwrite` on a file the project writes into.** The placeholder guard above protects against a broken value; this one protects against a correct value being thrown away, which no placeholder scan can see. `PLAN.md`, `CHANGELOG.md`, `docs/LEARNINGS.md`, `docs/AGENT-EVALS.md`, `docs/VISION.md`, `intake/INTENT.md`, `docs/ADOPTION-LOG.md` and everything under `docs/decisions/` are **accumulators**: their value is what the project put in them, and regenerating one from its template is almost never what anybody means. A `PLAN.md` holding real tasks, overwritten, comes back as *(add the first active tasks here)* with nothing warning the user.
 
