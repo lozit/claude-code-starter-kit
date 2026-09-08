@@ -1,9 +1,9 @@
 # The AI-native SDLC playbook — what it raises for groundrules
 
-**Written**: 2026-09-02, from a deliberation session in the operator's private cockpit. It
+**Written**: 2026-09-02, away from this repository and brought into it. It
 carries **the reasoning, not a decision**: the analysis belongs here, against this
 repository's own documentation, because several of these subjects are already settled here
-and a session elsewhere cannot know how.
+and cannot be weighed anywhere else.
 
 Source: Anthropic, *The AI-Native SDLC playbook* — <https://claude.com/blog/the-ai-native-sdlc-playbook>
 (a course version exists at <https://academy.claude.com/courses/ai-native-sdlc-playbook/introduction>).
