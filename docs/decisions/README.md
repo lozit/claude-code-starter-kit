@@ -67,3 +67,4 @@ No ADR needed for trivial choices or implementation details.
 | [0035](0035-no-auto-capture-memory-layer.md) | Considered an auto-capture memory layer (claude-mem class); declined — reaffirms ADR 0020/0021/0025 | Accepted | 2026-06-29 |
 | [0036](0036-git-workflow-corrected.md) | Git workflow corrected: PR on protected `main`, no AI attribution (supersedes 0028) | Accepted | 2026-09-02 |
 | [0037](0037-executable-evals-over-agent-config.md) | An executable eval suite over the agent's configuration (`evals/`), native format, out of band | Accepted | 2026-09-02 |
+| [0038](0038-close-reconcile-plan-against-diff.md) | `/groundrules:close`: reconcile `PLAN.md` against the diff — proposes, never auto-writes; a check, not a reminder | Accepted | 2026-09-08 |

@@ -12,7 +12,7 @@ This file differs from the long-term roadmap: it describes what is happening **n
 
 ## Up next
 
-- [ ] *(empty — `/goal` interop moved to In progress)*
+- [ ] **Exercise the `close` acceptance cases** (the brief's *Done when*, `intake/2026-09-08-close-the-session-update-the-context.md`). Five checks, all replayable in any bootstrapped repo — this one included: (1) an in-progress item whose work is in the diff is proposed for ticking, as a diff; (2) a diff matching nothing open says so and writes nothing; (3) an item linked to the change **only** by a filename is *not* matched; (4) it reads `PLAN.md` and git, and no other file; (5) the generated `CLAUDE.md` checkpoint list names it. A miss is a matcher gap to fix in `skills/close/SKILL.md`, a `docs/AGENT-EVALS.md` entry, and a candidate `evals/` case ([ADR 0037](docs/decisions/0037-executable-evals-over-agent-config.md)). *(supervised — a judgement call on each proposal, not a pass/fail script)*
 
 
 > **Long-term milestones moved to [`docs/ROADMAP.md`](docs/ROADMAP.md)** — M1 *Loop-readiness* (loop scaffolding opt-in, `/groundrules:realize`, triage convention; ADR 0027) and M2 *Multi-harness support*. They enter "In progress" here, and get a PRD/ADR, only when actively tackled.
@@ -34,6 +34,8 @@ Raw ideas, captured before they're lost. Not yet vetted. Each gets triaged later
 - [ ] ...
 
 ## Recently done
+
+- [x] **`/groundrules:close` shipped — [ADR 0038](docs/decisions/0038-close-reconcile-plan-against-diff.md)** (implements `intake/2026-09-08-close-the-session-update-the-context.md`): reconcile `PLAN.md` against the diff since a baseline, proposal shown as a diff, one-gesture confirmation, matching on what changed and never on a filename, `PLAN.md` + git and nothing else. Checkpoint lists (generated template + meta) name it; `checkpoint`'s recap points to it; README skill 15 + a *Reconciliation over reminders* practices row. — under `[Unreleased]` (2026-09-08)
 
 - [x] **Evals ADR written — [ADR 0037](docs/decisions/0037-executable-evals-over-agent-config.md)** (tensions 1 & 2 of the AI-native SDLC brief, source read): adopt `evals/` + `claude plugin eval`, **out of band** so ADR 0025 stands untouched; `docs/AGENT-EVALS.md` keeps the word and **feeds** the cases; **native case format adopted as-is** — portability is a property of what we *generate*, not of how we *test*, and the system under test is already a Claude Code plugin. Nothing generated for users, CI deferred with its reason. — under `[Unreleased]` (2026-09-02)
 
