@@ -16,6 +16,28 @@ before a push/release).
 
 ---
 
+## 2026-09-08 — Called a gated command "verified present" after reading only its `--help`
+
+**Observed**: [ADR 0037](decisions/0037-executable-evals-over-agent-config.md) adopted
+`claude plugin eval` on the strength of *"Runner verified present: `claude plugin eval --help`"*,
+and built its whole argument on being able to run it — *"a red case is a signal to read"*,
+*"`validated` acquires an operational meaning"*. Invoking the command actually prints
+`plugin eval is currently in early access` and does nothing. The subcommand exists; running it
+does not. Six days passed before anyone tried it.
+
+**Pattern**: **recurrence** of *asserts / trusts without verifying* (entry below), in its most
+specific form yet — `--help` answers *does this command exist*, which is not the question
+*can I run this command*. A help text is documentation, and the entry below already says not to
+verify a mechanism against documentation.
+
+**Guard**: to establish that a tool works, **invoke it and read what it does**, not its help.
+Where the difference matters — a gate, a licence, a credential, a permission — the cheap check is
+the real one, and it costs a single command. State the exit status or the output you saw, never
+"available".
+
+**Status**: watching — and the third case of the `evals/` suite (`verify-before-asserting`) grades
+this exact reflex, which the suite cannot yet run. That is the loop this entry sits in.
+
 ## 2026-09-02 — Reasoned about a layer-B copy as if it were the shipped layer-A source
 
 **Observed**: asked to analyse the loop's verifier against an external brief, the agent read
@@ -35,8 +57,10 @@ conclusion about behaviour**, not just before editing — and name the layer exp
 Concretely, for anything under `docs/prototypes/`: its shipped counterpart under
 `skills/bootstrap/templates/` is the one that governs behaviour.
 
-**Status**: watching — and the first candidate case for the `evals/` suite
-([ADR 0037](decisions/0037-executable-evals-over-agent-config.md)); tracked in `PLAN.md`.
+**Status**: watching — case authored as `evals/layer-ab-divergence/`
+([ADR 0037](decisions/0037-executable-evals-over-agent-config.md)). **Not `validated`**: the case has
+never been run, because the runner is gated (see the 2026-09-08 entry above). A case that exists
+is a written promise, not evidence.
 
 ## 2026-06-13 — Jumps to execution without capturing / confirming scope first
 
@@ -79,7 +103,7 @@ PLAN/ROADMAP, not here.)
 
 **Guard**: when a command/skill "doesn't appear", **verify the installed version on disk before advising** (`ls ~/.claude/plugins/cache/<marketplace>/<plugin>/`) — distinguish *marketplace catalog* (updated) from *installed plugin* (often not). The README "Updating the plugin" section and the skills' Phase 0 notices now spell out the two-step update explicitly.
 
-**Status**: watching — the prior guard ("verify before assert") didn't fire here; this strengthens it toward *environment/installation* claims specifically.
+**Status**: watching — case authored as `evals/verify-installed-version/`; the prior guard ("verify before assert") didn't fire here, and this strengthens it toward *environment/installation* claims specifically. **Not `validated`**: never run.
 
 ## 2026-06-08 — Asserts / trusts without verifying first
 
@@ -100,4 +124,4 @@ metrics, hit the API, not a WebFetch summary; for a "this will trigger/fire" cla
 concrete event that fires it. "Verify before you assert" is now also reflected in the
 `CLAUDE.md` "Verifying the work" discipline.
 
-**Status**: watching — re-evaluate over the next few sessions.
+**Status**: watching — case authored as `evals/verify-before-asserting/`. **Not `validated`**: never run. Recurred on 2026-09-08 (top entry), which is why the case grades the trigger question specifically.
