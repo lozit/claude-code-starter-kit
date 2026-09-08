@@ -173,6 +173,8 @@ What superpowers deliberately leaves out is exactly what groundrules adds, **wit
 
 You keep the build pipeline superpowers is great at; you gain the memory and the high-altitude framing it doesn't provide.
 
+**If you don't use it, you won't see it.** The generated `CLAUDE.md` carries an interop section explaining the altitude split — eight lines that are noise for a project without superpowers, so `bootstrap` and `adopt` **detect** the plugin and leave the section out when it isn't there. No extra interview question: detection first, and if it guesses wrong the final recap tells you in one line how to get the section back ([ADR 0039](docs/decisions/0039-conditional-superpowers-interop.md)).
+
 ## Philosophy
 
 - **Template over code** — plain `{{KEY}}` text substitution, never a template engine or application logic ([ADR 0002](docs/decisions/0002-plain-text-placeholder-substitution.md)).
