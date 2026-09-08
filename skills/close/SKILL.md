@@ -20,8 +20,9 @@ You will **reconcile `PLAN.md` with what actually changed**, and propose the edi
 Pick the baseline, in this order:
 
 1. `$ARGUMENTS` if given: a ref (`main`, `v1.10.0`, `HEAD~4`) or a window (`--since="8 hours ago"`).
-2. On a topic branch: `git merge-base HEAD <default>`, where `<default>` is `main` or `master`, whichever exists — everything this branch did.
-3. Otherwise the last tag (`git describe --tags --abbrev=0`); if none, the last 15 commits.
+2. **HEAD is not the default branch** (`main` or `master`, whichever exists): `git merge-base HEAD <default>` — everything this branch did. **Skip this rule when HEAD *is* the default branch**: the merge-base would be `HEAD` itself and the window would come out silently empty.
+3. Otherwise the last tag: `git describe --tags --abbrev=0`.
+4. No tag: `HEAD~15`, **or the root commit when history is shorter** (`git rev-list --max-parents=0 HEAD`). Use a **ref**, never a count — `HEAD~15` does not resolve in a repository with fewer than sixteen commits. Taking the root as the base excludes it from the window, which matters: the root commit is what created `PLAN.md`, and a check whose job is to compare the diff against `PLAN.md` must not find `PLAN.md` in its own diff.
 
 Then, in as few commands as possible:
 
@@ -29,19 +30,26 @@ Then, in as few commands as possible:
 - `git diff <base> --stat` and `git status --short` — the paths touched, committed or not.
 - `git diff <base> -- CHANGELOG.md` — the `[Unreleased]` lines added, if any. They are already a human-written summary of the change, so they are the strongest signal available.
 
-State the baseline in one line. If nothing changed, say so and stop — **an empty close is a valid outcome.**
+No `CHANGELOG.md` is not a degraded run — commit subjects and paths carry the comparison on their own; say nothing about it.
+
+State the baseline in one line. If nothing changed, say so and stop — **an empty close is a valid outcome.** But an *empty window* is not that outcome: if the baseline resolves to `HEAD`, or to a ref that yields no commits, that is a bug in the baseline. Say which rule you used and that it produced nothing, rather than reporting that nothing changed.
 
 ## Phase 2 — What the record says
 
 Read `PLAN.md`. Absent → say so and stop; there is nothing to reconcile. Otherwise take the open items of `## In progress`, `## Up next` and `## Waiting / blocked` — unchecked `- [ ]` bullets and their sub-bullets.
 
-**Match on what changed, never on filenames.** An item is *touched* when something it names appears in Phase 1: a path or directory, a backticked identifier, a skill or command name, an ADR or PRD number, the subject of a commit or of a `CHANGELOG` line. A **filename** is **not** a match — nothing links a file's name to a `PLAN.md` line, and a matcher built on names produces a false positive for every item whose work was described in the project's own words. **A check that cries wolf gets switched off, and then it is worse than no check.** When unsure, list the item as *possibly touched* for the human to resolve; never drop it silently.
+**Match on what changed, never on name resemblance.** An item is *touched* when something **the item itself names** appears in Phase 1: a path or directory it names, a backticked identifier, a skill or command name, an ADR or PRD number, or its subject restated in a commit or `CHANGELOG` line. What is forbidden is the **reverse** inference — concluding a link because a changed file's *name* looks related to an item's words. A path counts when the item names it; it never counts merely because it sounds adjacent. And a path an item names as *raw material* is not its deliverable: check which one changed.
+
+**A commit subject or a `CHANGELOG` line is a pointer, not proof.** Both are written by hand and both over-claim — a subject announcing a function the diff delivers as an empty stub. Confirm the deliverable against the diff before ticking on their word. **A check that cries wolf gets switched off, and then it is worse than no check.** When unsure, list the item as *possibly touched* for the human to resolve; never drop it silently.
 
 For each touched item, propose the smallest true edit:
 
 - **Tick** — the diff delivers the item: its stated deliverable exists in the diff, or a `CHANGELOG` line says it shipped. Edit: `[x]`, moved to `## Recently done` in the file's own style (mirror what the file already does, e.g. a trailing `— under [Unreleased] (YYYY-MM-DD)`).
 - **Rewrite one sentence** — the item stays open, but a status sentence in it is now false: *"not yet"*, *"pending"*, *"no X yet"*, *"in progress"*, a count, a version. Edit: that sentence only.
 - **Split** — the diff delivers a sub-bullet only: tick the sub-bullet, leave the parent open.
+- **Leave as is** — the item is touched, but nothing it promises was delivered and no sentence in it became false: a file it names as raw material changed, not its deliverable. Report it as touched, propose no edit. This is a result, not an omission, and it is the most common honest outcome for an item that is merely adjacent to the work.
+
+**Tick supersedes rewrite.** When the diff both delivers an item and falsifies a status sentence inside it (*"no test covers it yet"*, now covered), tick it and **drop the false tail as it moves** — keep the title, and a short description only if the file's existing `Recently done` entries carry one.
 
 Do not touch untouched items, the `## Ideas — to triage` inbox, or the file's `generated-by` signature.
 
@@ -60,7 +68,7 @@ Nothing to propose → no question. Say the record is already true; that is a re
 
 ## Phase 4 — Write, recap
 
-On confirmation, apply the edit (preserve the signature; `## Recently done` grows in the file's existing order). Then:
+On confirmation, apply the edit (preserve the signature; `## Recently done` grows in the file's existing order, and when too few entries establish one, append at the end). Then:
 
 - ✅ `PLAN.md`: N items ticked, M sentences rewritten — or *unchanged*
 - ⏭️ suggested commit subject: `docs(plan): close — <what the record now states>` — the message says what the record *now says*, not what the session did; the diff already says that.
@@ -72,7 +80,7 @@ On confirmation, apply the edit (preserve the signature; `## Recently done` grow
 - **`PLAN.md` and nothing else.** If a user keeps a status note elsewhere, that is theirs: this skill does not reach for it and does not mention it.
 - **Propose, never auto-write.** The confirmation is one gesture, and it is the human's.
 - **Match on what changed** — paths, identifiers, ADR/PRD numbers, commit and `CHANGELOG` subjects — never on a filename.
-- **Cheap or unused.** `PLAN.md` plus git metadata; no tour of `docs/`, no re-reading file contents beyond the hunks git already shows.
+- **Cheap or unused.** `PLAN.md` plus git metadata. The `git diff` hunks are in bounds — they are what tells a stub from a delivery — but opening the changed files is not, and neither is a tour of `docs/`.
 - **Empty is fine.** Manufacturing an edit to have something to show is the failure this command exists to prevent.
 - **Sibling of `/groundrules:checkpoint`, not part of it.** `checkpoint` is an interview that captures **knowledge** (decided → ADR, learned → LEARNINGS, drift → AGENT-EVALS). This captures nothing; it reconciles **status**, and it must stay cheap. Run both before a push.
 - This skill writes `PLAN.md` only; it never commits, tags, or pushes.

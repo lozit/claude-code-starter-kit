@@ -7,6 +7,31 @@ One entry per learning. Keep the format simple: title, context, lesson.
 
 ---
 
+## A skill's acceptance cases must be *run* on fixtures — reading the instructions back does not find their gaps
+
+**Why**: 2026-09-08, `/groundrules:close` shipped after being read and re-read by its author, then had its
+five acceptance cases exercised for real: two throwaway git repositories, and two **fresh subagents** given
+only the `SKILL.md` and a repository path, with no idea what the author expected. All five cases passed —
+and the runs returned **seven defects the author had read past**, three of them silent-failure class.
+The worst: rule 2 of the baseline said *"on a topic branch, use `git merge-base HEAD <default>`"*, which on
+the default branch resolves to `HEAD` itself, yielding an empty window and a confident **"nothing changed"**
+indistinguishable from a real one. Verified on this repo: zero commits in the window. Next: the fallback
+*"the last 15 commits"* names a **window** where every command needs a **ref**, so `HEAD~15` does not resolve
+in a young repository — and the only base left, the empty tree, puts the commit that *created* `PLAN.md`
+inside the diff the tool compares `PLAN.md` against. And two sentences one paragraph apart contradicted each
+other, *"a path or directory is a match"* against *"a filename is not a match"*, which is precisely the
+judgement call the skill's central rule exists to settle. None of these are visible by reading; all three
+appeared within minutes of a fixture.
+
+**When to apply**: whenever a skill is authored or substantially changed. Before calling it done, write the
+smallest fixtures its acceptance cases need — a positive, a negative, and one built to trip its central rule —
+and have a **fresh subagent** run the instructions against them, told to stop before writing and to report
+where the instructions were unclear. Its *ambiguity* section is worth more than its result: a case that passes
+still exposes the branches the author never took. Deliberately include a case where the honest answer is
+"nothing to do"; a check that cannot come back empty is a check that manufactures work. This is the cheap,
+manual form of the [ADR 0037](decisions/0037-executable-evals-over-agent-config.md) eval suite, and it needs
+no runner.
+
 ## Commit the acceptance test before the loop — an untracked test makes the "untampered" guard guard nothing
 
 **Why**: 2026-06-20, a field test of the loop quickstart (a real `to_roman` task) converged correctly —
