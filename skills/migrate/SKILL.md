@@ -72,9 +72,19 @@ For each file listed in `generatedFiles`:
 
 1. Identify the template that produced it. Use the same mapping as `skills/bootstrap/SKILL.md` Phase 5. Templates are English-only with a single `.tpl` per file (no language variants).
 2. Read `${CLAUDE_PLUGIN_ROOT}/skills/bootstrap/templates/<template>` (current version).
-3. Substitute the placeholders with `answers` (same logic as bootstrap Phase 5).
-4. Read the file on disk.
-5. Compare via Bash `diff -u <(printf '%s' "$current") <(printf '%s' "$generated")`:
+3. **Read the file on disk.** Do this *before* substituting: the resolution ladder below reads it as its strongest source.
+4. **Substitute the placeholders.** `answers` alone is **not** enough and assuming it is corrupts files: a project bootstrapped by an older version can carry an `answers` object holding little more than `projectName`, while the template needs `{{DESCRIPTION}}`, `{{STACK}}`, `{{DATE}}`, `{{GLOBAL_CLAUDE_NOTE}}` and more. Resolve each placeholder through this ladder, first hit wins:
+   1. **`.groundrules.json`** — `answers`, and also `intent` (its `goal` / `users` / `constraints` / `nonGoals` / `acceptanceCriteria` are what `{{GOAL}}`, `{{USERS}}`, `{{CONSTRAINTS}}`, `{{NONGOALS}}`, `{{ACCEPTANCE}}` were written from) and the top-level keys.
+   2. **The file on disk** — the strongest source, and the one `bootstrap` never has: a previous generation already substituted these, so the current file *is* the record of the values. Recover one by anchoring on the template's literal text on either side of the placeholder (`# {{PROJECT_NAME}}` against the file's own heading, and so on). Recover, never guess: if the surrounding text has been hand-edited past recognition, treat it as unresolved.
+   3. **Re-derive the non-interactive ones exactly as `bootstrap`** does: `{{STACK}}` from the folder's stack markers, `{{GLOBAL_CLAUDE_NOTE}}` by reading the global `CLAUDE.md`, `{{REMOTE_PROVIDER}}` / `{{REMOTE_VISIBILITY}}` from `git remote -v`. **A derivation that legitimately finds nothing resolves to the empty string** — `bootstrap` defines `{{STACK}}` as *"stack or empty string"*, and the same holds for the note and the remote pair. A stack-less project is a resolved project, not a blocked one; rung 2 runs first, so a real value already on disk is never overwritten by an empty one.
+   4. **Unresolved** → leave it unresolved. This is only for placeholders with **no defined empty form** — `{{PROJECT_NAME}}`, `{{DESCRIPTION}}`, and the `VISION` fields. **Never fabricate a value, and never ask**: `migrate` is not an interview, and a plausible invented `{{DESCRIPTION}}` written into a user's file is worse than a visible gap.
+
+   **`{{DATE}}` comes from `bootstrappedAt`, never from the clock.** The template renders it as *bootstrapped on `{{DATE}}`*, so re-deriving it with `date +%F` writes a statement that is false. Rung 3 does not apply to it.
+5. **Bring the generated text to what `bootstrap` would produce for *this* project — not the raw template.** `bootstrap` does not write the template as-is: it drops the sections a global `CLAUDE.md` already covers, splices `## Invariants` only when the loop is scaffolded, and drops `### Interop with superpowers` when superpowers is absent. Comparing a project against the raw template reports every one of those as a difference the user never introduced. Apply the same section selection here, from the same inputs, **before** diffing.
+
+   **Apply a section drop only when the project file lacks that section.** When the file *has* it, the difference is real and belongs in the arbitration: dropping it turns *your wording is out of date* into a pure deletion, and — for the interop block — makes `Overwrite with the new template` silently remove a section whose removal is supposed to be its own separate question. Answering one question must never decide the other.
+6. **Mask what stayed unresolved, on both sides, before comparing.** An unresolved `{{STACK}}` diffed against the real value the file already carries reports a difference that does not exist, and a recap padded with false differences trains the user to accept overwrites without reading. Replace the placeholder in the generated text **and** the span it corresponds to on disk with one identical marker; when that span cannot be located, drop the line from the comparison. Say once, in the recap, which placeholders were masked and for which files.
+7. Compare via Bash `diff -u <(printf '%s' "$current") <(printf '%s' "$generated")`:
    - **Identical** → note "already up to date"
    - **Differs** → note "to arbitrate" + keep the diff handy
 
@@ -84,7 +94,8 @@ For each file listed in `generatedFiles`:
 
 For each template in the current plugin that would produce a file given `answers` (respecting the `HAS_*` flags) **but that is NOT in `generatedFiles`**:
 
-- It's a new template introduced in a recent version → offer to create it.
+- **Distinguish two cases**, because they read very differently to a user. A template **added since OLD** (check `${CLAUDE_PLUGIN_ROOT}/CHANGELOG.md`) is genuinely *new in a recent version*. One that already existed at OLD was simply **never generated for this project** — declined at bootstrap, or lost since. Offer both, but never announce the second as new: on a project whose `generatedFiles` is short, that mislabels every always-created file at once.
+- A `HAS_*` flag **absent** from `answers` is *unknown*, not `false`: offer the file and say the state file does not record the choice, rather than silently skipping it.
 
 ## Phase 5 — Recap and arbitration
 
@@ -111,6 +122,20 @@ For each "new template available": `Create` / `Skip`.
 ## Phase 6 — Apply decisions
 
 > If `--dry-run`: skip this phase, go straight to phase 8 with a "would have done:" report.
+
+**What gets written.** Always the **substituted** text of Phase 3 step 4 — **never** the masked text of step 6. Masking exists only to keep an unresolved placeholder out of the *comparison*; writing the masked text would delete the value's whole line from the user's file and, worse, blind the guard below by removing the very tokens it looks for.
+
+**Guard, before every `Write` in this phase — a `{{KEY}}` must never reach a user's file.** Scan the content you are about to write for a **bare** placeholder, applying the same backtick rule as `/groundrules:verify-bootstrap` § 2.4: one wrapped in backticks is a documentation reference, not a leftover. `verify-bootstrap` already reports a bare one as a **failure**, so writing one here would mean this plugin producing the exact defect it ships a detector for. If any remain:
+
+- **Overwrite** → **refuse it.** Write `<file>.new` instead and name the unresolved placeholders. The user's file is never damaged by a migration.
+- **Save as .new** → proceed, and name them. When a refused overwrite has already produced the same `<file>.new`, say so plainly: the user picked `Overwrite` and got something else, and a recap that does not explain that reads as the skill ignoring their answer.
+- **Create** → **skip the file.** A file that does not exist yet loses nothing by waiting, and creating it half-substituted only moves the problem. Name what is missing.
+
+In every case say where the value would come from — usually a key absent from `.groundrules.json` — so the user can fill it and re-run: `migrate` is re-runnable by design.
+
+**Second guard — never offer `Overwrite` on a file the project writes into.** The placeholder guard above protects against a broken value; this one protects against a correct value being thrown away, which no placeholder scan can see. `PLAN.md`, `CHANGELOG.md`, `docs/LEARNINGS.md`, `docs/AGENT-EVALS.md`, `docs/VISION.md`, `intake/INTENT.md`, `docs/ADOPTION-LOG.md` and everything under `docs/decisions/` are **accumulators**: their value is what the project put in them, and regenerating one from its template is almost never what anybody means. A `PLAN.md` holding real tasks, overwritten, comes back as *(add the first active tasks here)* with nothing warning the user.
+
+For those files, Phase 5 offers **`See the diff` / `Keep my file` / `Save the new one as .new`** and **not** `Overwrite`. Say why in one clause — *this file accumulates your content* — so the missing option does not read as an omission. Everything else keeps all four.
 
 For each "Overwrite" → `Write` the new content.
 For each "Save as .new" → `Write` to `<file>.new`.

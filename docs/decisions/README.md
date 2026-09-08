@@ -70,3 +70,4 @@ No ADR needed for trivial choices or implementation details.
 | [0038](0038-close-reconcile-plan-against-diff.md) | `/groundrules:close`: reconcile `PLAN.md` against the diff — proposes, never auto-writes; a check, not a reminder | Accepted | 2026-09-08 |
 | [0039](0039-conditional-superpowers-interop.md) | The superpowers interop section is conditional (`{{HAS_SUPERPOWERS}}`), detected rather than asked | Accepted | 2026-09-08 |
 | [0040](0040-three-bootstrap-modes.md) | Three bootstrap modes: prior state then emptiness, two questions in that order (bootstrap / resume / brownfield) | Accepted | 2026-09-08 |
+| [0041](0041-a-migration-never-damages-a-correct-file.md) | A migration never damages a correct file: no bare `{{KEY}}` written, no `Overwrite` on an accumulator, and a comparison text matching what `bootstrap` would produce | Accepted | 2026-09-08 |
