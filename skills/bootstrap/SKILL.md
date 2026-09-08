@@ -22,7 +22,7 @@ You will bootstrap a Claude Code project in the **current working directory**. F
 1. Run `ls -la` on the cwd.
 2. Detect the following markers and note what is present:
    - `.git/` (existing git repo)
-   - `.groundrules.json` (state from a previous invocation — if present, load it and switch to **resume mode**); a legacy pre-1.0 `.starter-kit.json` also triggers resume mode — load it and recommend `/groundrules:migrate` (V1.0 renamed the plugin and the state file)
+   - `.groundrules.json` (state from a previous invocation — if present, **load it**; it is what selects `resume` in the mode table at step 4, and this line does not decide the mode on its own); a legacy pre-1.0 `.starter-kit.json` counts the same — load it and recommend `/groundrules:migrate` (V1.0 renamed the plugin and the state file)
    - `CLAUDE.md`, `README.md`, `docs/`, `intake/`, `docs/media/`, `PLAN.md`, `CHANGELOG.md`, `.gitignore`, `docs/VISION.md`, `intake/INTENT.md`
    - optional specialized docs: `docs/DATA_MODEL.md`, `docs/SECURITY.md`, `docs/DESIGN_SYSTEM.md`, `docs/ROADMAP.md`, `docs/I18N.md`, `docs/PROCESS.md`, `RELEASE.md`, `docs/AGENT-EVALS.md`
    - **`PLAN.md` equivalents** (planning aliases, **same altitude**) — detection is **case-insensitive** and **nested** (up to ~3 levels, excluding `node_modules`/`.git`): `plan.md`, `TODO.md`, `todo.md`, `todos.md`, `TASKS.md`, `BACKLOG.md`, including under a path (e.g. `docs/gtd/todos.md`). There may be **several** — report all of them. **Case guard**: **never** generate `PLAN.md` if an equivalent name exists in a different case (collision on a case-sensitive FS).
@@ -43,7 +43,27 @@ You will bootstrap a Claude Code project in the **current working directory**. F
    - **Present with a `generated-by: groundrules` signature near the top** → recognized, offer "ignore / regenerate". The signature may be an HTML comment (`<!-- ... -->`, Markdown) or a shell comment (`# generated-by: groundrules`, for `*.sh`/`.gitignore`), and need not be line 1 (e.g. after a shebang or YAML frontmatter — scan the first ~10 lines).
    - **Present without a signature** → foreign file, default "ignore"
 
-If the folder is completely empty → classic bootstrap mode. Otherwise → resume mode (announce it clearly to the user at the start of the interview).
+4. **Determine the mode.** Three of them, decided by **two questions asked in this order** — is there groundrules state, and only then is the folder empty. Answering them with one word is what made this ambiguous before:
+
+   | State file present? | Anything else in the folder? | Mode |
+   |---|---|---|
+   | **yes** | — (irrelevant) | **resume** |
+   | no | no | **bootstrap** |
+   | no | yes | **brownfield** |
+
+   **"Anything else" ignores `.git/` and the state file itself.** A folder holding only a git repository has nothing for groundrules to preserve, so it is `bootstrap`, not `brownfield`. Without this, every `git init && /groundrules:bootstrap` would be misrouted.
+
+   - **bootstrap** — generate everything, no arbitration.
+   - **resume** — prior groundrules state exists: load it, skip what is already there, re-ask nothing the state answers (idempotence). This is the only thing the word *resume* now means, and the state file alone decides it: a folder is never "too empty" to resume.
+   - **brownfield** — someone else's files, no groundrules history. The term is `adopt`'s own (cf. ADR 0008); **do not call this mode *foreign***, which in this skill is a **file** category (step 3, present without a signature) and would overload one word onto two ideas.
+
+   **In `brownfield`, before Phase 2 begins** — not "at the start of the interview", which would ask whether the user wants a different skill after starting to question them:
+   - Name the mode, and say the folder holds files groundrules did not generate and has no state to resume from.
+   - **Point at `/groundrules:adopt` first**: it is what maps existing files to groundrules roles, where bootstrap classifies each of them as a foreign file and ignores it — lossy, and the reason `adopt` exists.
+   - Then **one `AskUserQuestion`**: `Continue with bootstrap (create only what's missing)` / `Stop — I'll run /groundrules:adopt`. On the second, **stop and say to run `/groundrules:adopt`**: a skill cannot invoke another, so the user types the command.
+   - **Never refuse, and never silently proceed as if this were a resume.**
+
+   Announce the mode by name in every case.
 
 ## Phase 2 — Base interview
 
@@ -170,8 +190,13 @@ Create neither `intake/INTENT.md` nor `docs/VISION.md`. Note in `.groundrules.js
 
 Show a clear text recap:
 - List of files that will be **created** (full path)
-- List of files that will be **ignored** (resume mode)
-- Planned git actions (`git init`, first commit, remote)
+- List of files that will be **ignored** — in `resume`, files the state already accounts for; in `brownfield`, the **foreign** files (present without a generated-by signature). Name the mode, so the two reasons are not read as one.
+- Planned git actions (`git init` — **only when Phase 1 found no `.git/`**; say *existing repository, no init* when it did — first commit, remote)
+- **Notes carried from the interview** — earlier phases route observations here; this is their destination, and without it they have nowhere to land. **The block is open**: any decision or caveat an earlier phase reached that the file lists above do not show belongs here, not only the cases enumerated below. One line each; omit the whole block when there are none. Those that exist today:
+  - **a planning alias was reconciled** (Call 3, whenever one was detected): which alias, and what was decided — adopted instead of `PLAN.md`, created alongside, or its content ported. Detecting `TODO.md` and then showing it in the ignored list like any other file hides the one decision the user most needs to see before confirming.
+  - **loop scaffolding deferred to superpowers** (Call 2c, when `HAS_SUPERPOWERS=true`): no `loop/` is generated because superpowers already is a maker/verifier pipeline.
+  - **`PLAN.md` should point, not duplicate** (Call 3 note, when `HAS_SUPERPOWERS=true`): have it reference the active superpowers plan rather than restate its tasks.
+- **In `brownfield` mode, repeat the `adopt` recommendation here** — one line, naming the mode again. This screen is the last thing the user sees before `Confirm and generate`, and an advisory given once before the interview has scrolled away by the time it matters most.
 
 Then a final `AskUserQuestion`: `Confirm and generate` / `Cancel`.
 

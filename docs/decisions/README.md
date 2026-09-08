@@ -69,3 +69,4 @@ No ADR needed for trivial choices or implementation details.
 | [0037](0037-executable-evals-over-agent-config.md) | An executable eval suite over the agent's configuration (`evals/`), native format, out of band | Accepted | 2026-09-02 |
 | [0038](0038-close-reconcile-plan-against-diff.md) | `/groundrules:close`: reconcile `PLAN.md` against the diff — proposes, never auto-writes; a check, not a reminder | Accepted | 2026-09-08 |
 | [0039](0039-conditional-superpowers-interop.md) | The superpowers interop section is conditional (`{{HAS_SUPERPOWERS}}`), detected rather than asked | Accepted | 2026-09-08 |
+| [0040](0040-three-bootstrap-modes.md) | Three bootstrap modes: emptiness and prior state are two questions (bootstrap / resume / foreign content) | Accepted | 2026-09-08 |
