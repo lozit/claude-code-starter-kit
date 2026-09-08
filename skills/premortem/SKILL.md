@@ -1,6 +1,6 @@
 ---
 name: premortem
-description: Use before committing to a plan, PRD, ADR, architecture, or strategy — especially when you're tempted to ask "is this good?" (which invites a sycophantic yes). It runs Gary Klein's premortem: assume the thing already failed, enumerate the causes ranked by probability × impact, and name the early signal for each, then optionally fold the result into a PRD's Risks or an ADR. The reflection-side adversarial pass.
+description: "Use before committing to a plan, PRD, ADR, architecture, or strategy — especially when you're tempted to ask \"is this good?\" (which invites a sycophantic yes). It runs Gary Klein's premortem: assume the thing already failed, enumerate the causes ranked by probability × impact, and name the early signal for each, then optionally fold the result into a PRD's Risks or an ADR. The reflection-side adversarial pass."
 disable-model-invocation: true
 allowed-tools: Read, Edit, Write, Bash, AskUserQuestion
 ---

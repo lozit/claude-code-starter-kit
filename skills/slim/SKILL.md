@@ -1,6 +1,6 @@
 ---
 name: slim
-description: Use when CLAUDE.md approaches or exceeds the ~200-line budget: proposes concrete optimizations (extract to docs/ or .claude/rules/, compress, de-duplicate) without ever losing content.
+description: "Use when CLAUDE.md approaches or exceeds the ~200-line budget: proposes concrete optimizations (extract to docs/ or .claude/rules/, compress, de-duplicate) without ever losing content."
 disable-model-invocation: true
 allowed-tools: Read, Write, Edit, Bash, AskUserQuestion
 ---

@@ -24,7 +24,7 @@
       "Bash(cat *)",
       "Bash(head *)",
       "Bash(tail *)",
-      "Bash(find * -type f *)",
+      "Bash(find . -type f *)",
       "Bash(grep *)",
       "Bash(rg *)",
       "Bash(wc *)",
