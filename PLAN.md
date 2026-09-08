@@ -7,8 +7,7 @@ This file differs from the long-term roadmap: it describes what is happening **n
 
 ## In progress
 
-- [ ] **Author the first eval cases** (implements [ADR 0037](docs/decisions/0037-executable-evals-over-agent-config.md)): up to **three** `evals/` cases, each sourced from a `Status: watching` entry of `docs/AGENT-EVALS.md` (failure mode = prompt, guard = grader). `claude plugin eval init --bare <name>` scaffolds one. Keep the suite small enough that it actually gets run; non-blocking until it has earned trust.
-  - **Case 1 — the layer A/B divergence** (`docs/AGENT-EVALS.md`, 2026-09-02): prompt the agent to change a loop prompt (e.g. *"tighten what the verifier is handed"*); the grader passes only if **both** copies land — `skills/bootstrap/templates/loop/` (shipped, layer A) **and** `docs/prototypes/loop/` (prototype, layer B) — or if the agent names the layer distinction and says which one governs. Its failure was observed twice on the same file pair: the divergence itself, then this session reading B as if it were A. A whole-directory `diff` is **not** the cheap mechanical version of this: the two copies diverge on purpose (the prototype drives `TODO.md`, the shipped template drives `loop/backlog.md` per [ADR 0030](docs/decisions/0030-loop-namespace-and-backlog.md), and the template carries checks the prototype never had), so such a check would be red forever — noise, not a guard. A real one compares only the sections that must not drift (the verifier's frame and what it is handed); worth doing, but it is its own small task, not a free `diff`.
+- [ ] *(empty)*
 
 ## Up next
 
@@ -31,9 +30,11 @@ Raw ideas, captured before they're lost. Not yet vetted. Each gets triaged later
 
 ## Waiting / blocked
 
-- [ ] ...
+- [ ] **Run the `evals/` suite — blocked on early access** ([ADR 0037](docs/decisions/0037-executable-evals-over-agent-config.md)). The three cases are authored (`evals/layer-ab-divergence`, `evals/verify-installed-version`, `evals/verify-before-asserting`), each from a `Status: watching` entry of `docs/AGENT-EVALS.md`. **None has ever been executed**: `claude plugin eval` prints *"currently in early access"* and does nothing (verified 2026-09-08, Claude Code 2.1.265). Unblocks when the gate opens; the first run will be a debugging session on the case **format**, which has never been parsed by the tool, before it is a signal about the agent. Until then no entry may move to `validated`, which was the whole point of the ADR.
 
 ## Recently done
+
+- [x] **First three eval cases authored** (implements [ADR 0037](docs/decisions/0037-executable-evals-over-agent-config.md)): `evals/` holds one case per `Status: watching` entry of `docs/AGENT-EVALS.md` — the layer A/B confusion, the restart advised without checking the installed version, and the trigger asserted without verification. Each pairs an LLM judge carrying the guard's rubric with a deterministic grader as a floor under it. Running them is blocked and tracked above; the gate itself became a fourth `AGENT-EVALS` entry, since adopting the runner on the strength of its `--help` is the very reflex the third case grades. — under `[Unreleased]` (2026-09-08)
 
 - [x] **`close` acceptance pass — five cases exercised, seven instruction defects fixed**: two throwaway git repositories and two fresh subagents running `skills/close/SKILL.md` blind. All five of the brief's cases pass — an in-progress item whose work is in the diff is proposed for ticking; a diff matching nothing open proposes nothing and writes nothing; an item linked to the change only through a file it names as *raw material* is not ticked; only `PLAN.md` and `CHANGELOG.md` (via `git diff`) are read; the generated `CLAUDE.md` names the command. The runs found what review had not: the baseline's topic-branch rule yields an **empty window on the default branch** (silent false "nothing changed", verified here), the no-tag fallback named a **count where a ref is needed**, and *"a path is a match"* contradicted *"a filename is not a match"* one paragraph later. Fixed, plus a *leave as is* outcome, tick-supersedes-rewrite, and commit subjects demoted to pointers. Rule captured in `docs/LEARNINGS.md`. — under `[Unreleased]` (2026-09-08)
 

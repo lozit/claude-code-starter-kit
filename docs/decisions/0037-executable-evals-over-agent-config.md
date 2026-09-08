@@ -138,4 +138,11 @@ earned trust.
 - Brief: `intake/2026-09-02-ai-native-sdlc-evals-and-verification.md` (tensions 1 and 2; 3 and 4 closed
   separately).
 - Runner verified present: `claude plugin eval --help`, Claude Code 2.1.258, 2026-09-02.
+- **2026-09-08 — present is not runnable.** Invoking the command prints `plugin eval is currently
+  in early access` and does nothing (Claude Code 2.1.265). The 2026-09-02 check read the help text,
+  which answers *does this exist*, not *can this run*. Decision 6's *"a red case is a signal to
+  read"* and the operational meaning this ADR gives to `validated` both depend on executing the
+  suite, and are **suspended** until the gate opens. The three cases are authored
+  (`evals/`), unexecuted, and no `docs/AGENT-EVALS.md` entry may move to `validated` on the
+  strength of one existing. The reflex itself is logged in `docs/AGENT-EVALS.md` (2026-09-08).
 - Authoring the first cases is tracked in `PLAN.md`, not here — this ADR decides, it does not build.
