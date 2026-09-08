@@ -1,4 +1,4 @@
-<!-- generated-by: groundrules v1.10.0 -->
+<!-- generated-by: groundrules v1.11.0 -->
 # PRD — Loop walkthrough + validation suite (show how to use the loop on a fresh project)
 
 > Product Requirements Document for a single feature. Written **before** building, so the agent

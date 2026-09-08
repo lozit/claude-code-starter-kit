@@ -1,4 +1,4 @@
-<!-- generated-by: groundrules v1.10.0 -->
+<!-- generated-by: groundrules v1.11.0 -->
 # 0040 — Three bootstrap modes: emptiness and prior state are two questions, not one
 
 **Date**: 2026-09-08

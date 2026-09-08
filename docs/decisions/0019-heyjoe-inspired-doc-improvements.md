@@ -1,4 +1,4 @@
-<!-- generated-by: groundrules v1.10.0 -->
+<!-- generated-by: groundrules v1.11.0 -->
 # 0019 — Doc improvements harvested from a real project (crm-heyjoe)
 
 **Date**: 2026-06-06

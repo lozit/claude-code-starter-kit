@@ -1,4 +1,4 @@
-<!-- generated-by: groundrules v1.10.0 -->
+<!-- generated-by: groundrules v1.11.0 -->
 # 0037 — An executable eval suite over the agent's configuration (`evals/`), native format, out of band
 
 **Date**: 2026-09-02

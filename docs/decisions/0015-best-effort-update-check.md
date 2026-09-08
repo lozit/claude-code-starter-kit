@@ -1,4 +1,4 @@
-<!-- generated-by: groundrules v1.10.0 -->
+<!-- generated-by: groundrules v1.11.0 -->
 # 0015 — Best-effort plugin update check in skills (Phase 0)
 
 **Date**: 2026-06-06

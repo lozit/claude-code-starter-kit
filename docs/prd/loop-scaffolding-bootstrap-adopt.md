@@ -1,4 +1,4 @@
-<!-- generated-by: groundrules v1.10.0 -->
+<!-- generated-by: groundrules v1.11.0 -->
 # PRD — Loop scaffolding, opt-in in `bootstrap`/`adopt` (M1 brick 2)
 
 > Product Requirements Document for a single feature. Written **before** building, so the agent

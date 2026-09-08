@@ -1,4 +1,4 @@
-<!-- generated-by: groundrules v1.10.0 -->
+<!-- generated-by: groundrules v1.11.0 -->
 # PRD — `/goal` interop: surface the two executors (implements ADR 0031)
 
 > Product Requirements Document for a single feature. Written **before** building, so the agent

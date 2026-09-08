@@ -1,4 +1,4 @@
-<!-- generated-by: groundrules v1.10.0 -->
+<!-- generated-by: groundrules v1.11.0 -->
 # PRD — /groundrules:vision (interactive VISION builder)
 
 > Product Requirements Document for a single feature. Written **before** building, so the agent

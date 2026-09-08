@@ -1,4 +1,4 @@
-<!-- generated-by: groundrules v1.10.0 -->
+<!-- generated-by: groundrules v1.11.0 -->
 # ROADMAP — groundrules
 
 Long-term direction: the **big milestones** we want to reach. This is the *vision* horizon —

@@ -1,5 +1,5 @@
 {
-  "groundrulesVersion": "1.10.0",
+  "groundrulesVersion": "1.11.0",
   "bootstrappedAt": "2026-05-11",
   "bootstrappedWithVersion": "0.1.0",
   "migrations": [
@@ -152,6 +152,12 @@
       "to": "1.10.0",
       "at": "2026-07-23",
       "note": "V1.10 posture & positioning harvested from community tools/patterns (no new skill, no runtime): generated CLAUDE.md ## Posture gains a third axis 'Keep the diff small' (simplicity first / surgical changes / clean up only your own mess), question-led per ADR 0032, from karpathy-skills (ADR 0034); recorded decision to decline auto-capture memory layers (claude-mem class) reaffirming ADR 0020/0021/0025, with a CONTEXT-ECONOMY contrast section + README leaves-out line (ADR 0035); the 'canary' adherence probe documented in CONTEXT-ECONOMY as the detective complement to the <200-line budget (root canary tests saturation not compaction; groundrules generates none — opt-in). README 'Established practices' gains a small-surgical-diffs row."
+    },
+    {
+      "from": "1.10.0",
+      "to": "1.11.0",
+      "at": "2026-09-08",
+      "note": "V1.11 new skill /groundrules:close — reconcile PLAN.md against the diff, proposes never auto-writes, matches on what changed never on filenames (ADR 0038), hardened by its five acceptance cases; the superpowers interop section of the generated CLAUDE.md becomes conditional on HAS_SUPERPOWERS, detected never asked, registry signal scope-filtered (ADR 0039); bootstrap's mode disambiguated into bootstrap/resume/brownfield with adopt routing plus an open notes block in its recap (ADR 0040); migrate hardened — never writes an unresolved {{KEY}}, no Overwrite on an accumulator or a disputed signature, comparison text matches what bootstrap would generate, changelog range defined, superpowers awareness added (ADR 0041); first three evals/ cases authored but unrunnable, runner gated, ADR 0037 amended. Four SKILL.md descriptions corrected to valid YAML."
     }
   ],
   "answers": {

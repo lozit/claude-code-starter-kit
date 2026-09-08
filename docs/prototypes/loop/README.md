@@ -1,4 +1,4 @@
-<!-- generated-by: groundrules v1.10.0 -->
+<!-- generated-by: groundrules v1.11.0 -->
 # Prototype — minimal runnable loop (M1, brick 1)
 
 > **Status: prototype, NOT shipped.** These files are a proof-of-concept for the

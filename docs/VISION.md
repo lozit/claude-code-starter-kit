@@ -1,4 +1,4 @@
-<!-- generated-by: groundrules v1.10.0 -->
+<!-- generated-by: groundrules v1.11.0 -->
 # Vision — groundrules
 
 > Synthesis of the project intent. Source: `intake/INTENT.md` (retroactive paste of the original prompt). Update when the intent evolves (rare; tactical decisions go in `docs/decisions/`).
