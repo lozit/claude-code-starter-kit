@@ -87,7 +87,7 @@ and offer to author one first — that's the gate doing its job.)
 ## Step 4 — Run the loop and watch it engage
 
 ```bash
-bash loop/run-loop.sh --max 8     # drives headless `claude -p` — a fresh agent per iteration; costs tokens
+bash loop/run-loop.sh --max 8     # headless `claude -p`, twice per iteration — maker then verifier; costs tokens
 ```
 This is the **high-fidelity** executor (the verifier re-runs `go test` itself). For a lighter, in-the-box
 alternative on a single task — `/goal "the command \`go test ./...\` exits 0"` — and when to pick which,

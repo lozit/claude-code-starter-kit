@@ -7,6 +7,12 @@
 > [`docs/prd/loop-minimal-runnable.md`](../../prd/loop-minimal-runnable.md). They are **not** copied
 > into user projects and **not** wired into `bootstrap`/`adopt` — that is the *next* brick. The point
 > here is to prove the **maker/verifier loop contract** on a fixture before productizing it.
+>
+> **Frozen at the single-invocation shape (2026-09-09).** The shipped template now splits each
+> iteration into two `claude -p` calls — a maker pass, then a **separate** verifier pass — so the
+> verifier's fresh context is supplied by the runner rather than merely asked for (ADR 0044). This
+> prototype keeps the old one-invocation runner, so its `verifier.md` deliberately does **not**
+> carry the new standalone-inputs and act-on-verdict sections. **The shipped template governs.**
 
 ## What this is
 

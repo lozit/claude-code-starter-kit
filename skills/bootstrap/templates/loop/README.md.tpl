@@ -40,7 +40,7 @@ you pick the engine **by stakes**. Both pursue the *same* tests; they differ in 
 # from the project root; MAX caps the iterations (anti-runaway, mandatory)
 bash loop/run-loop.sh --max 5
 ```
-Drives `claude -p` headless, a **fresh agent each iteration** (the model forgets; the repo remembers).
+Drives `claude -p` headless **twice per iteration** — a maker pass, then a **separate** verifier pass with a fresh context (the model forgets; the repo remembers). The split is what makes the verifier independent: an agent that remembers writing the code re-confirms its own blind spots, so the runner supplies the fresh context rather than the prompt merely asking for it.
 The **verifier re-runs the acceptance test itself** and re-derives from the diff, and a real decision is
 **parked in `blocked.md`**. It iterates the **whole backlog** and stops on an empty backlog or `MAX`.
 Reach for this when the result matters.
