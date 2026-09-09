@@ -243,7 +243,7 @@ Issues and pull requests are welcome. A few conventions:
 - **Structural changes go through an ADR** — propose one with `/groundrules:add-adr` (or describe the decision in the PR so it can become one).
 - **The plugin dogfoods itself** — this repo uses its own generated structure (`docs/`, `intake/`, ADRs, `PLAN.md`), so changes should keep the dogfood coherent.
 - **Templates are plain text** — `{{KEY}}` substitution only, no engine.
-- **Changing a skill's instructions? there's an eval suite for that** — `evals/` holds regression cases over the agent's own behaviour, one per recorded failure mode ([ADR 0037](docs/decisions/0037-executable-evals-over-agent-config.md)). It is maintainer-side only: nothing is generated into your project and no skill invokes it. Fair warning — `claude plugin eval` is in **early access**, so the cases are written and have never been run.
+- **Changing a skill's instructions? there's an eval suite for that** — `evals/` holds regression cases over the agent's own behaviour, one per recorded failure mode ([ADR 0037](docs/decisions/0037-executable-evals-over-agent-config.md)). It is maintainer-side only: nothing is generated into your project and no skill invokes it. It runs on the official `skill-creator` plugin's harness — paired runs, one with the plugin and one without ([ADR 0042](docs/decisions/0042-skill-creator-harness-as-the-runner.md)); `claude plugin eval`, the runner originally chosen, is gated behind early access. Fair warning: the cases are written and have never been run.
 
 ## References
 

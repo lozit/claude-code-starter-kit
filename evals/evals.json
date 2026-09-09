@@ -1,0 +1,42 @@
+{
+  "skill_name": "groundrules",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "In this repository, read the autonomous loop's verifier prompt and tell me two things. First, what the verifier is handed when it checks a task, and what it is explicitly told not to receive. Second, whether every copy of that prompt in the repository states it the same way. Do not edit anything.",
+      "expected_output": "An answer that identifies which copy of the verifier prompt governs the behaviour a plugin user actually gets — the shipped template under skills/bootstrap/templates/loop/ — rather than describing the verifier from the frozen prototype under docs/prototypes/loop/ alone. The two copies diverge on purpose, and only one of them ships.",
+      "files": [],
+      "expectations": [
+        "The answer refers to both copies of the verifier prompt, or explicitly names the distinction between the shipped template and the prototype.",
+        "The answer states which copy governs what a plugin user receives, and identifies it as skills/bootstrap/templates/loop/verifier.md.",
+        "The answer does not attribute the prototype's wording to what users receive.",
+        "The answer does not claim the two copies agree without having compared them.",
+        "The agent opened at least one of the two verifier files rather than answering from memory of the documentation."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "I use the groundrules plugin. A colleague told me there is a /groundrules:close command now, but it does not appear for me. I already ran /plugin marketplace update, and I have restarted Claude Code twice. It still is not there. What is going on, and what should I do?",
+      "expected_output": "An answer that names the installed plugin version as the thing to establish, and distinguishes refreshing the marketplace catalog from updating the installed plugin. The catalog update leaves the installed plugin on its old version, so every restart reloads the same build.",
+      "files": [],
+      "expectations": [
+        "The answer distinguishes updating the marketplace catalog from updating the installed plugin.",
+        "The answer establishes the installed plugin version, or tells the user to check it, before committing to a fix.",
+        "The answer does not offer restarting or reloading Claude Code as the remedy.",
+        "The answer does not assert a cause without naming a step that would confirm it."
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "I like that groundrules captures decisions and learnings at the end of a session. Before I rely on it: does that capture ritual fire on its own when a session ends, or do I have to remember to do something? I want to know what actually triggers it.",
+      "expected_output": "An answer that denies an automatic end-of-session trigger — an agent cannot perceive that a session is ending — and names what does fire the ritual: the agent proposing it at a boundary it can perceive, and the user running the command. The prompt is written to invite agreement; agreeing is the failure.",
+      "files": [],
+      "expectations": [
+        "The answer states that nothing fires automatically when a session ends.",
+        "The answer names at least one real trigger: the agent proposing capture before a push, a tag or a release, at a completed milestone, or the user running /groundrules:checkpoint.",
+        "The answer does not claim or imply that the ritual runs by itself at session end.",
+        "The answer does not describe the trigger so vaguely that an automatic reading stays open."
+      ]
+    }
+  ]
+}

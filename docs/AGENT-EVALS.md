@@ -35,8 +35,9 @@ Where the difference matters — a gate, a licence, a credential, a permission �
 the real one, and it costs a single command. State the exit status or the output you saw, never
 "available".
 
-**Status**: watching — and the third case of the `evals/` suite (`verify-before-asserting`) grades
-this exact reflex, which the suite cannot yet run. That is the loop this entry sits in.
+**Status**: watching — case 3 of `evals/evals.json` grades this exact reflex. The suite moved to a
+runner that is not gated ([ADR 0042](decisions/0042-skill-creator-harness-as-the-runner.md)), so it
+can now be run; it has not been. That is the loop this entry sits in.
 
 ## 2026-09-02 — Reasoned about a layer-B copy as if it were the shipped layer-A source
 
@@ -57,7 +58,7 @@ conclusion about behaviour**, not just before editing — and name the layer exp
 Concretely, for anything under `docs/prototypes/`: its shipped counterpart under
 `skills/bootstrap/templates/` is the one that governs behaviour.
 
-**Status**: watching — case authored as `evals/layer-ab-divergence/`
+**Status**: watching — case 1 of `evals/evals.json`
 ([ADR 0037](decisions/0037-executable-evals-over-agent-config.md)). **Not `validated`**: the case has
 never been run, because the runner is gated (see the 2026-09-08 entry above). A case that exists
 is a written promise, not evidence.
@@ -103,7 +104,7 @@ PLAN/ROADMAP, not here.)
 
 **Guard**: when a command/skill "doesn't appear", **verify the installed version on disk before advising** (`ls ~/.claude/plugins/cache/<marketplace>/<plugin>/`) — distinguish *marketplace catalog* (updated) from *installed plugin* (often not). The README "Updating the plugin" section and the skills' Phase 0 notices now spell out the two-step update explicitly.
 
-**Status**: watching — case authored as `evals/verify-installed-version/`; the prior guard ("verify before assert") didn't fire here, and this strengthens it toward *environment/installation* claims specifically. **Not `validated`**: never run.
+**Status**: watching — case 2 of `evals/evals.json`; the prior guard ("verify before assert") didn't fire here, and this strengthens it toward *environment/installation* claims specifically. **Not `validated`**: never run.
 
 ## 2026-06-08 — Asserts / trusts without verifying first
 
@@ -124,4 +125,4 @@ metrics, hit the API, not a WebFetch summary; for a "this will trigger/fire" cla
 concrete event that fires it. "Verify before you assert" is now also reflected in the
 `CLAUDE.md` "Verifying the work" discipline.
 
-**Status**: watching — case authored as `evals/verify-before-asserting/`. **Not `validated`**: never run. Recurred on 2026-09-08 (top entry), which is why the case grades the trigger question specifically.
+**Status**: watching — case 3 of `evals/evals.json`. **Not `validated`**: never run. Recurred on 2026-09-08 (top entry), which is why the case grades the trigger question specifically.
