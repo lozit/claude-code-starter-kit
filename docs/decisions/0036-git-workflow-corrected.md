@@ -1,4 +1,4 @@
-<!-- generated-by: groundrules v1.10.0 -->
+<!-- generated-by: groundrules v1.11.0 -->
 # 0036 — Git workflow corrected: PR on protected `main`, no AI attribution (supersedes 0028)
 
 **Date**: 2026-09-02

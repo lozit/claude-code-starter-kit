@@ -1,4 +1,4 @@
-<!-- generated-by: groundrules v1.10.0 -->
+<!-- generated-by: groundrules v1.11.0 -->
 # 0030 — `loop/` as the loop's namespace; a dedicated backlog referenced by `PLAN.md`
 
 **Date**: 2026-06-14

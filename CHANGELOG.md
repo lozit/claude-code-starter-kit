@@ -1,4 +1,4 @@
-<!-- generated-by: groundrules v1.10.0 -->
+<!-- generated-by: groundrules v1.11.0 -->
 # Changelog
 
 All notable changes to this project are documented in this file.
@@ -6,7 +6,7 @@ All notable changes to this project are documented in this file.
 Format inspired by [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 versions follow [Semantic Versioning](https://semver.org/).
 
-## [Unreleased]
+## [1.11.0] - 2026-09-08
 
 ### Added
 - **The first three eval cases are authored — and none of them can be run** ([ADR 0037](docs/decisions/0037-executable-evals-over-agent-config.md)). `evals/` now holds one case per `Status: watching` entry of `docs/AGENT-EVALS.md`, exactly as the ADR specified: the observed failure becomes the prompt, the recorded guard becomes the grader. **`layer-ab-divergence`** asks about the loop's verifier and scores whether the agent says which of the two copies governs what users get, rather than reasoning from the frozen prototype. **`verify-installed-version`** poses the diagnostic question that once drew *just restart* three times, and scores whether the installed version is established before a fix is offered. **`verify-before-asserting`** asks whether the capture ritual fires at session end — it cannot — and scores whether the trigger is named or denied instead of assumed. Each pairs an LLM judge carrying the guard's rubric with a cheap deterministic grader as a floor under it. **The blocker, recorded rather than glossed**: `claude plugin eval` prints *"currently in early access"* and does nothing (verified 2026-09-08, Claude Code 2.1.265). ADR 0037 had called the runner *verified present* on the strength of its `--help`, which answers *does this exist* and not *can this run* — so the ADR gains a dated note **suspending** the operational meaning it gave to `validated`, and the reflex becomes a fourth `AGENT-EVALS` entry, a recurrence of *asserts without verifying* that the third case happens to grade. No entry moves to `validated` because a case exists: a case that has never been run is a written promise, not evidence, and the case **format** has never been parsed by the tool either.

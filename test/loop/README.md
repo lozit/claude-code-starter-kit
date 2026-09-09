@@ -1,4 +1,4 @@
-<!-- generated-by: groundrules v1.10.0 -->
+<!-- generated-by: groundrules v1.11.0 -->
 # test/loop — loop walkthrough + validation suite
 
 How to **use the groundrules loop** on a fresh project, in a way that also **validates** it. Spec'd in

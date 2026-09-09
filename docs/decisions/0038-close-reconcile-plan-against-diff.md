@@ -1,4 +1,4 @@
-<!-- generated-by: groundrules v1.10.0 -->
+<!-- generated-by: groundrules v1.11.0 -->
 # 0038 — `/groundrules:close`: reconcile `PLAN.md` against the diff — a check, not a reminder
 
 **Date**: 2026-09-08

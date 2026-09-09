@@ -1,6 +1,6 @@
 {
   "name": "groundrules",
-  "version": "1.10.0",
+  "version": "1.11.0",
   "description": "Interactive bootstrap of Claude Code projects: interview, docs/ structure, best practices of documentation and configuration, git init, optional remote.",
   "author": {
     "name": "Guillaume Ferrari",

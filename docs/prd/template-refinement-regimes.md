@@ -1,4 +1,4 @@
-<!-- generated-by: groundrules v1.10.0 -->
+<!-- generated-by: groundrules v1.11.0 -->
 # PRD — Template refinement: route work by regime in the generated CLAUDE.md
 
 > Product Requirements Document for a single feature. Written **before** building, so the agent

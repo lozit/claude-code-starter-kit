@@ -1,4 +1,4 @@
-<!-- generated-by: groundrules v1.10.0 -->
+<!-- generated-by: groundrules v1.11.0 -->
 # `evals/` — the executable suite over this plugin's own configuration
 
 Maintainer-side tooling, run with `claude plugin eval .`. It tests **groundrules' own

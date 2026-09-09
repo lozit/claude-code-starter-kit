@@ -1,4 +1,4 @@
-<!-- generated-by: groundrules v1.10.0 -->
+<!-- generated-by: groundrules v1.11.0 -->
 # 0039 — The superpowers interop section is conditional, detected rather than asked
 
 **Date**: 2026-09-08

@@ -1,4 +1,4 @@
-<!-- generated-by: groundrules v1.10.0 -->
+<!-- generated-by: groundrules v1.11.0 -->
 # Role: Maker
 
 You implement **one** atomic task from `loop/backlog.md`, then report. You are one half of a

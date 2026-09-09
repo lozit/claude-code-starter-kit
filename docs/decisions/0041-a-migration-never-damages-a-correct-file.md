@@ -1,4 +1,4 @@
-<!-- generated-by: groundrules v1.10.0 -->
+<!-- generated-by: groundrules v1.11.0 -->
 # 0041 — A migration never damages a correct file: two write guards, and a comparison text that matches what `bootstrap` would produce
 
 **Date**: 2026-09-08

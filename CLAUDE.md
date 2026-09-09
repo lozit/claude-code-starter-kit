@@ -45,7 +45,7 @@ Reloading after a change: a **new skill directory** requires a full restart of C
 
 ## Template conventions
 
-- Every template carries `<!-- generated-by: groundrules v1.10.0 -->` at the top.
+- Every template carries `<!-- generated-by: groundrules v1.11.0 -->` at the top.
 - Placeholders in `{{KEY}}` format (plain text substitution, no template engine).
 - Available placeholders defined in `skills/bootstrap/SKILL.md` (Phase 5).
 - **English-only**: one `.tpl` per file, no language suffix (cf. ADR 0012). `gitignore.minimal` and `adr-template.md` are plain files.

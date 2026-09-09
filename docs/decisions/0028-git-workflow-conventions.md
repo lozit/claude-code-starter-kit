@@ -1,4 +1,4 @@
-<!-- generated-by: groundrules v1.10.0 -->
+<!-- generated-by: groundrules v1.11.0 -->
 # 0028 — Git workflow conventions (branching, commit granularity, AI attribution)
 
 **Date**: 2026-06-13

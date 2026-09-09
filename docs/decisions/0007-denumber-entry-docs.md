@@ -1,4 +1,4 @@
-<!-- generated-by: groundrules v1.10.0 -->
+<!-- generated-by: groundrules v1.11.0 -->
 # 0007 — Drop the numeric prefix on entry docs (VISION / INTENT)
 
 **Date**: 2026-06-03
