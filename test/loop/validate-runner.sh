@@ -32,9 +32,11 @@ trap 'rm -rf "$WORK"' EXIT
 mkdir -p "$WORK/bin" "$WORK/proj/loop"
 cp "$RUNNER" "$WORK/proj/loop/run-loop.sh"
 echo "# fixed per-iteration prompt (content irrelevant to the runner test)" > "$WORK/proj/loop/LOOP.md"
+echo "# verifier prompt (content irrelevant to the runner test)" > "$WORK/proj/loop/verifier.md"
 
-# Stub: ignores args, prints $STUB_OUT, and appends a line to $WORK/calls each invocation
-# so we can count how many fresh iterations ran.
+# Stub: ignores args, prints $STUB_OUT, and appends a line to $WORK/calls each invocation.
+# Since v1.12 an iteration is TWO invocations — maker then verifier — so the call count is what
+# proves the split actually happens rather than being merely asked for in the prompts.
 cat > "$WORK/bin/claude" <<EOF
 #!/usr/bin/env bash
 echo "call" >> "$WORK/calls"
@@ -47,10 +49,13 @@ run() { ( cd "$WORK/proj" && : > "$WORK/calls"; "$@" ); }   # reset call counter
 calls() { wc -l < "$WORK/calls" | tr -d ' '; }
 
 # --- Test 1: MAX cap bounds a never-DONE loop -------------------------------
-echo "[1] MAX cap stops a never-DONE loop at exactly --max iterations"
+echo "[1] MAX cap stops a never-DONE loop at exactly --max iterations, two invocations each"
 out="$(STUB_OUT='STATUS: still working' run bash loop/run-loop.sh --max 3 2>&1)"; rc=$?
 n="$(calls)"
-[[ "$n" == "3" ]] && ok "ran exactly 3 iterations (got $n)" || bad "expected 3 iterations, got $n"
+[[ "$n" == "6" ]] && ok "ran 3 iterations as 6 invocations — maker + verifier each (got $n)" \
+  || bad "expected 6 invocations for 3 iterations, got $n"
+[[ "$(grep -c '── maker pass' <<<"$out")" == "3" ]] && ok "3 maker passes" || bad "expected 3 maker passes"
+[[ "$(grep -c '── verifier pass' <<<"$out")" == "3" ]] && ok "3 verifier passes" || bad "expected 3 verifier passes"
 grep -q 'hit MAX=3' <<<"$out" && ok "printed the anti-runaway stop message" || bad "missing 'hit MAX' message"
 [[ "$rc" == "0" ]] && ok "exited 0 after the cap" || bad "expected exit 0, got $rc"
 
@@ -58,8 +63,10 @@ grep -q 'hit MAX=3' <<<"$out" && ok "printed the anti-runaway stop message" || b
 echo "[2] 'DONE: backlog empty' stops the loop early"
 out="$(STUB_OUT='DONE: backlog empty' run bash loop/run-loop.sh --max 5 2>&1)"; rc=$?
 n="$(calls)"
-[[ "$n" == "1" ]] && ok "stopped after 1 iteration (got $n)" || bad "expected 1 iteration, got $n"
+[[ "$n" == "1" ]] && ok "stopped after the maker pass alone (got $n)" || bad "expected 1 invocation, got $n"
 grep -q 'natural stop' <<<"$out" && ok "printed the natural-stop message" || bad "missing 'natural stop' message"
+grep -q '── verifier pass' <<<"$out" && bad "ran a verifier pass on an empty backlog" \
+  || ok "skipped the verifier pass — nothing to verify"
 
 # --- Test 3: the cap is guarded (invalid / absurd values rejected) ----------
 echo "[3] the MAX guard rejects invalid and absurd ceilings"

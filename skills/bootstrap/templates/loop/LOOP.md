@@ -1,9 +1,15 @@
 <!-- generated-by: groundrules v1.11.0 -->
-# LOOP — the fixed prompt, replayed each iteration
+# LOOP — the maker prompt, replayed each iteration
 
-This is the prompt `loop/run-loop.sh` feeds to a **fresh** agent every iteration. It is intentionally
-fixed: the model forgets between iterations, the **repo remembers**. Everything you need is on disk —
-read it, don't rely on memory of a previous turn.
+This is the prompt `loop/run-loop.sh` feeds to a **fresh** agent at the start of every iteration. It is
+intentionally fixed: the model forgets between iterations, the **repo remembers**. Everything you need
+is on disk — read it, don't rely on memory of a previous turn.
+
+> **You are the maker, and only the maker.** The runner makes a **second, separate invocation** after
+> yours, with [`verifier.md`](verifier.md), to judge what you did. That agent gets a fresh context and
+> nothing from your turn — not your reasoning, not your `STATUS`, not a commit message. **Do not
+> review your own work, and do not commit.** Leave the change in the working tree; the verifier
+> commits it if it passes. Reviewing yourself is exactly what the split exists to prevent.
 
 > **Backlog ownership.** The loop reads `loop/backlog.md` — **never `PLAN.md` directly**. `PLAN.md` is
 > the human's planning surface; `loop/backlog.md` holds only loop-safe tasks (atomic, verifiable,
@@ -22,30 +28,15 @@ read it, don't rely on memory of a previous turn.
    `loop/blocked.md`. If there is none → output `DONE: backlog empty` and **stop** (the loop's natural
    stop condition).
 
-3. **Maker pass.** Implement that one task following [`maker.md`](maker.md). Run its acceptance test.
-   Produce the maker `STATUS` block.
+3. **Implement it** following [`maker.md`](maker.md). Run its acceptance test. Produce the maker
+   `STATUS` block, which is your report to a human reader — the verifier will not read it.
 
-4. **Verifier pass.** Review the maker's diff following [`verifier.md`](verifier.md) — **as an
-   independent reviewer that re-derives from the diff and re-runs the test**, not trusting the maker's
-   report. For real independence the verifier should run as a **separate subagent / fresh context**,
-   handed only the **task line + its pre-written acceptance test** and the **diff** — never the maker's
-   reasoning, its `STATUS` narrative or the commit message. Those carry the author's framing, and a
-   fresh agent fed the author's story is no longer a fresh one.
+4. **Stop there. Do not commit.** Leave the work in the working tree: the verifier reads it as
+   `git diff`, judges it, and commits it if it passes. If you are **BLOCKED** or need context, say so
+   in `STATUS` and write `loop/blocked.md` — the verifier will find both.
 
-5. **Act on the verdict.**
-   - **PASS** → flip `- [ ]` → `- [x]` in `loop/backlog.md` and (optionally) append a one-line lesson to
-     `loop/lessons.md`, **then commit the intended diff** — the files the task changed **+** the
-     `loop/backlog.md` check-off **+ `loop/lessons.md` if you touched it** (it's tracked on purpose —
-     durable loop memory). Message references the task. Stage explicitly rather than `git add -A`: that
-     would sweep build artifacts and any in-flight `loop/blocked.md` into the commit.
-   - **REJECT** → leave the task unchecked. If this task has now been REJECTed across multiple
-     iterations with no progress, or the maker reported **BLOCKED**, **write/append `loop/blocked.md`**
-     and leave the task for human triage (the backward crossing). Otherwise the next iteration retries
-     it with the verifier's note.
-   - Maker **BLOCKED / NEEDS_CONTEXT** → ensure `loop/blocked.md` is written, do not commit, move on.
-
-6. **One task per iteration.** Do not chain into the next task. End the turn. The runner starts the
-   next fresh iteration.
+5. **One task per iteration.** Do not chain into the next task. End the turn. The runner then makes the
+   verifier invocation, and after it the next fresh iteration.
 
 ## Stop conditions (any one ends the loop)
 - `DONE: backlog empty` — no ready task remains.

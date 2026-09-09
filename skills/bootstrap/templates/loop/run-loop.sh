@@ -8,17 +8,26 @@
 #
 # Delivery: Claude Code (drives `claude -p` headless). Harness portability is a separate milestone.
 #
-# It replays loop/LOOP.md against a FRESH agent each iteration until one of:
-#   - the agent reports "DONE: backlog empty" (natural stop), or
+# Each iteration is TWO fresh agent invocations, never one:
+#   1. the maker pass   — loop/LOOP.md   — picks one task, implements it, leaves the work uncommitted
+#   2. the verifier pass — loop/verifier.md — judges that diff and commits it, or rejects it
+#
+# The split is the point. A single invocation doing both passes gives the verifier the maker's
+# reasoning for free, and a verifier that remembers writing the code re-confirms its own blind spots.
+# The prompts have always demanded a fresh context for the verifier; before this, nothing supplied one.
+#
+# It repeats until one of:
+#   - the maker reports "DONE: backlog empty" (natural stop — the verifier is skipped), or
 #   - the hard MAX iteration ceiling is hit (anti-runaway — MANDATORY, not optional).
 #
 # The model forgets between iterations; the repo remembers. All loop logic lives in the Markdown
 # prompts (loop/LOOP.md, loop/maker.md, loop/verifier.md) — this script is the ONLY executable piece.
 #
 # Usage (run from the project root):
-#   bash loop/run-loop.sh [--max N] [--prompt path/to/LOOP.md] [--workdir DIR]
+#   bash loop/run-loop.sh [--max N] [--prompt path/to/LOOP.md] [--verifier path/to/verifier.md] [--workdir DIR]
 #
-# Defaults: --max 5, --prompt <this script's dir>/LOOP.md, --workdir current directory.
+# Defaults: --max 5, --prompt <script dir>/LOOP.md, --verifier <script dir>/verifier.md,
+# --workdir current directory.
 
 set -euo pipefail
 
@@ -26,6 +35,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 MAX=5                          # hard ceiling — the anti-runaway safety. There is no "unlimited".
 PROMPT="$SCRIPT_DIR/LOOP.md"
+VERIFIER="$SCRIPT_DIR/verifier.md"
 WORKDIR="$(pwd)"
 DONE_MARKER="DONE: backlog empty"
 
@@ -33,6 +43,7 @@ while [[ $# -gt 0 ]]; do
   case "$1" in
     --max)     MAX="$2"; shift 2 ;;
     --prompt)  PROMPT="$2"; shift 2 ;;
+    --verifier) VERIFIER="$2"; shift 2 ;;
     --workdir) WORKDIR="$2"; shift 2 ;;
     -h|--help) grep '^#' "$0" | sed 's/^# \{0,1\}//'; exit 0 ;;
     *) echo "unknown arg: $1" >&2; exit 2 ;;
@@ -59,15 +70,24 @@ echo "loop: workdir=$WORKDIR  prompt=$PROMPT  max=$MAX"
 for (( i=1; i<=MAX; i++ )); do
   echo "──────── iteration $i / $MAX ────────"
 
-  # Each iteration is a FRESH headless agent invocation: no carried context, state read from disk.
-  # `|| true` so a non-zero exit on one iteration doesn't kill the loop before we inspect the output.
+  # --- Maker pass: a FRESH headless invocation. No carried context; state read from disk.
+  # `|| true` so a non-zero exit doesn't kill the loop before we inspect the output.
+  echo "── maker pass"
   out="$(claude -p "$(cat "$PROMPT")" 2>&1 || true)"
   printf '%s\n' "$out"
 
+  # The backlog emptied: stop before spending a verifier invocation on nothing.
   if printf '%s' "$out" | grep -qF "$DONE_MARKER"; then
     echo "loop: natural stop — '$DONE_MARKER' at iteration $i."
     exit 0
   fi
+
+  # --- Verifier pass: a SECOND fresh invocation, and that is the whole point.
+  # It is handed nothing from the maker's turn — not this variable, not the transcript. It re-derives
+  # the task, the acceptance test and the diff from disk, judges them, and commits or rejects.
+  echo "── verifier pass"
+  vout="$(claude -p "$(cat "$VERIFIER")" 2>&1 || true)"
+  printf '%s\n' "$vout"
 done
 
 echo "loop: hit MAX=$MAX without an empty backlog. Stopping (anti-runaway)."
