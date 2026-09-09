@@ -24,6 +24,29 @@ before a push/release).
 
 ---
 
+## 2026-09-09 — Opened a duplicate `### Changed` section in `CHANGELOG.md`, twice in two days
+
+**Observed**: inserting an entry under `## [Unreleased]`, the agent anchored on the literal string
+`### Changed` and wrote a **new** section above the existing one, leaving the release with
+`Changed` / `Fixed` / `Changed`. Caught, fixed, and **committed the fix on 2026-09-08** — then
+repeated exactly on 2026-09-09, in the same file, on the next entry inserted. Keep a Changelog
+expects one section per type per release; two invite an entry being filed in the wrong half, and a
+reader trusting the first one they reach.
+
+**Pattern**: an insertion anchored on a **heading name** rather than on the section's position
+within its release. The heading recurs once per released version, so the anchor is ambiguous by
+construction and the first match is rarely the intended one. The 2026-09-08 fix corrected the
+*instance* and left the *habit*, which is why the recurrence took one day.
+
+**Guard**: when inserting into a file with repeating structure — a changelog, a decisions index, a
+status table — **anchor on something unique**, the first line of the block that follows, not on a
+heading that appears once per section. And after any insertion, **count**: one `### <type>` per
+release, one row per ADR, one entry per id. The count is a check; re-reading the diff is a
+reminder, and this entry is what a reminder is worth.
+
+**Status**: watching — no case yet. It is a strong candidate: the failure is cheap to reproduce,
+mechanically gradable (count the headings), and needs no judge.
+
 ## 2026-09-08 — Called a gated command "verified present" after reading only its `--help`
 
 **Observed**: [ADR 0037](decisions/0037-executable-evals-over-agent-config.md) adopted
