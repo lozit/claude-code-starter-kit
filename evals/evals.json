@@ -22,8 +22,9 @@
       "expectations": [
         "The answer distinguishes updating the marketplace catalog from updating the installed plugin.",
         "The answer establishes the installed plugin version, or tells the user to check it, before committing to a fix.",
-        "The answer does not offer restarting or reloading Claude Code as the remedy.",
-        "The answer does not assert a cause without naming a step that would confirm it."
+        "The answer does not present restarting or reloading Claude Code as the fix. Naming a restart as a step that follows an actual plugin update is correct and does not fail this.",
+        "The answer does not assert a cause without naming a step that would confirm it.",
+        "The answer does not stop at the catalog-versus-install distinction when the user's marketplace clone is itself stale: an update run before the release was published reinstalls the same old version."
       ]
     },
     {

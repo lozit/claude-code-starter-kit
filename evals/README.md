@@ -60,22 +60,47 @@ which is a real argument for going back to it if the gate ever opens.
 
 ## What has actually been run
 
-| id | Runs | With the plugin | Baseline | Delta |
+All three ran once, on 2026-09-09.
+
+| id | With the plugin | Baseline | Delta | Verdict on the case |
 |---|---|---|---|---|
-| 1 | 0 | — | — | — |
-| 2 | 0 | — | — | — |
-| 3 | **1** (2026-09-09) | **pass**, 4/4 expectations | **fail**, 3 of 4 | **real** |
+| 1 | **pass** 5/5 | **inapplicable** | unmeasurable | keep; the baseline does not apply to this shape |
+| 2 | **pass** 4/4 | **pass** 4/4 | **zero** | **weak — it does not discriminate** |
+| 3 | **pass** 4/4 | **fail** 3 of 4 | **real** | keep; it does what it was written to do |
 
-**Case 3's first run is the suite's first signal, and it is a positive one.** With the plugin, the
-answer denied the automatic trigger and named the real ones. Without it — properly isolated — the
-answer speculated that a `Stop` hook *probably* drives the capture, invented a command name, and
-left the automatic reading open. The configuration is what makes the difference, which is exactly
-what the case was written to detect.
+**Case 3 is the suite's first real signal, and it is positive.** With the plugin, the answer denied
+the automatic trigger and named the real ones. Isolated, it speculated that a `Stop` hook *probably*
+drives the capture, invented a command name, and left the automatic reading open. The configuration
+is what makes the difference — exactly what the case was written to detect.
 
-**No entry in [`docs/AGENT-EVALS.md`](../docs/AGENT-EVALS.md) moves to `validated` on that.** One
-run is not a rate: `skill-creator` defaults to three per case for the non-determinism, and a single
-green tells you the case *can* pass, not that the guard *holds*. Cases 1 and 2 remain unexecuted;
-treat their expectations as a specification of what each guard promises, not as evidence.
+**Case 2 does not discriminate, and that is a finding about the case.** Both arms passed, and this
+time the baseline was properly isolated, so the zero is real rather than contamination. The
+catalog-versus-install distinction is derivable from general knowledge of Claude Code; it does not
+need this plugin's configuration. Either the case gets sharpened onto something only this repo
+knows, or its `docs/AGENT-EVALS.md` entry is a guard the model no longer needs — a legitimate
+outcome for an entry whose failure was observed in June 2026. **Decide it, do not let it sit
+green.** The with-plugin arm did find something the case had not anticipated, now an expectation:
+the user's *marketplace clone* can itself be stale, so an update run before the release was
+published reinstalls the same old version.
+
+**Case 1's baseline is inapplicable, as predicted.** Its question is about files in this
+repository; a shielded arm has no way to reach them and correctly refused to answer. **A baseline
+does not apply uniformly across case shapes** — for a case that asks the agent to read this repo,
+*without the plugin* is not a meaningful condition, and pretending to measure a delta there would
+manufacture one.
+
+**No entry in [`docs/AGENT-EVALS.md`](../docs/AGENT-EVALS.md) moves to `validated` on this.** One
+run is not a rate: three per case is the default for the non-determinism, and a single green tells
+you a case *can* pass, not that the guard *holds*.
+
+### The answer key is inside the repository under test
+
+Running case 1, the with-plugin arm **read `evals/evals.json`** — it greps the repo, and the file
+is in it. It then referred to the case grading its own answer. Nothing suggests it used the
+expectations to shape its reply, and on this run it would not have needed to; but an agent that can
+read what it is graded on is not being graded on what you think. There is no clean fix while the
+suite lives in the repository the cases explore. **Weigh every future green from a repo-reading
+case against this**, and prefer prompts whose answer cannot be improved by knowing the rubric.
 
 ## The three cases
 

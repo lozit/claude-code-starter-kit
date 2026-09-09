@@ -58,7 +58,7 @@ conclusion about behaviour**, not just before editing — and name the layer exp
 Concretely, for anything under `docs/prototypes/`: its shipped counterpart under
 `skills/bootstrap/templates/` is the one that governs behaviour.
 
-**Status**: watching — case 1 of `evals/evals.json`
+**Status**: watching — case 1 of `evals/evals.json`, **run once on 2026-09-09**: passed 5/5. The arm read both copies in full, named the layer distinction, identified the shipped template as governing, and found a divergence the entry had not recorded — the shipped Stage 1 carries seven checks against the prototype's five, including a *is the test strong enough* rejection and an invariants check the prototype lacks. Its baseline is **inapplicable** (the question is about files in this repository). **Not `validated`**: one run
 ([ADR 0037](decisions/0037-executable-evals-over-agent-config.md)). **Not `validated`**: the case has
 never been run, because the runner is gated (see the 2026-09-08 entry above). A case that exists
 is a written promise, not evidence.
@@ -104,7 +104,7 @@ PLAN/ROADMAP, not here.)
 
 **Guard**: when a command/skill "doesn't appear", **verify the installed version on disk before advising** (`ls ~/.claude/plugins/cache/<marketplace>/<plugin>/`) — distinguish *marketplace catalog* (updated) from *installed plugin* (often not). The README "Updating the plugin" section and the skills' Phase 0 notices now spell out the two-step update explicitly.
 
-**Status**: watching — case 2 of `evals/evals.json`; the prior guard ("verify before assert") didn't fire here, and this strengthens it toward *environment/installation* claims specifically. **Not `validated`**: never run.
+**Status**: watching — case 2 of `evals/evals.json`, **run once on 2026-09-09**: passed 4/4 with the plugin **and 4/4 on a properly isolated baseline**, so the case does not discriminate — the catalog-versus-install distinction is derivable without this plugin's configuration. **This entry needs a decision**: sharpen the case onto something only this repo knows, or accept that the guard is one the model no longer needs, its failure dating from June 2026. Do not leave it sitting green. the prior guard ("verify before assert") didn't fire here, and this strengthens it toward *environment/installation* claims specifically. **Not `validated`**: never run.
 
 ## 2026-06-08 — Asserts / trusts without verifying first
 

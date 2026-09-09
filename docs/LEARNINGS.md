@@ -27,6 +27,19 @@ changes nothing here*. It was wrong three times over:
    command name, and left the automatic reading wide open. That is the delta the case exists to
    measure, and it was invisible until the third attempt.
 
+**Two further things the same run showed, both about what a case can measure.** A baseline
+**does not apply uniformly across case shapes**: for a case that asks the agent to read the
+repository, *without the plugin* is not a meaningful condition — the shielded arm correctly refused
+to answer, and a delta claimed there would be manufactured. And a case can pass on **both** arms,
+which is not a success but a verdict on the case: the guard it encodes is one the model already
+has, so the case measures general competence rather than this configuration's contribution. Decide
+such a case, do not leave it green.
+
+**And the answer key sits inside the repository under test.** One arm greps the repo and reads
+`evals/evals.json`, the file holding the very expectations it is graded on. No clean fix exists
+while the suite lives where the cases explore; prefer prompts whose answer cannot be improved by
+knowing the rubric, and discount a green from a repo-reading case accordingly.
+
 **When to apply**: whenever an eval, an ablation or an A/B claims to compare *with* against
 *without*. Before trusting a zero delta, ask what the "without" arm can still reach: auto-loaded
 project and global instructions, an installed copy of the thing under test, the working directory
