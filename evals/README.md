@@ -65,7 +65,7 @@ All three ran **three times** on 2026-09-09, which is what turns a green into a 
 | id | With the plugin | Baseline | Delta | Verdict on the case |
 |---|---|---|---|---|
 | 1 | **3/3 green** | inapplicable | unmeasurable | green **discounted** — 2 of 3 runs read the answer key |
-| 2 | **3/3 green** | 1 run, green | **zero** | it does not discriminate |
+| 2 | **1/1 green** (sharpened) | **fail** 4 of 6 | **real** | sharpened 2026-09-09; the old version did not discriminate |
 | 3 | **3/3 green** | **0/3** — all three fail | **real and repeated** | it does what it was written to do |
 
 Nine with-plugin runs, nine green. Case 3's three isolated baselines all fail the same way: they
@@ -77,13 +77,16 @@ the automatic trigger and named the real ones. Isolated, it speculated that a `S
 drives the capture, invented a command name, and left the automatic reading open. The configuration
 is what makes the difference — exactly what the case was written to detect.
 
-**Case 2 does not discriminate, and that is a finding about the case.** Both arms passed, and this
-time the baseline was properly isolated, so the zero is real rather than contamination. The
-catalog-versus-install distinction is derivable from general knowledge of Claude Code; it does not
-need this plugin's configuration. Either the case gets sharpened onto something only this repo
-knows, or its `docs/AGENT-EVALS.md` entry is a guard the model no longer needs — a legitimate
-outcome for an entry whose failure was observed in June 2026. **Decide it, do not let it sit
-green.** The with-plugin arm did find something the case had not anticipated, now an expectation:
+**Case 2 was sharpened on 2026-09-09, and now discriminates.** In its first form both arms passed:
+the catalog-versus-install distinction is derivable from general knowledge of Claude Code and needs
+nothing from this plugin. The prompt now carries a **checkable false premise** — the user's
+colleague says `close` shipped in 1.10.0, when it shipped in 1.11.0 — which is verifiable from this
+repository and unknowable without it. The with-plugin arm opened by correcting it and *proved* the
+correction against both tags, and drew a consequence the case had not anticipated: a catalog
+refreshed before the release could not have carried the version either. The isolated baseline never
+questioned the figure at all; it worked around the premise without examining it, and invented a
+verification command (`commands/close.md`) for a plugin whose skills live in `skills/<name>/`.
+**A prompt whose comfortable answer is wrong is what makes a case measure anything.** The with-plugin arm did find something the case had not anticipated, now an expectation:
 the user's *marketplace clone* can itself be stale, so an update run before the release was
 published reinstalls the same old version.
 
