@@ -10,9 +10,17 @@ Fed by the checkpoint-capture ritual (cf. `CLAUDE.md` → "Capture at checkpoint
 before a push/release).
 
 > **This file is the journal, not the suite.** The runnable regression suite over the agent's
-> configuration lives in `evals/` and is run with `claude plugin eval` ([ADR 0037](decisions/0037-executable-evals-over-agent-config.md)).
-> An entry here whose guard sits at `Status: watching` is a **case candidate**: the observed failure
-> mode is the prompt, the guard is the grader. `validated` is meant to mean *a case exists and is green*.
+> configuration lives in `evals/`, run on `skill-creator`'s harness ([ADR 0037](decisions/0037-executable-evals-over-agent-config.md),
+> runner amended by [ADR 0042](decisions/0042-skill-creator-harness-as-the-runner.md)). An entry
+> here whose guard sits at `Status: watching` is a **case candidate**: the observed failure mode is
+> the prompt, the guard is the expectation list.
+>
+> **Status vocabulary** ([ADR 0043](decisions/0043-probed-not-validated.md), which retired
+> `validated`): `watching` — no case, or a case whose green is discounted for a stated reason.
+> `probed: <case>, N/N since <date>` — a case exists and is green over a **rate**, covering one
+> **named instance**. An entry names a behavioural *class*, which no finite suite covers, so
+> **`probed` never means the class is safe**: a recurrence does not falsify the probe, it records
+> that the class failed elsewhere. The entry's history is the signal; the status only indexes it.
 
 ---
 
@@ -35,9 +43,10 @@ Where the difference matters — a gate, a licence, a credential, a permission �
 the real one, and it costs a single command. State the exit status or the output you saw, never
 "available".
 
-**Status**: watching — case 3 of `evals/evals.json` grades this exact reflex. The suite moved to a
-runner that is not gated ([ADR 0042](decisions/0042-skill-creator-harness-as-the-runner.md)), so it
-can now be run; it has not been. That is the loop this entry sits in.
+**Status**: watching — no case of its own. Case 3 grades the *class* this belongs to on a different
+instance, and was green 3/3 six days **after** this happened, which is exactly why
+[ADR 0043](decisions/0043-probed-not-validated.md) retired `validated`: a probe covers an instance,
+never the class.
 
 ## 2026-09-02 — Reasoned about a layer-B copy as if it were the shipped layer-A source
 
@@ -58,10 +67,9 @@ conclusion about behaviour**, not just before editing — and name the layer exp
 Concretely, for anything under `docs/prototypes/`: its shipped counterpart under
 `skills/bootstrap/templates/` is the one that governs behaviour.
 
-**Status**: watching — case 1 of `evals/evals.json`, **run three times on 2026-09-09**: 3/3 green (5/5 expectations each). The arm read both copies in full, named the layer distinction, identified the shipped template as governing, and found a divergence the entry had not recorded — the shipped Stage 1 carries seven checks against the prototype's five, including a *is the test strong enough* rejection and an invariants check the prototype lacks. Its baseline is **inapplicable** (the question is about files in this repository). **Not `validated`**: one run
-([ADR 0037](decisions/0037-executable-evals-over-agent-config.md)). **Not `validated`**: the case has
-never been run, because the runner is gated (see the 2026-09-08 entry above). A case that exists
-is a written promise, not evidence.
+**Status**: watching — case 1 of `evals/evals.json`, **run three times on 2026-09-09**: 3/3 green (5/5 expectations each), but the green is **discounted** and the entry stays `watching`: two of the three runs read `evals/evals.json`, the file holding the expectations grading them. The arm read both copies in full, named the layer distinction, identified the shipped template as governing, and found a divergence the entry had not recorded — the shipped Stage 1 carries seven checks against the prototype's five, including a *is the test strong enough* rejection and an invariants check the prototype lacks. Its baseline is **inapplicable** (the question is about files in this repository). **Not `validated`**: one run
+([ADR 0037](decisions/0037-executable-evals-over-agent-config.md)). It also turned up a divergence
+this entry had never recorded: the shipped Stage 1 carries seven checks to the prototype's five.
 
 ## 2026-06-13 — Jumps to execution without capturing / confirming scope first
 
@@ -104,7 +112,7 @@ PLAN/ROADMAP, not here.)
 
 **Guard**: when a command/skill "doesn't appear", **verify the installed version on disk before advising** (`ls ~/.claude/plugins/cache/<marketplace>/<plugin>/`) — distinguish *marketplace catalog* (updated) from *installed plugin* (often not). The README "Updating the plugin" section and the skills' Phase 0 notices now spell out the two-step update explicitly.
 
-**Status**: watching — case 2 of `evals/evals.json`, **run three times on 2026-09-09**: 3/3 green, and its isolated baseline also passed, so the case does not discriminate — the catalog-versus-install distinction is derivable without this plugin's configuration. **This entry needs a decision**: sharpen the case onto something only this repo knows, or accept that the guard is one the model no longer needs, its failure dating from June 2026. Do not leave it sitting green. the prior guard ("verify before assert") didn't fire here, and this strengthens it toward *environment/installation* claims specifically. **Not `validated`**: never run.
+**Status**: `probed` by case 2 of `evals/evals.json`, 3/3 since 2026-09-09 — covering the missing-command instance only. Its isolated baseline also passed, and its isolated baseline also passed, so the case does not discriminate — the catalog-versus-install distinction is derivable without this plugin's configuration. **This entry needs a decision**: sharpen the case onto something only this repo knows, or accept that the guard is one the model no longer needs, its failure dating from June 2026. Do not leave it sitting green. the prior guard ("verify before assert") didn't fire here, and this strengthens it toward *environment/installation* claims specifically. **Not `validated`**: never run.
 
 ## 2026-06-08 — Asserts / trusts without verifying first
 
@@ -125,4 +133,4 @@ metrics, hit the API, not a WebFetch summary; for a "this will trigger/fire" cla
 concrete event that fires it. "Verify before you assert" is now also reflected in the
 `CLAUDE.md` "Verifying the work" discipline.
 
-**Status**: watching — case 3 of `evals/evals.json`, **run three times on 2026-09-09**: 3/3 green with the plugin, **0/3 on the isolated baseline** — all three refused to commit, offered a `Stop` hook as a plausible mechanism and left the automatic reading open; one invented a command name. A real, repeated delta. **Still not `validated`**, and the reason is no longer the run count: this case grades one narrow instance, while this entry names a behavioural class that **recurred on 2026-09-08** (adopting a runner on the strength of its `--help`). Three greens on the instance, six days after the class failed, is not evidence the guard holds. **Not `validated`**: never run. Recurred on 2026-09-08 (top entry), which is why the case grades the trigger question specifically.
+**Status**: `probed` by case 3 of `evals/evals.json`, 3/3 since 2026-09-09 — covering the session-end-trigger instance only. **The class is not safe**, and the entry below this one is the proof: it recurred on 2026-09-08. 3/3 green with the plugin, **0/3 on the isolated baseline** — all three refused to commit, offered a `Stop` hook as a plausible mechanism and left the automatic reading open; one invented a command name. A real, repeated delta. **Still not `validated`**, and the reason is no longer the run count: this case grades one narrow instance, while this entry names a behavioural class that **recurred on 2026-09-08** (adopting a runner on the strength of its `--help`). Three greens on the instance, six days after the class failed, is not evidence the guard holds. **Not `validated`**: never run. Recurred on 2026-09-08 (top entry), which is why the case grades the trigger question specifically.
