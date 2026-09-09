@@ -145,6 +145,11 @@ earned trust.
   suite, and are **suspended** until the gate opens. The three cases are authored
   (`evals/`), unexecuted, and no `docs/AGENT-EVALS.md` entry may move to `validated` on the
   strength of one existing. The reflex itself is logged in `docs/AGENT-EVALS.md` (2026-09-08).
+- **2026-09-09 — decision 2's `validated` is retired by [ADR 0043](0043-probed-not-validated.md).**
+  The suite ran, and the promise came due: an entry names a behavioural *class*, a case grades one
+  *instance*, and the class recurred on 2026-09-08 six days before the case went green 3/3. The
+  vocabulary is now `watching` / `probed: <case>, N/N since <date>`. Everything else decision 2 says
+  — the journal feeds the suite, failure mode as prompt, guard as grader — stands.
 - **2026-09-09 — decision 1 is amended by [ADR 0042](0042-skill-creator-harness-as-the-runner.md).**
   The gate did not open (re-verified twice, once after installing `skill-creator` and restarting),
   so the suite moved to `skill-creator`'s harness, which needs no early access. Everything else in

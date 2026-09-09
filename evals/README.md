@@ -93,19 +93,19 @@ does not apply uniformly across case shapes** — for a case that asks the agent
 *without the plugin* is not a meaningful condition, and pretending to measure a delta there would
 manufacture one.
 
-### Nothing moves to `validated`, and the reason is now sharper than "not enough runs"
+### `validated` is retired; two entries are now `probed`
 
-Three runs each is a rate, so the old reason has expired. The real one is narrower and worse:
+Three runs each is a rate, so "not enough runs" expired. The real problem was the word:
+**a green covers the case's instance, never the behavioural class its entry names.** Case 3 grades
+one question; its entry is *asserts / trusts without verifying first*, and that class **recurred on
+2026-09-08**, when this repository adopted a runner on the strength of its `--help`. Had
+`validated` existed as ADR 0037 defined it, the entry would have read green at the moment the guard
+was failing.
 
-**A green case validates the guard on that case's instance, not the behavioural class the entry
-names.** Case 3 grades one question — does the capture ritual fire at session end. Its entry is
-*asserts / trusts without verifying first*, and that failure **recurred on 2026-09-08**, when this
-repository adopted a runner on the strength of its `--help` without invoking it. Three greens on a
-narrow instance, six days after the class failed on a wide one, is not evidence the guard holds.
-
-So `validated` needs either a case whose scope matches its entry, or an explicit statement that it
-means *this instance is covered* and nothing more. Until that is settled, every entry stays at
-`watching`.
+[ADR 0043](../docs/decisions/0043-probed-not-validated.md) retires the word. Entries are `watching`
+or **`probed: <case>, N/N since <date>`** — one named instance, at a measured rate, and nothing
+about the class. Cases 2 and 3 make their entries `probed`. Case 1's does **not**: its green is
+discounted, two of three runs having read the file that grades them.
 
 ### The answer key is inside the repository under test
 
