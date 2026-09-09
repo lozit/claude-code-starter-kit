@@ -7,6 +7,48 @@ One entry per learning. Keep the format simple: title, context, lesson.
 
 ---
 
+## A baseline arm run anywhere the plugin is reachable is not a baseline — and three channels reach it
+
+**Why**: 2026-09-09, the first real run of the `evals/` suite. Case 3 asks whether the capture ritual
+fires at session end; it cannot. Two arms were run, one with the repository and one meant to be
+without. **Both passed, so the measured delta was zero** — which would have read as *the plugin
+changes nothing here*. It was wrong three times over:
+
+1. **A subagent launched from the repository receives the project `CLAUDE.md` automatically.** The
+   control asked one directly: it reported three auto-loaded instruction blocks, quoted the file's
+   first lines, and said its knowledge of `/groundrules:close` came from that context and not from
+   training — naming the section. Zero tool calls. The configuration under test walks into the
+   baseline through the front door.
+2. **An isolated `claude -p` in an empty directory outside the repository still found it.** The
+   plugin is *installed* on this machine, so its full sources sit in the plugin cache, readable by
+   any session. The answer said *"vérifié dans le repo"*.
+3. Only with **tools disallowed as well** did the arm answer without the plugin — and it then
+   **failed the case**: it speculated that a `Stop` hook *probably* drives the capture, invented a
+   command name, and left the automatic reading wide open. That is the delta the case exists to
+   measure, and it was invisible until the third attempt.
+
+**Two further things the same run showed, both about what a case can measure.** A baseline
+**does not apply uniformly across case shapes**: for a case that asks the agent to read the
+repository, *without the plugin* is not a meaningful condition — the shielded arm correctly refused
+to answer, and a delta claimed there would be manufactured. And a case can pass on **both** arms,
+which is not a success but a verdict on the case: the guard it encodes is one the model already
+has, so the case measures general competence rather than this configuration's contribution. Decide
+such a case, do not leave it green.
+
+**And the answer key sits inside the repository under test.** One arm greps the repo and reads
+`evals/evals.json`, the file holding the very expectations it is graded on. No clean fix exists
+while the suite lives where the cases explore; prefer prompts whose answer cannot be improved by
+knowing the rubric, and discount a green from a repo-reading case accordingly.
+
+**When to apply**: whenever an eval, an ablation or an A/B claims to compare *with* against
+*without*. Before trusting a zero delta, ask what the "without" arm can still reach: auto-loaded
+project and global instructions, an installed copy of the thing under test, the working directory
+itself. A contaminated baseline does not fail loudly — it agrees with the other arm, which reads
+as a reassuring result. **Prefer a contaminated arm that fails to one that passes**: the second is
+indistinguishable from success. And state the confound you could not remove — disallowing tools
+buys isolation at the price of conflating *no plugin* with *no ability to look anything up*, which
+is not the same experiment.
+
 ## A skill's acceptance cases must be *run* on fixtures — reading the instructions back does not find their gaps
 
 **Why**: 2026-09-08, `/groundrules:close` shipped after being read and re-read by its author, then had its

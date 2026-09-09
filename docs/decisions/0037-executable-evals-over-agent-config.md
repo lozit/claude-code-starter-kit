@@ -145,4 +145,8 @@ earned trust.
   suite, and are **suspended** until the gate opens. The three cases are authored
   (`evals/`), unexecuted, and no `docs/AGENT-EVALS.md` entry may move to `validated` on the
   strength of one existing. The reflex itself is logged in `docs/AGENT-EVALS.md` (2026-09-08).
+- **2026-09-09 — decision 1 is amended by [ADR 0042](0042-skill-creator-harness-as-the-runner.md).**
+  The gate did not open (re-verified twice, once after installing `skill-creator` and restarting),
+  so the suite moved to `skill-creator`'s harness, which needs no early access. Everything else in
+  this ADR stands. The cases are still unexecuted, and `validated` still means nothing yet.
 - Authoring the first cases is tracked in `PLAN.md`, not here — this ADR decides, it does not build.

@@ -1,58 +1,127 @@
 <!-- generated-by: groundrules v1.11.0 -->
 # `evals/` — the executable suite over this plugin's own configuration
 
-Maintainer-side tooling, run with `claude plugin eval .`. It tests **groundrules' own
-configuration** — the instructions in `skills/*/SKILL.md` and their templates — and nothing else.
-Decided in [ADR 0037](../docs/decisions/0037-executable-evals-over-agent-config.md).
+Maintainer-side tooling. It tests **groundrules' own configuration** — the instructions in
+`skills/*/SKILL.md` and their templates — and nothing else. Decided in
+[ADR 0037](../docs/decisions/0037-executable-evals-over-agent-config.md); the runner was changed in
+[ADR 0042](../docs/decisions/0042-skill-creator-harness-as-the-runner.md).
 
 **Nothing here is generated into user projects, and no skill invokes it.** Same category as the
-`gh` calls used to cut a release. Offline-first is a property of the skills; this is not a skill.
+`gh` calls used to cut a release.
 
-## Read this first: no case here has ever been run
+## The runner
 
-`claude plugin eval` is present in Claude Code but **gated behind early access**. Invoking it
-prints `plugin eval is currently in early access` and does nothing (verified 2026-09-08, Claude
-Code 2.1.265). ADR 0037 recorded the runner as *verified present*, which was true of the
-subcommand and not of the ability to run it.
+`claude plugin eval` — the runner ADR 0037 originally chose — is **gated behind early access**.
+Invoking it prints `plugin eval is currently in early access` and does nothing (verified three
+times: 2026-09-08, and twice on 2026-09-09, once after installing `skill-creator` and restarting).
 
-So the three cases below are **authored and unexecuted**. They have never been green, and they
-have never been red. Treat every claim in them as a specification of what the guard promises, not
-as evidence that it holds — and in particular, **no entry in
-[`docs/AGENT-EVALS.md`](../docs/AGENT-EVALS.md) may move to `validated` on the strength of a case
-existing.** That was ADR 0037's whole purpose, and it is exactly the part still blocked.
+The suite therefore uses the harness carried by the official **`skill-creator`** plugin, which
+needs no gate. Its method is the one this repository had already been applying by hand: for each
+case, **two runs in the same turn** — one with the plugin loaded, one without, as a baseline —
+then a comparison of what each produced. `skill-creator` adds the two things doing it by hand
+lacked: the baseline arm, which measures whether the plugin changes behaviour at all, and
+aggregation over repeated runs, which separates a real failure from noise.
 
-The case **format** is also unverified against a real run. It follows the runner's documented
-shape (a `prompt.md` with frontmatter, one markdown file per grader, an optional `case.yaml` for
-fixtures), but no case here has been parsed by the tool. Expect the first real run to be a
-debugging session on the format before it is a signal about the agent.
+To run it, invoke the `skill-creator` skill and point it at `evals/evals.json`. Results belong in
+a workspace **outside** this repository's tracked tree.
 
-## Running it, when the gate opens
+### Getting a baseline arm that is actually a baseline
+
+Measured on 2026-09-09, and it cost three attempts (`docs/LEARNINGS.md`). The plugin reaches an
+unshielded arm through three channels, and any one of them makes the delta read as zero:
+
+- **A subagent launched from this repository is handed the project `CLAUDE.md`** before it does
+  anything. That file *is* part of the configuration under test.
+- **The plugin is installed on the maintainer's machine**, so its full sources are readable from
+  the plugin cache by any session, from any directory.
+- The repository is findable on disk.
+
+The arm that finally answered *without* the plugin was:
 
 ```bash
-claude plugin eval .                      # the whole suite
-claude plugin eval . --case layer-ab      # one case
-claude plugin eval . --runs 1             # fast pass while iterating (default is 3)
-claude plugin eval . --ablation with-without   # with-plugin vs no-plugin, and the delta
+cd "$(mktemp -d)" && echo "<the case prompt>" |   claude -p --disallowed-tools Bash Read Grep Glob WebFetch WebSearch Task
 ```
 
-Start with `--runs 1`. The default of three runs per case exists for the non-determinism of the
-LLM graders, and it triples the cost of a suite that has not yet been shown to parse.
+**State the confound**: this buys isolation at the price of conflating *no plugin* with *no ability
+to look anything up*. A cleanly ablated arm — the plugin absent but tools available — needs a
+sandbox this repository does not have. `claude plugin eval --ablation with-without` provides one,
+which is a real argument for going back to it if the gate ever opens.
 
-**A red case is a signal to read, not a release blocker** (ADR 0037, decision 6), until the suite
-has earned trust.
+## Two deliberate deviations from `skill-creator`'s conventions
+
+- **The suite lives at the repository root, not inside a skill directory.** `skill-creator` files
+  `evals/evals.json` under the skill it tests. Two of the three cases here are not about one
+  skill: the layer confusion is about a repository-wide convention, and the update trap spans the
+  README and three skills' notices. ADR 0037 scoped this suite to *the plugin's configuration*,
+  so `skill_name` is `groundrules` and the suite sits once at the root.
+- **`scripts/run_eval.py` is not used.** That script evaluates whether a skill's **description**
+  makes it trigger, and requires a skill directory. These are **behavioural** cases — what the
+  agent does once it is running — which is the other half of `skill-creator`'s workflow.
+
+## What has actually been run
+
+All three ran once, on 2026-09-09.
+
+| id | With the plugin | Baseline | Delta | Verdict on the case |
+|---|---|---|---|---|
+| 1 | **pass** 5/5 | **inapplicable** | unmeasurable | keep; the baseline does not apply to this shape |
+| 2 | **pass** 4/4 | **pass** 4/4 | **zero** | **weak — it does not discriminate** |
+| 3 | **pass** 4/4 | **fail** 3 of 4 | **real** | keep; it does what it was written to do |
+
+**Case 3 is the suite's first real signal, and it is positive.** With the plugin, the answer denied
+the automatic trigger and named the real ones. Isolated, it speculated that a `Stop` hook *probably*
+drives the capture, invented a command name, and left the automatic reading open. The configuration
+is what makes the difference — exactly what the case was written to detect.
+
+**Case 2 does not discriminate, and that is a finding about the case.** Both arms passed, and this
+time the baseline was properly isolated, so the zero is real rather than contamination. The
+catalog-versus-install distinction is derivable from general knowledge of Claude Code; it does not
+need this plugin's configuration. Either the case gets sharpened onto something only this repo
+knows, or its `docs/AGENT-EVALS.md` entry is a guard the model no longer needs — a legitimate
+outcome for an entry whose failure was observed in June 2026. **Decide it, do not let it sit
+green.** The with-plugin arm did find something the case had not anticipated, now an expectation:
+the user's *marketplace clone* can itself be stale, so an update run before the release was
+published reinstalls the same old version.
+
+**Case 1's baseline is inapplicable, as predicted.** Its question is about files in this
+repository; a shielded arm has no way to reach them and correctly refused to answer. **A baseline
+does not apply uniformly across case shapes** — for a case that asks the agent to read this repo,
+*without the plugin* is not a meaningful condition, and pretending to measure a delta there would
+manufacture one.
+
+**No entry in [`docs/AGENT-EVALS.md`](../docs/AGENT-EVALS.md) moves to `validated` on this.** One
+run is not a rate: three per case is the default for the non-determinism, and a single green tells
+you a case *can* pass, not that the guard *holds*.
+
+### The answer key is inside the repository under test
+
+Running case 1, the with-plugin arm **read `evals/evals.json`** — it greps the repo, and the file
+is in it. It then referred to the case grading its own answer. Nothing suggests it used the
+expectations to shape its reply, and on this run it would not have needed to; but an agent that can
+read what it is graded on is not being graded on what you think. There is no clean fix while the
+suite lives in the repository the cases explore. **Weigh every future green from a repo-reading
+case against this**, and prefer prompts whose answer cannot be improved by knowing the rubric.
 
 ## The three cases
 
 Each comes from an entry in [`docs/AGENT-EVALS.md`](../docs/AGENT-EVALS.md) sitting at
-`Status: watching`: the observed failure mode is the prompt, the recorded guard is the grader.
+`Status: watching`: the observed failure mode is the prompt, the recorded guard is the
+expectation list.
 
-| Case | Source entry | Grades on |
+| id | Source entry | What it catches |
 |---|---|---|
-| `layer-ab-divergence` | 2026-09-02 — reasoned about a layer-B copy as if it were the shipped source | whether both copies are consulted, or the distinction is named |
-| `verify-installed-version` | 2026-06-08 — "just restart" advised without checking what is installed | whether the installed version is checked before advising |
-| `verify-before-asserting` | 2026-06-08 — asserts / trusts without verifying first | whether a claimed trigger is named or denied, rather than assumed |
+| 1 | 2026-09-02 — reasoned about a layer-B copy as if it were the shipped source | describing the verifier from the frozen prototype, and calling it what users get |
+| 2 | 2026-06-08 — "just restart" advised without checking what is installed | prescribing a remedy before establishing the installed version |
+| 3 | 2026-06-08 — asserts / trusts without verifying first | agreeing that a ritual fires on a trigger that cannot exist |
+
+Case 3 is the one this repository keeps failing. Adopting `claude plugin eval` on the strength of
+its `--help` — which answers *does this command exist*, not *can I run it* — is the same reflex,
+logged as its own `AGENT-EVALS` entry on 2026-09-08.
 
 ## Adding a case
 
 Only from an existing `docs/AGENT-EVALS.md` entry, and only while the suite stays small enough to
 actually be run. A suite nobody runs is worse than none, because it looks like coverage.
+
+Write the prompt so the comfortable answer is the wrong one. A case the agent passes by agreeing
+with the question measures nothing.

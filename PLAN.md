@@ -7,6 +7,8 @@ This file differs from the long-term roadmap: it describes what is happening **n
 
 ## In progress
 
+- [ ] **Decide case 2, then repeat all three** — the first pass ran all three on 2026-09-09. Cases 1 and 3 do what they were written to do (5/5 and 4/4 with the plugin; case 3's isolated baseline fails three expectations, a real delta; case 1's baseline is inapplicable by shape). **Case 2 passed on both arms**, so it does not discriminate: either sharpen it onto something only this repo knows, or accept that its `docs/AGENT-EVALS.md` guard is one the model no longer needs. Then run each case three times, which is what turns a green into a rate and is the precondition for any entry moving to `validated`. Older framing: — case 3 ran once on 2026-09-09 (with-plugin 4/4, isolated baseline 3 failures, a real delta), which is the suite's first signal but not a rate. Three runs per case is `skill-creator`'s default for the non-determinism, and no `docs/AGENT-EVALS.md` entry moves to `validated` on one green. Cases 1 and 2 are unexecuted; case 1's baseline arm is expected to be meaningless, since its question is about files a shielded arm cannot reach — if so, record that a baseline does not apply uniformly across case shapes. No longer blocked ([ADR 0042](docs/decisions/0042-skill-creator-harness-as-the-runner.md)). The three cases are transposed to `evals/evals.json` and the harness (`skill-creator`, paired runs with and without the plugin) needs no early access. **Still never executed.** Expect the first run to be about the *method* — does the baseline arm actually differ, do the expectations grade cleanly — before it is a signal about the agent. Only after a case has run, repeatedly and green, may its `docs/AGENT-EVALS.md` entry move to `validated`; that is the outstanding half of [ADR 0037](docs/decisions/0037-executable-evals-over-agent-config.md).
+
 - [ ] *(empty)*
 
 ## Up next
@@ -30,9 +32,11 @@ Raw ideas, captured before they're lost. Not yet vetted. Each gets triaged later
 
 ## Waiting / blocked
 
-- [ ] **Run the `evals/` suite — blocked on early access** ([ADR 0037](docs/decisions/0037-executable-evals-over-agent-config.md)). The three cases are authored (`evals/layer-ab-divergence`, `evals/verify-installed-version`, `evals/verify-before-asserting`), each from a `Status: watching` entry of `docs/AGENT-EVALS.md`. **None has ever been executed**: `claude plugin eval` prints *"currently in early access"* and does nothing (verified 2026-09-08, Claude Code 2.1.265). Unblocks when the gate opens; the first run will be a debugging session on the case **format**, which has never been parsed by the tool, before it is a signal about the agent. Until then no entry may move to `validated`, which was the whole point of the ADR.
+- [ ] ...
 
 ## Recently done
+
+- [x] **Eval suite transposed to a runner that actually runs** ([ADR 0042](docs/decisions/0042-skill-creator-harness-as-the-runner.md), amends [ADR 0037](docs/decisions/0037-executable-evals-over-agent-config.md) decision 1): `claude plugin eval` stayed gated through three checks, including after installing `skill-creator` and restarting, so the suite moved to that plugin's own harness — paired runs with and without the plugin, aggregated over repetitions, no gate. The three cases became `evals/evals.json`; the CLI-format files were **deleted rather than kept in parallel**, since maintaining an unverified container for an unavailable runner is the abstraction ADR 0034 refuses. — under `[Unreleased]` (2026-09-09)
 
 - [x] **First three eval cases authored** (implements [ADR 0037](docs/decisions/0037-executable-evals-over-agent-config.md)): `evals/` holds one case per `Status: watching` entry of `docs/AGENT-EVALS.md` — the layer A/B confusion, the restart advised without checking the installed version, and the trigger asserted without verification. Each pairs an LLM judge carrying the guard's rubric with a deterministic grader as a floor under it. Running them is blocked and tracked above; the gate itself became a fourth `AGENT-EVALS` entry, since adopting the runner on the strength of its `--help` is the very reflex the third case grades. — under `[Unreleased]` (2026-09-08)
 
