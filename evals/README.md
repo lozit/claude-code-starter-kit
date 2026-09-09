@@ -60,13 +60,17 @@ which is a real argument for going back to it if the gate ever opens.
 
 ## What has actually been run
 
-All three ran once, on 2026-09-09.
+All three ran **three times** on 2026-09-09, which is what turns a green into a rate.
 
 | id | With the plugin | Baseline | Delta | Verdict on the case |
 |---|---|---|---|---|
-| 1 | **pass** 5/5 | **inapplicable** | unmeasurable | keep; the baseline does not apply to this shape |
-| 2 | **pass** 4/4 | **pass** 4/4 | **zero** | **weak — it does not discriminate** |
-| 3 | **pass** 4/4 | **fail** 3 of 4 | **real** | keep; it does what it was written to do |
+| 1 | **3/3 green** | inapplicable | unmeasurable | green **discounted** — 2 of 3 runs read the answer key |
+| 2 | **3/3 green** | 1 run, green | **zero** | it does not discriminate |
+| 3 | **3/3 green** | **0/3** — all three fail | **real and repeated** | it does what it was written to do |
+
+Nine with-plugin runs, nine green. Case 3's three isolated baselines all fail the same way: they
+refuse to commit, offer a `Stop` hook as a plausible mechanism, and leave the automatic reading
+open — one of them invented a command name. That is a consistent delta, not a lucky one.
 
 **Case 3 is the suite's first real signal, and it is positive.** With the plugin, the answer denied
 the automatic trigger and named the real ones. Isolated, it speculated that a `Stop` hook *probably*
@@ -89,9 +93,19 @@ does not apply uniformly across case shapes** — for a case that asks the agent
 *without the plugin* is not a meaningful condition, and pretending to measure a delta there would
 manufacture one.
 
-**No entry in [`docs/AGENT-EVALS.md`](../docs/AGENT-EVALS.md) moves to `validated` on this.** One
-run is not a rate: three per case is the default for the non-determinism, and a single green tells
-you a case *can* pass, not that the guard *holds*.
+### Nothing moves to `validated`, and the reason is now sharper than "not enough runs"
+
+Three runs each is a rate, so the old reason has expired. The real one is narrower and worse:
+
+**A green case validates the guard on that case's instance, not the behavioural class the entry
+names.** Case 3 grades one question — does the capture ritual fire at session end. Its entry is
+*asserts / trusts without verifying first*, and that failure **recurred on 2026-09-08**, when this
+repository adopted a runner on the strength of its `--help` without invoking it. Three greens on a
+narrow instance, six days after the class failed on a wide one, is not evidence the guard holds.
+
+So `validated` needs either a case whose scope matches its entry, or an explicit statement that it
+means *this instance is covered* and nothing more. Until that is settled, every entry stays at
+`watching`.
 
 ### The answer key is inside the repository under test
 
