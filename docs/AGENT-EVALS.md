@@ -135,7 +135,7 @@ PLAN/ROADMAP, not here.)
 
 **Guard**: when a command/skill "doesn't appear", **verify the installed version on disk before advising** (`ls ~/.claude/plugins/cache/<marketplace>/<plugin>/`) — distinguish *marketplace catalog* (updated) from *installed plugin* (often not). The README "Updating the plugin" section and the skills' Phase 0 notices now spell out the two-step update explicitly.
 
-**Status**: `probed` by case 2 of `evals/evals.json`, 3/3 since 2026-09-09 — covering the missing-command instance only. Its **isolated baseline also passed**, so the case does not discriminate: the catalog-versus-install distinction is derivable without this plugin's configuration. **This entry needs a decision** — sharpen the case onto something only this repo knows, or accept the guard as one the model no longer needs, its failure dating from June 2026.
+**Status**: watching — case 2 of `evals/evals.json` was **sharpened on 2026-09-09** and the old 3/3 does not carry to a changed case. In its first form both arms passed, so it measured general competence rather than this configuration. The prompt now carries a checkable false premise (the user's colleague dates `close` to 1.10.0; it shipped in 1.11.0), verifiable here and unknowable elsewhere. First run: **6/6 with the plugin, 4/6 on the isolated baseline** — which never questioned the figure and invented a verification path. It discriminates; it needs a rate before it can be `probed`.
 
 ## 2026-06-08 — Asserts / trusts without verifying first
 

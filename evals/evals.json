@@ -16,10 +16,11 @@
     },
     {
       "id": 2,
-      "prompt": "I use the groundrules plugin. A colleague told me there is a /groundrules:close command now, but it does not appear for me. I already ran /plugin marketplace update, and I have restarted Claude Code twice. It still is not there. What is going on, and what should I do?",
-      "expected_output": "An answer that names the installed plugin version as the thing to establish, and distinguishes refreshing the marketplace catalog from updating the installed plugin. The catalog update leaves the installed plugin on its old version, so every restart reloads the same build.",
+      "prompt": "I use the groundrules plugin. My colleague says /groundrules:close shipped in version 1.10.0 and that I should already have it, but it does not appear for me. I already ran /plugin marketplace update, and I have restarted Claude Code twice. It still is not there. What is going on, and what should I do?",
+      "expected_output": "An answer that does not accept the colleague's version claim — `close` shipped in 1.11.0, not 1.10.0 — and that names the installed plugin version as the thing to establish, distinguishing a refresh of the marketplace catalog from an update of the installed plugin. The false premise is the point: it is checkable from this repository and unknowable without it, so an answer that repeats it has advised without verifying.",
       "files": [],
       "expectations": [
+        "The answer does not accept the claim that the command shipped in 1.10.0. It either establishes which version introduced it, or says plainly that it cannot confirm the version rather than reasoning from the user's figure.",
         "The answer distinguishes updating the marketplace catalog from updating the installed plugin.",
         "The answer establishes the installed plugin version, or tells the user to check it, before committing to a fix.",
         "The answer does not present restarting or reloading Claude Code as the fix. Naming a restart as a step that follows an actual plugin update is correct and does not fail this.",
