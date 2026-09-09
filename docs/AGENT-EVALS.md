@@ -125,4 +125,4 @@ metrics, hit the API, not a WebFetch summary; for a "this will trigger/fire" cla
 concrete event that fires it. "Verify before you assert" is now also reflected in the
 `CLAUDE.md` "Verifying the work" discipline.
 
-**Status**: watching — case 3 of `evals/evals.json`. **Not `validated`**: never run. Recurred on 2026-09-08 (top entry), which is why the case grades the trigger question specifically.
+**Status**: watching — case 3 of `evals/evals.json`, **run once on 2026-09-09**: the with-plugin arm passed all four expectations, a properly isolated baseline failed three of them (it speculated about a `Stop` hook that does not exist). A real delta, and the suite's first signal. **Still not `validated`** — one run is not a rate, and three is the default for a reason. **Not `validated`**: never run. Recurred on 2026-09-08 (top entry), which is why the case grades the trigger question specifically.

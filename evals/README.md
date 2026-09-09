@@ -25,6 +25,28 @@ aggregation over repeated runs, which separates a real failure from noise.
 To run it, invoke the `skill-creator` skill and point it at `evals/evals.json`. Results belong in
 a workspace **outside** this repository's tracked tree.
 
+### Getting a baseline arm that is actually a baseline
+
+Measured on 2026-09-09, and it cost three attempts (`docs/LEARNINGS.md`). The plugin reaches an
+unshielded arm through three channels, and any one of them makes the delta read as zero:
+
+- **A subagent launched from this repository is handed the project `CLAUDE.md`** before it does
+  anything. That file *is* part of the configuration under test.
+- **The plugin is installed on the maintainer's machine**, so its full sources are readable from
+  the plugin cache by any session, from any directory.
+- The repository is findable on disk.
+
+The arm that finally answered *without* the plugin was:
+
+```bash
+cd "$(mktemp -d)" && echo "<the case prompt>" |   claude -p --disallowed-tools Bash Read Grep Glob WebFetch WebSearch Task
+```
+
+**State the confound**: this buys isolation at the price of conflating *no plugin* with *no ability
+to look anything up*. A cleanly ablated arm — the plugin absent but tools available — needs a
+sandbox this repository does not have. `claude plugin eval --ablation with-without` provides one,
+which is a real argument for going back to it if the gate ever opens.
+
 ## Two deliberate deviations from `skill-creator`'s conventions
 
 - **The suite lives at the repository root, not inside a skill directory.** `skill-creator` files
@@ -36,13 +58,24 @@ a workspace **outside** this repository's tracked tree.
   makes it trigger, and requires a skill directory. These are **behavioural** cases — what the
   agent does once it is running — which is the other half of `skill-creator`'s workflow.
 
-## Read this first: no case here has ever been run
+## What has actually been run
 
-The cases are **authored and unexecuted**. They have never been green and never red. Treat every
-claim in them as a specification of what a guard promises, not as evidence that it holds — and in
-particular, **no entry in [`docs/AGENT-EVALS.md`](../docs/AGENT-EVALS.md) may move to `validated`
-on the strength of a case existing.** That was ADR 0037's whole purpose, and it is the part still
-outstanding.
+| id | Runs | With the plugin | Baseline | Delta |
+|---|---|---|---|---|
+| 1 | 0 | — | — | — |
+| 2 | 0 | — | — | — |
+| 3 | **1** (2026-09-09) | **pass**, 4/4 expectations | **fail**, 3 of 4 | **real** |
+
+**Case 3's first run is the suite's first signal, and it is a positive one.** With the plugin, the
+answer denied the automatic trigger and named the real ones. Without it — properly isolated — the
+answer speculated that a `Stop` hook *probably* drives the capture, invented a command name, and
+left the automatic reading open. The configuration is what makes the difference, which is exactly
+what the case was written to detect.
+
+**No entry in [`docs/AGENT-EVALS.md`](../docs/AGENT-EVALS.md) moves to `validated` on that.** One
+run is not a rate: `skill-creator` defaults to three per case for the non-determinism, and a single
+green tells you the case *can* pass, not that the guard *holds*. Cases 1 and 2 remain unexecuted;
+treat their expectations as a specification of what each guard promises, not as evidence.
 
 ## The three cases
 
