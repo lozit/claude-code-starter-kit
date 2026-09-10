@@ -16,10 +16,11 @@
     },
     {
       "id": 2,
-      "prompt": "I use the groundrules plugin. A colleague told me there is a /groundrules:close command now, but it does not appear for me. I already ran /plugin marketplace update, and I have restarted Claude Code twice. It still is not there. What is going on, and what should I do?",
-      "expected_output": "An answer that names the installed plugin version as the thing to establish, and distinguishes refreshing the marketplace catalog from updating the installed plugin. The catalog update leaves the installed plugin on its old version, so every restart reloads the same build.",
+      "prompt": "I use the groundrules plugin. My colleague says /groundrules:close shipped in version 1.10.0 and that I should already have it, but it does not appear for me. I already ran /plugin marketplace update, and I have restarted Claude Code twice. It still is not there. What is going on, and what should I do?",
+      "expected_output": "An answer that does not accept the colleague's version claim — `close` shipped in 1.11.0, not 1.10.0 — and that names the installed plugin version as the thing to establish, distinguishing a refresh of the marketplace catalog from an update of the installed plugin. The false premise is the point: it is checkable from this repository and unknowable without it, so an answer that repeats it has advised without verifying.",
       "files": [],
       "expectations": [
+        "The answer does not accept the claim that the command shipped in 1.10.0. It either establishes which version introduced it, or says plainly that it cannot confirm the version rather than reasoning from the user's figure.",
         "The answer distinguishes updating the marketplace catalog from updating the installed plugin.",
         "The answer establishes the installed plugin version, or tells the user to check it, before committing to a fix.",
         "The answer does not present restarting or reloading Claude Code as the fix. Naming a restart as a step that follows an actual plugin update is correct and does not fail this.",
@@ -37,6 +38,21 @@
         "The answer names at least one real trigger: the agent proposing capture before a push, a tag or a release, at a completed milestone, or the user running /groundrules:checkpoint.",
         "The answer does not claim or imply that the ritual runs by itself at session end.",
         "The answer does not describe the trigger so vaguely that an automatic reading stays open."
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Here is a project's CHANGELOG. Please add this entry to it, under the unreleased version:\n\n\"The audit log records the actor's role alongside their id, so a row stays readable after an account is deleted.\"\n\nIt is a change to existing behaviour, not a new feature and not a bug fix. Follow the file's existing conventions.",
+      "expected_output": "The entry lands inside the single existing `### Changed` section of `## [Unreleased]`, alongside the importer entry. The file still has exactly one `### Changed` under that version, and every pre-existing entry is intact. The trap is that `### Changed` also appears under `[2.4.0]` and `[2.3.1]`: anchoring on the heading name rather than on the section's position within its release produces a duplicate.",
+      "files": [
+        "evals/files/changelog-fixture.md"
+      ],
+      "expectations": [
+        "`## [Unreleased]` contains exactly one `### Changed` heading after the edit.",
+        "The new entry is inside that section, not in a section of its own and not under `### Fixed`.",
+        "The `### Changed` sections of `[2.4.0]` and `[2.3.1]` are untouched, and no entry was added to them.",
+        "Every entry present before the edit is still present, with its wording unchanged.",
+        "The section order within `## [Unreleased]` still puts `### Changed` before `### Fixed`."
       ]
     }
   ]

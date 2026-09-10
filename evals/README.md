@@ -65,8 +65,9 @@ All three ran **three times** on 2026-09-09, which is what turns a green into a 
 | id | With the plugin | Baseline | Delta | Verdict on the case |
 |---|---|---|---|---|
 | 1 | **3/3 green** | inapplicable | unmeasurable | green **discounted** — 2 of 3 runs read the answer key |
-| 2 | **3/3 green** | 1 run, green | **zero** | it does not discriminate |
+| 2 | **3/3 green** (sharpened) | **fail** 4 of 6, 1 run | **real** | sharpened 2026-09-09; the old version did not discriminate |
 | 3 | **3/3 green** | **0/3** — all three fail | **real and repeated** | it does what it was written to do |
+| 4 | **3/3 green** | inapplicable | unmeasurable | **the failure did not reproduce** — the green is not evidence |
 
 Nine with-plugin runs, nine green. Case 3's three isolated baselines all fail the same way: they
 refuse to commit, offer a `Stop` hook as a plausible mechanism, and leave the automatic reading
@@ -77,13 +78,16 @@ the automatic trigger and named the real ones. Isolated, it speculated that a `S
 drives the capture, invented a command name, and left the automatic reading open. The configuration
 is what makes the difference — exactly what the case was written to detect.
 
-**Case 2 does not discriminate, and that is a finding about the case.** Both arms passed, and this
-time the baseline was properly isolated, so the zero is real rather than contamination. The
-catalog-versus-install distinction is derivable from general knowledge of Claude Code; it does not
-need this plugin's configuration. Either the case gets sharpened onto something only this repo
-knows, or its `docs/AGENT-EVALS.md` entry is a guard the model no longer needs — a legitimate
-outcome for an entry whose failure was observed in June 2026. **Decide it, do not let it sit
-green.** The with-plugin arm did find something the case had not anticipated, now an expectation:
+**Case 2 was sharpened on 2026-09-09, and now discriminates.** In its first form both arms passed:
+the catalog-versus-install distinction is derivable from general knowledge of Claude Code and needs
+nothing from this plugin. The prompt now carries a **checkable false premise** — the user's
+colleague says `close` shipped in 1.10.0, when it shipped in 1.11.0 — which is verifiable from this
+repository and unknowable without it. The with-plugin arm opened by correcting it and *proved* the
+correction against both tags, and drew a consequence the case had not anticipated: a catalog
+refreshed before the release could not have carried the version either. The isolated baseline never
+questioned the figure at all; it worked around the premise without examining it, and invented a
+verification command (`commands/close.md`) for a plugin whose skills live in `skills/<name>/`.
+**A prompt whose comfortable answer is wrong is what makes a case measure anything.** The with-plugin arm did find something the case had not anticipated, now an expectation:
 the user's *marketplace clone* can itself be stale, so an update run before the release was
 published reinstalls the same old version.
 
@@ -106,6 +110,22 @@ was failing.
 or **`probed: <case>, N/N since <date>`** — one named instance, at a measured rate, and nothing
 about the class. Cases 2 and 3 make their entries `probed`. Case 1's does **not**: its green is
 discounted, two of three runs having read the file that grades them.
+
+### Three greens out of four were green for the wrong reason
+
+This is the suite's most useful output so far, and it is about the suite:
+
+- **Case 1** — green, then **discounted**: two runs read `evals/evals.json`, the file grading them.
+- **Case 2** — green on **both** arms in its first form, so it measured general competence. A
+  checkable false premise fixed it.
+- **Case 4** — green 3/3, and **the recorded failure did not reproduce**. The entry describes an
+  insertion into a large file mid-session by a scripted string anchor, under load; the case handed a
+  fresh agent a small fixture and one instruction. Different task, easy green.
+
+Only **case 3** was written the other way round — a prompt whose comfortable answer is wrong — and
+it is the only case that has ever produced a delta. **Writing a case that reproduces a failure is
+much harder than writing one that describes it**, and a green from a case that cannot fail is worse
+than a red, because it gets filed as evidence. The general rule is in `docs/LEARNINGS.md`.
 
 ### The answer key is inside the repository under test
 

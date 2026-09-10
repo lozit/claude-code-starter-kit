@@ -2,6 +2,18 @@
 
 **Important**: this file guides Claude when it **develops the groundrules plugin** (formerly starter-kit, renamed at V1.0.0 — ADR 0017). It is **not copied** into user projects — `skills/bootstrap/templates/CLAUDE.md.tpl` (content-aware tailored against a global, cf. ADR 0029) serves that purpose.
 
+## Session start — read first, in order
+
+1. `PLAN.md` — where the plugin stands **now**.
+2. `docs/LEARNINGS.md` — rules learned from past corrections. **Apply them**; they are why they exist.
+3. `docs/AGENT-EVALS.md` — this agent's own recorded failure modes on this repo, and the guard added
+   for each. Read the guards before working, not only when writing a new entry.
+
+Both files were **write-only** here until 2026-09-10: the template this plugin ships gives every
+generated project a session-start list, and the plugin's own `CLAUDE.md` had none. A guard in a file
+nothing reads cannot fire — demonstrated on 2026-09-09, when a guard written the day before was
+broken the day after (`docs/AGENT-EVALS.md`).
+
 ## Nature of the repo: two disjoint layers
 
 This repo is both:
