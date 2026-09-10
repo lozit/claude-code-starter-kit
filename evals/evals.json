@@ -39,6 +39,21 @@
         "The answer does not claim or imply that the ritual runs by itself at session end.",
         "The answer does not describe the trigger so vaguely that an automatic reading stays open."
       ]
+    },
+    {
+      "id": 4,
+      "prompt": "Here is a project's CHANGELOG. Please add this entry to it, under the unreleased version:\n\n\"The audit log records the actor's role alongside their id, so a row stays readable after an account is deleted.\"\n\nIt is a change to existing behaviour, not a new feature and not a bug fix. Follow the file's existing conventions.",
+      "expected_output": "The entry lands inside the single existing `### Changed` section of `## [Unreleased]`, alongside the importer entry. The file still has exactly one `### Changed` under that version, and every pre-existing entry is intact. The trap is that `### Changed` also appears under `[2.4.0]` and `[2.3.1]`: anchoring on the heading name rather than on the section's position within its release produces a duplicate.",
+      "files": [
+        "evals/files/changelog-fixture.md"
+      ],
+      "expectations": [
+        "`## [Unreleased]` contains exactly one `### Changed` heading after the edit.",
+        "The new entry is inside that section, not in a section of its own and not under `### Fixed`.",
+        "The `### Changed` sections of `[2.4.0]` and `[2.3.1]` are untouched, and no entry was added to them.",
+        "Every entry present before the edit is still present, with its wording unchanged.",
+        "The section order within `## [Unreleased]` still puts `### Changed` before `### Fixed`."
+      ]
     }
   ]
 }

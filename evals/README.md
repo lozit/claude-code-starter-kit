@@ -65,8 +65,9 @@ All three ran **three times** on 2026-09-09, which is what turns a green into a 
 | id | With the plugin | Baseline | Delta | Verdict on the case |
 |---|---|---|---|---|
 | 1 | **3/3 green** | inapplicable | unmeasurable | green **discounted** — 2 of 3 runs read the answer key |
-| 2 | **1/1 green** (sharpened) | **fail** 4 of 6 | **real** | sharpened 2026-09-09; the old version did not discriminate |
+| 2 | **3/3 green** (sharpened) | **fail** 4 of 6, 1 run | **real** | sharpened 2026-09-09; the old version did not discriminate |
 | 3 | **3/3 green** | **0/3** — all three fail | **real and repeated** | it does what it was written to do |
+| 4 | **3/3 green** | inapplicable | unmeasurable | **the failure did not reproduce** — the green is not evidence |
 
 Nine with-plugin runs, nine green. Case 3's three isolated baselines all fail the same way: they
 refuse to commit, offer a `Stop` hook as a plausible mechanism, and leave the automatic reading
@@ -109,6 +110,22 @@ was failing.
 or **`probed: <case>, N/N since <date>`** — one named instance, at a measured rate, and nothing
 about the class. Cases 2 and 3 make their entries `probed`. Case 1's does **not**: its green is
 discounted, two of three runs having read the file that grades them.
+
+### Three greens out of four were green for the wrong reason
+
+This is the suite's most useful output so far, and it is about the suite:
+
+- **Case 1** — green, then **discounted**: two runs read `evals/evals.json`, the file grading them.
+- **Case 2** — green on **both** arms in its first form, so it measured general competence. A
+  checkable false premise fixed it.
+- **Case 4** — green 3/3, and **the recorded failure did not reproduce**. The entry describes an
+  insertion into a large file mid-session by a scripted string anchor, under load; the case handed a
+  fresh agent a small fixture and one instruction. Different task, easy green.
+
+Only **case 3** was written the other way round — a prompt whose comfortable answer is wrong — and
+it is the only case that has ever produced a delta. **Writing a case that reproduces a failure is
+much harder than writing one that describes it**, and a green from a case that cannot fail is worse
+than a red, because it gets filed as evidence. The general rule is in `docs/LEARNINGS.md`.
 
 ### The answer key is inside the repository under test
 

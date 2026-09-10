@@ -7,6 +7,55 @@ One entry per learning. Keep the format simple: title, context, lesson.
 
 ---
 
+## Writing a case that *reproduces* a failure is far harder than writing one that *describes* it
+
+**Why**: 2026-09-10, and it is now three cases out of four. Every green the `evals/` suite has
+produced was green for a reason other than *the guard works*:
+
+- **Case 1** — green 3/3, then **discounted**: two of the three runs read `evals/evals.json`, the
+  file holding the expectations grading them. The answer key sits inside the repository the case
+  explores.
+- **Case 2** — green on **both** arms in its first form. The question was answerable from general
+  knowledge of Claude Code, so it measured competence and not this plugin's configuration. Only a
+  **checkable false premise** — a version number wrong in a way verifiable here and unknowable
+  elsewhere — made it discriminate.
+- **Case 4** — green 3/3 on its first outing, and the recorded failure **did not reproduce**. The
+  entry describes inserting into a large file mid-session, by a scripted string anchor, under load;
+  the case handed a fresh agent a small file and one focused instruction. Different task, so the
+  green says the task was easy.
+
+Only **case 3** was written the other way round — a prompt whose comfortable answer is the wrong one
+— and it is the only case that has ever produced a delta.
+
+**When to apply**: when writing an eval case from a recorded failure, do not transcribe the entry
+into a prompt. **Ask what made the failure happen** — the pressure, the size, the shortcut that was
+tempting, the plausible-but-wrong answer — and rebuild *that*, or admit the case reproduces nothing.
+Three tests before trusting a green: could a reader answer it without the thing under test (then it
+measures competence); can the agent reach the grading criteria (then it is not blind); and were the
+conditions that produced the failure actually present (then it is a different task wearing the same
+name). **A green from a case that cannot fail is more dangerous than a red**, because it is filed as
+evidence.
+
+## A guard in a file nothing reads cannot fire — check that the lesson is *loaded*, not just written
+
+**Why**: 2026-09-10. A guard was written into `docs/AGENT-EVALS.md` on 2026-09-08 and broken on
+2026-09-09, in the same file, on the next edit of the same kind. The guard was not wrong and the
+entry was not vague; **nothing put it in front of the agent**. This repository's own `CLAUDE.md` had
+no *Session start* section at all — while the template it ships gives every generated project one,
+naming `PLAN.md`, `docs/LEARNINGS.md` and `docs/VISION.md` as required reading. So `LEARNINGS.md`
+and `AGENT-EVALS.md` were **write-only** here: the agent was told where to record lessons and never
+told to read them. Every guard in both files was structurally unable to fire, which makes the whole
+capture ritual a filing habit rather than a feedback loop. Found while checking whether a proposed
+eval case could ever be meaningful — the case needed the guard to be loaded, and it was not.
+
+**When to apply**: whenever you write a rule meant to change future behaviour — a guard, a lesson, a
+convention. **Name the file that will carry it into the next session**, and check that something
+actually loads that file: a session-start list, an always-loaded config, a rule with a `paths:`
+frontmatter. If nothing does, you have written a note, not a guard, and the honest choice is to move
+it somewhere loaded or to accept that it will not fire. The tell is a recurrence shortly after a
+capture: the rule existed, the failure repeated, so the path from one to the other was never there.
+And dogfooding is not automatic — a plugin can ship the mechanism it fails to apply to itself.
+
 ## A baseline arm run anywhere the plugin is reachable is not a baseline — and three channels reach it
 
 **Why**: 2026-09-09, the first real run of the `evals/` suite. Case 3 asks whether the capture ritual

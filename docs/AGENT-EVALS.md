@@ -44,8 +44,17 @@ heading that appears once per section. And after any insertion, **count**: one `
 release, one row per ADR, one entry per id. The count is a check; re-reading the diff is a
 reminder, and this entry is what a reminder is worth.
 
-**Status**: watching — no case yet. It is a strong candidate: the failure is cheap to reproduce,
-mechanically gradable (count the headings), and needs no judge.
+**Root cause, found 2026-09-10**: the guard above could not fire, because nothing in this repository
+loaded the file holding it — the meta `CLAUDE.md` had no *Session start* section, while the template
+this plugin ships gives every generated project one. Fixed by giving the dogfood the list it ships;
+the general lesson is in `docs/LEARNINGS.md`.
+
+**Status**: watching — case 4 of `evals/evals.json` grades it, and is the suite's first **fully
+deterministic** case: count the headings, no judge. **Run 3/3 green on 2026-09-10, and the green is
+not evidence**: the failure did not reproduce. The recorded failure happened mid-session, inserting
+by a scripted string anchor into a large real file under load; the case hands a fresh agent a small
+fixture and one focused instruction. Different task. The case needs the *conditions* rebuilt — several
+insertions at once, across a longer file — before a green means anything.
 
 ## 2026-09-08 — Called a gated command "verified present" after reading only its `--help`
 
@@ -135,7 +144,7 @@ PLAN/ROADMAP, not here.)
 
 **Guard**: when a command/skill "doesn't appear", **verify the installed version on disk before advising** (`ls ~/.claude/plugins/cache/<marketplace>/<plugin>/`) — distinguish *marketplace catalog* (updated) from *installed plugin* (often not). The README "Updating the plugin" section and the skills' Phase 0 notices now spell out the two-step update explicitly.
 
-**Status**: watching — case 2 of `evals/evals.json` was **sharpened on 2026-09-09** and the old 3/3 does not carry to a changed case. In its first form both arms passed, so it measured general competence rather than this configuration. The prompt now carries a checkable false premise (the user's colleague dates `close` to 1.10.0; it shipped in 1.11.0), verifiable here and unknowable elsewhere. First run: **6/6 with the plugin, 4/6 on the isolated baseline** — which never questioned the figure and invented a verification path. It discriminates; it needs a rate before it can be `probed`.
+**Status**: watching — case 2 of `evals/evals.json` was **sharpened on 2026-09-09** and the old 3/3 does not carry to a changed case. In its first form both arms passed, so it measured general competence rather than this configuration. The prompt now carries a checkable false premise (the user's colleague dates `close` to 1.10.0; it shipped in 1.11.0), verifiable here and unknowable elsewhere. **3/3 at 6/6 with the plugin** (2026-09-10) against **4/6 on the isolated baseline**, which never questioned the figure and invented a verification path. Two runs found things the case had not anticipated: a catalog refreshed before the release could not have carried the version, and **this machine holds two installs of the plugin** — user scope at 1.11.0, project scope pinned at 1.10.0 for this very repository, so the dogfood runs an old copy of its own plugin. **`probed` by case 2, 3/3 since 2026-09-10** — covering the version-claim instance only.
 
 ## 2026-06-08 — Asserts / trusts without verifying first
 
